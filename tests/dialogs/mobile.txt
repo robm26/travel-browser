@@ -1,0 +1,11 @@
+LaunchRequest
+# UK phone example
+# MyPhoneNumberIntent mobileNumber=447429425036
+
+# US phone example
+MyPhoneNumberIntent mobileNumber=5082598463
+
+# Australia example
+# MyPhoneNumberIntent mobileNumber=6140667317
+
+AMAZON.StopIntent

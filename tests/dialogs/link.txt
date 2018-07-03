@@ -1,0 +1,4 @@
+LaunchRequest
+MyNameIsIntent firstname=Robert
+LinkSessionIntent
+AMAZON.StopIntent

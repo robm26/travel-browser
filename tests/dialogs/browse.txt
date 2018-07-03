@@ -1,0 +1,5 @@
+LaunchRequest
+BrowseCitiesIntent country=
+BrowseCitiesIntent country=Canada
+ShowCityIntent city=Toronto
+AMAZON.StopIntent

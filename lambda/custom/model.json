@@ -1,0 +1,407 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "travel browser",
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NoIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.YesIntent",
+          "samples": []
+        },
+        {
+          "name": "ResetIntent",
+          "slots": [],
+          "samples": [
+            "reset",
+            "reset memory",
+            "clear memory"
+          ]
+        },
+        {
+          "name": "BrowseCitiesIntent",
+          "slots": [
+            {
+              "name": "country",
+              "type": "AMAZON.Country"
+            }
+          ],
+          "samples": [
+            "filter by {country}",
+            "show cities in {country}",
+            "browse cities in {country}",
+            "browse",
+            "browse cities",
+            "show cities",
+            "show city list"
+          ]
+        },
+        {
+          "name": "MyPhoneNumberIntent",
+          "slots": [
+            {
+              "name": "mobileNumber",
+              "type": "AMAZON.PhoneNumber",
+              "samples": [
+                "send it to {mobileNumber}",
+                "my mobile is {mobileNumber}",
+                "my phone number is {mobileNumber}",
+                "my number is {mobileNumber}",
+                "{mobileNumber}"
+              ]
+            }
+          ],
+          "samples": [
+            "send me a text",
+            "send a text",
+            "text me at {mobileNumber}",
+            "my mobile is {mobileNumber}",
+            "my number is {mobileNumber}",
+            "my phone number is {mobileNumber}"
+          ]
+        },
+        {
+          "name": "AMAZON.MoreIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NavigateSettingsIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NextIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.PageUpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.PageDownIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.PreviousIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ScrollRightIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ScrollDownIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ScrollLeftIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ScrollUpIntent",
+          "samples": []
+        },
+        {
+          "name": "SpeakSpeedIntent",
+          "slots": [
+            {
+              "name": "speakingSpeedChange",
+              "type": "speakSpeedSlotType"
+            }
+          ],
+          "samples": [
+            "speak {speakingSpeedChange}"
+          ]
+        },
+        {
+          "name": "ShowCityIntent",
+          "slots": [
+            {
+              "name": "city",
+              "type": "citySlotType"
+            }
+          ],
+          "samples": [
+            "show {city}",
+            "{city}",
+            "tell me about {city}",
+            "go to {city}"
+          ]
+        }
+      ],
+      "types": [
+        {
+          "name": "speakSpeedSlotType",
+          "values": [
+            {
+              "name": {
+                "value": "slower"
+              }
+            },
+            {
+              "name": {
+                "value": "faster"
+              }
+            }
+          ]
+        },
+        {
+          "name": "citySlotType",
+          "values": [
+            {
+              "name": {
+                "value": "Bangalore"
+              }
+            },
+            {
+              "name": {
+                "value": "Dublin"
+              }
+            },
+            {
+              "name": {
+                "value": "Philadelphia"
+              }
+            },
+            {
+              "name": {
+                "value": "Portland"
+              }
+            },
+            {
+              "name": {
+                "value": "Frankfurt"
+              }
+            },
+            {
+              "name": {
+                "value": "Edinburgh"
+              }
+            },
+            {
+              "name": {
+                "value": "Phoenix"
+              }
+            },
+            {
+              "name": {
+                "value": "Miami"
+              }
+            },
+            {
+              "name": {
+                "value": "New York City"
+              }
+            },
+            {
+              "name": {
+                "value": "San Jose"
+              }
+            },
+            {
+              "name": {
+                "value": "Atlanta"
+              }
+            },
+            {
+              "name": {
+                "value": "Los Angeles"
+              }
+            },
+            {
+              "name": {
+                "value": "Chicago"
+              }
+            },
+            {
+              "name": {
+                "value": "Pune"
+              }
+            },
+            {
+              "name": {
+                "value": "Boston"
+              }
+            },
+            {
+              "name": {
+                "value": "Denver"
+              }
+            },
+            {
+              "name": {
+                "value": "London"
+              }
+            },
+            {
+              "name": {
+                "value": "Melbourne"
+              }
+            },
+            {
+              "name": {
+                "value": "Sydney"
+              }
+            },
+            {
+              "name": {
+                "value": "Brisbane"
+              }
+            },
+            {
+              "name": {
+                "value": "Auckland"
+              }
+            },
+            {
+              "name": {
+                "value": "Washington DC"
+              }
+            },
+            {
+              "name": {
+                "value": "Mumbai"
+              }
+            },
+            {
+              "name": {
+                "value": "Belfast"
+              }
+            },
+            {
+              "name": {
+                "value": "Toronto"
+              }
+            },
+            {
+              "name": {
+                "value": "Munich"
+              }
+            },
+            {
+              "name": {
+                "value": "Lille"
+              }
+            },
+            {
+              "name": {
+                "value": "Paris"
+              }
+            },
+            {
+              "name": {
+                "value": "San Francisco"
+              }
+            },
+            {
+              "name": {
+                "value": "Seattle"
+              }
+            },
+            {
+              "name": {
+                "value": "Vancouver"
+              }
+            },
+            {
+              "name": {
+                "value": "Austin"
+              }
+            },
+            {
+              "name": {
+                "value": "Bristol"
+              }
+            },
+            {
+              "name": {
+                "value": "Vienna"
+              }
+            },
+            {
+              "name": {
+                "value": "Delhi"
+              }
+            },
+            {
+              "name": {
+                "value": "Montreal"
+              }
+            },
+            {
+              "name": {
+                "value": "Tokyo"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "dialog": {
+      "intents": [
+        {
+          "name": "MyPhoneNumberIntent",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "mobileNumber",
+              "type": "AMAZON.PhoneNumber",
+              "confirmationRequired": false,
+              "elicitationRequired": true,
+              "prompts": {
+                "elicitation": "Elicit.Slot.147640314547.594530034359"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "prompts": [
+      {
+        "id": "Elicit.Slot.1298640133108.110887262871",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "what page"
+          }
+        ]
+      },
+      {
+        "id": "Confirm.Intent.1018158812104",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Okay I heard {mobileNumber} , is that correct?"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.147640314547.594530034359",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "what is your phone number?"
+          }
+        ]
+      }
+    ]
+  }
+}

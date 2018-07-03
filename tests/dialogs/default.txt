@@ -1,0 +1,4 @@
+LaunchRequest
+MyColorSetIntent color=red
+MyColorGetIntent
+AMAZON.StopIntent

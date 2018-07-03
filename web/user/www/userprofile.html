@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Skill User Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+    <script src="js/userdata.js"></script>
+
+    <!--<link rel="stylesheet" href="css/react-bootstrap-table2.css" />-->
+    <!--<script src="js/react-bootstrap-table2.js"></script>-->
+
+
+    <script >
+        function init() {
+            console.log('starting user profile page');
+//            document.getElementById('word1').value = 'fast';
+//            document.getElementById('word2').value = 'record';
+//            document.getElementById('number').value = 758;
+
+            setStatus('ready');
+        }
+    </script>
+
+    <link rel="stylesheet" href="css/styles.css" />
+
+</head>
+<body onLoad="init();">
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span class="pagetitle">Alexa Skill User Profile Update</span>
+    </div>
+    <div class="panel-body">
+
+        <div id="lookuppanel" class="col-sm-2">
+            <table class="table" border="0">
+                <tr>
+                    <td>Word 1</td><td><input type="text" id="word1" size="7"></td>
+                </tr>
+                <tr>
+                    <td>Word 2</td><td><input type="text" id="word2" size="7"></td>
+                </tr>
+                <tr>
+                    <td>Number</td><td><input type="text" id="number" size="4"></td>
+                </tr>
+                <tr><td colspan="2">
+                    <button type="button" class="btn btn-primary btn-xs" onClick="loadAttrs();">LOAD</button>
+
+                    <button type="button" class="btn btn-info btn-xs" onClick="clearForm();">CLEAR</button>
+
+
+                    <button type="button" class="btn btn-warning btn-xs" onClick="testy();">TEST</button>
+                </td></tr>
+            </table>
+
+        </div>
+        <div id="profilepanel" class="col-sm-7">
+            <div id="savebuttons" class="savebuttons">
+                <button type="button" class="btn btn-primary btn-xs" onClick="saveAttrs();">SAVE</button>
+
+            </div>
+
+            <div id="attrPanel" class="attrPanel">
+                <table id="EditFormTable" class="table">
+
+                </table>
+
+            </div>
+
+        </div>
+        <div id="rightuppanel" class="col-sm-2">
+            <div class="panel-heading" ><I>status :</I>
+                <div id="status" class="status">
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,7 @@
+LaunchRequest
+BookmarkSetIntent page=234
+StatusIntent
+# ResetIntent
+AMAZON.HelpIntent
+AMAZON.YesIntent
+AMAZON.StopIntent

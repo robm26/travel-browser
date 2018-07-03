@@ -1,0 +1,28 @@
+
+.panel-heading {background-color:whitesmoke}
+
+.status {background-color:#eee; padding:3px; border: 1px dashed gainsboro}
+
+.table {background-color: gainsboro; }
+.pagetitle{font-size:larger}
+.tablename {font-weight:bold}
+
+.EditTableNameHeader {width:30%; background-color:gainsboro}
+.EditTableValueHeader { background-color:whitesmoke}
+
+.EditTableNameColumn {width:30%; background-color:whitesmoke}
+.EditTableValueColumn { background-color:white}
+.readonly {background-color:gainsboro}
+
+
+.lookuppanel {padding:10px; background-color:whitesmoke; float:left}
+.lookupkey {font-size:larger; padding:5px; width:80px}
+.maintableheader {background-color:silver}
+
+.savebuttons{background-color:gainsboro; padding:3px}
+.attrPanel{background-color:whitesmoke; padding:3px}
+
+.statusNormal{background-color:whitesmoke; padding:3px; border: 1px dashed gainsboro}
+.statusWarn{background-color:coral; padding:3px}
+.statusError{background-color:hotpink; padding:3px}
+
