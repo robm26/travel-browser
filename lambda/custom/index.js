@@ -218,41 +218,51 @@ const ShowCityHandler = {
         const DisplayImg1 = constants.getDisplayImg1();
         const DisplayImg2 = constants.getDisplayImg2();
 
+        // const img = `https://s3.amazonaws.com/skill-images-789/travel/${city}.jpg`;
+        const img = data.getImgUrl(city);
+        const airportCode = data.getAirportCode(city);
+
         if (helpers.supportsDisplay(handlerInput)) {
 
             const myImage1 = new Alexa.ImageHelper()
-                .addImageInstance(DisplayImg1.url)
+                .addImageInstance(img)
                 .getImage();
 
             const myImage2 = new Alexa.ImageHelper()
-                .addImageInstance(DisplayImg2.url)
+                .addImageInstance(img)
                 .getImage();
 
             const primaryText = new Alexa.RichTextContentHelper()
-                .withPrimaryText('Here is your list!')
+                .withPrimaryText(city + ': ' + airportCode)
                 .getTextContent();
 
-
-            // responseBuilder.addRenderTemplateDirective({
-            //     type : 'ListTemplate1',
-            //     token : 'string',
-            //     backButton : 'hidden',
-            //     backgroundImage: myImage2,
-            //     image: myImage1,
-            //     title: helpers.capitalize(invocationName),
-            //     listItems : itemList
+            // To do: Make template 7 work
+            // handlerInput.responseBuilder.addRenderTemplateDirective({
+            //   type: 'BodyTemplate7',
+            //   token: 'string',
+            //   backButton: 'HIDDEN',
+            //   backgroundImage: myImage2,
+            //   image: getDisplayImg1,
+            //   title: primaryText,
             // });
+
+            handlerInput.responseBuilder.addRenderTemplateDirective({
+              type: 'BodyTemplate6',
+              token: 'string',
+              backButton: 'HIDDEN',
+              backgroundImage: myImage2,
+              image: DisplayImg1,
+              title: helpers.capitalize(invocationName),
+              textContent: primaryText
+            });
         }
 
-        // const img = `https://s3.amazonaws.com/skill-images-789/travel/${city}.jpg`;
-        const img = data.getImgUrl(city);
-
+        say += ' Airport code for the city is: ' + airportCode;
         return handlerInput.responseBuilder
             .speak(say)
             .reprompt(`Try again.  ${say}`)
             .withStandardCard(`${city}`, cardText, img, img)
             .getResponse();
-
     }
 };
 
