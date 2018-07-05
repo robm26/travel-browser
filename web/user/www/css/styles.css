@@ -1,7 +1,7 @@
 
 .panel-heading {background-color:whitesmoke}
 
-.status {background-color:#eee; padding:3px; border: 1px dashed gainsboro}
+.status {background-color:#eee; padding:3px; border: 1px dashed gainsboro; }
 
 .table {background-color: gainsboro; }
 .pagetitle{font-size:larger}
@@ -26,3 +26,62 @@
 .statusWarn{background-color:coral; padding:3px}
 .statusError{background-color:hotpink; padding:3px}
 
+.connectStatus {background-color:yellow; float:right}
+
+body {
+    padding : 10px ;
+
+}
+
+
+#exTab2 h3 {
+    /*color : grey;*/
+    /*background-color: #428bca;*/
+    padding : 5px 15px;
+}
+
+.tab-pane {background-color:whitesmoke}
+
+
+.table1 { border:1px gray; table-layout:fixed; }
+.tdlabel { background-color: white; color:silver; font-family: "Arial"; font-size:small; padding:5px; border-top:2px solid white; }
+.tdvalue { background-color: gainsboro; color:silver; font-family: "Courier New"; padding:5px; border-top:2px solid white; background-color:whitesmoke}
+.tdvaluesmall { background-color: gainsboro; color:silver; word-wrap:break-word; font-size:9pt; font-family: "Courier New"; padding:5px; border-top:2px solid white; background-color:whitesmoke}
+.connected { color:green; font-weight:bold; }
+.disconnected { color:red; font-weight:bold; }
+
+
+.iotMainPanel {overflow:scroll; height:350px; padding:3px;
+        background-color:white;
+        border-bottom:1px solid silver;
+        border-left:1px solid silver;
+        border-right:1px solid silver;
+}
+
+.iotIntentDiv {background-color:lemonchiffon; padding:3px}
+.iotRequestDiv {background-color:palegoldenrod; padding:3px}
+.iotResponseDiv {background-color:azure; width:100%; float:right; padding:3px; border-bottom:1px solid gainsboro}
+.iotResponseEndDiv {background-color:azure; width:100%; float:right; padding:3px; border-bottom:3px solid silver }
+
+.iotResponseSpan {color:cornflowerblue; float:right; width:80% }
+
+.iotAttributesDiv {color:deeppink; background-color: pink; font-size:smaller;display:none}
+
+.iotAttributesSpan {}
+
+
+/*.iotRequestSpan {color:darkred; font-weight:bold}*/
+/*.iotIntentSpan {color:darkkhaki; font-weight:bold}*/
+
+
+/*.iotInactive {color:dimgray; background-color:gainsboro}*/
+
+
+.btn.btn-light{
+    background-color: white;
+    border: 1px solid gainsboro;
+    color: gainsboro;
+
+}
+
+.tab-pane.iot {float:right}

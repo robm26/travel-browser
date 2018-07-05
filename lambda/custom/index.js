@@ -1,5 +1,5 @@
-// ForgetMeNot is a sample Alexa function that demonstrates persistent attributes
-// The function requires Create Table and read/write access to DynamoDB
+// Travel Browser sample skill
+// The function's IAM role requires DynamoDB and IOT permissions
 
 'use strict';
 
@@ -37,6 +37,7 @@ const LaunchHandler = {
 
         const joinRank = '3'; // sessionAttributes['joinRank'];
         const skillUserCount = sessionAttributes['skillUserCount'];
+        const preferredGreeting = sessionAttributes['preferredGreeting'];
 
         const thisTimeStamp = new Date(handlerInput.requestEnvelope.request.timestamp).getTime();
         // console.log('thisTimeStamp: ' + thisTimeStamp);
@@ -51,10 +52,11 @@ const LaunchHandler = {
         let say = ``;
         if (launchCount == 1) {
             say = `welcome new user! `
+                + `<audio src='https://s3.amazonaws.com/ask-soundlibrary/magic/amzn_sfx_magic_blast_1x_01.mp3'/>`
                 + ` You are the <say-as interpret-as="ordinal">${joinRank}</say-as> user to join!`;
         } else {
 
-            say = `Welcome back, ${namePronounce}.  This is session ${launchCount} `;
+            say = `${preferredGreeting} ${namePronounce}.  This is session ${launchCount} `;
                 // + ' and it has been ' + span.timeSpanDesc
                 // + '. There are now ' + skillUserCount + ' skill users. '
                 // + ' You joined as the <say-as interpret-as="ordinal">' + joinRank + '</say-as> user.';
@@ -107,8 +109,9 @@ const LaunchHandler = {
 
 const LinkSessionHandler = {
     canHandle(handlerInput) {
+
         return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'LinkSessionIntent';
+            && (handlerInput.requestEnvelope.request.intent.name === 'LinkSessionIntent');
     },
 
     async handle(handlerInput) {
@@ -124,18 +127,126 @@ const LinkSessionHandler = {
 
         let phrase = phraseArray[0] + ', ' + phraseArray[1] + ', <say-as interpret-as="digits">' + phraseArray[2] + '</say-as> ';
 
+        sessionAttributes['IotTopic'] = handlerInput.requestEnvelope.session.user.userId.slice(-10);
+
         handlerInput.attributesManager.setPersistentAttributes(sessionAttributes);
         handlerInput.attributesManager.savePersistentAttributes();
 
-        let say = `Okay I will tell you a web site and then a three part password. `;
+        let say = `Okay I will tell you a web site and then a three part password. The password expires in five minutes. `;
         say += `The website is bit dot lee slash link session. `;
-        say += `The password is ${phrase} . `;
-        say += `Would you like me to repeat that?`;
+        say += `The password is ${phrase} .  Thats ${phrase} . `;
+        say += ` Goodbye for now.`;
+        // say += `Would you like me to repeat that?`;
+
+        return handlerInput.responseBuilder
+            .speak(say)
+            .withShouldEndSession(true)
+
+            .withStandardCard(`Travel Browser Pass Phrase`, `Go to:\nbit.ly/update\n\nand enter:\n${phraseArray[0]} ${phraseArray[1]} ${phraseArray[2]}`)
+            .getResponse();
+
+    }
+};
+
+const BrowseCitiesHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+            && handlerInput.requestEnvelope.request.intent.name === 'BrowseCitiesIntent';
+    },
+
+    async handle(handlerInput) {
+
+        const request = handlerInput.requestEnvelope.request;
+        const responseBuilder = handlerInput.responseBuilder;
+
+        // let sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+
+        let say = ``;
+
+        let slotStatus = ``;
+
+
+        let slotValues = helpers.getSlotValues(request.intent.slots);
+        const countryList = await data.getCountryList();
+        // getSlotValues returns .heardAs, .resolved, and .isValidated for each slot, according to request slot status codes ER_SUCCESS_MATCH, ER_SUCCESS_NO_MATCH, or traditional simple request slot without resolutions
+
+        // console.log('***** slotValues: ' +  JSON.stringify(slotValues, null, 2));
+        //   SLOT: country
+        let country = slotValues.country.resolved || slotValues.country.heardAs || '';
+
+        let list = data.getCityList(country);
+        let sortedList = helpers.sortArray(list.slice());
+        const cityListShort = helpers.sayArray(helpers.shuffleArray(list).slice(0,3));
+
+        if (slotValues.country.heardAs) {
+            slotStatus += ` Here are some cities we serve in ${slotValues.country.heardAs}. ${cityListShort} `;
+
+        } else {
+
+            slotStatus += `Here are some cities we serve. ${cityListShort}. `;
+            slotStatus += `You can also ask me to filter the list.  Just say, browse by `;
+        }
+
+        if (slotValues.country.ERstatus === 'ER_SUCCESS_MATCH') {
+
+            if(slotValues.country.resolved !== slotValues.country.heardAs) {
+                slotStatus += `a valid synonym for ` + slotValues.country.resolved + `. `;
+            } else {
+                // slotStatus += `a valid match. `
+            }
+
+        }
+        if (slotValues.country.ERstatus === 'ER_SUCCESS_NO_MATCH') {
+            slotStatus += `which did not match any slot value. `;
+            console.log(`***** consider adding "${slotValues.country.heardAs}" to the custom slot type used by slot country! `);
+        }
+
+
+        if( (slotValues.country.ERstatus === 'ER_SUCCESS_NO_MATCH') ||  (!slotValues.country.heardAs) ) {
+
+            slotStatus += helpers.sayArray(helpers.shuffleArray(countryList).slice(0,3), `or`) + `, for example`;
+            // + helpers.sayArray(helpers.getExampleSlotValues('BrowseCitiesIntent','country'), 'or');
+        }
+
+        say += slotStatus;
+
+        const cardText = helpers.displayListFormatter(sortedList, `card`);
+
+        const itemList = helpers.displayListFormatter(sortedList, `list`);
+
+        const DisplayImg1 = constants.getDisplayImg1();
+        const DisplayImg2 = constants.getDisplayImg2();
+
+        if (helpers.supportsDisplay(handlerInput)) {
+
+            const myImage1 = new Alexa.ImageHelper()
+                .addImageInstance(DisplayImg1.url)
+                .getImage();
+
+            const myImage2 = new Alexa.ImageHelper()
+                .addImageInstance(DisplayImg2.url)
+                .getImage();
+
+            const primaryText = new Alexa.RichTextContentHelper()
+                .withPrimaryText('Here is your list!')
+                .getTextContent();
+
+
+            responseBuilder.addRenderTemplateDirective({
+                type : 'ListTemplate1',
+                token : 'string',
+                backButton : 'hidden',
+                backgroundImage: myImage2,
+                image: myImage1,
+                title: helpers.capitalize(invocationName),
+                listItems : itemList
+            });
+        }
 
         return handlerInput.responseBuilder
             .speak(say)
             .reprompt(`Try again.  ${say}`)
-            // .withStandardCard(`${city}`, cardText, img, img)
+            .withSimpleCard(` ${country} Destinations`, cardText)
             .getResponse();
 
     }
@@ -256,109 +367,7 @@ const ShowCityHandler = {
     }
 };
 
-const BrowseCitiesHandler = {
-    canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'BrowseCitiesIntent';
-    },
 
-    async handle(handlerInput) {
-
-        const request = handlerInput.requestEnvelope.request;
-        const responseBuilder = handlerInput.responseBuilder;
-
-        // let sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-
-        let say = ``;
-
-        let slotStatus = ``;
-
-
-        let slotValues = helpers.getSlotValues(request.intent.slots);
-        const countryList = await data.getCountryList();
-        // getSlotValues returns .heardAs, .resolved, and .isValidated for each slot, according to request slot status codes ER_SUCCESS_MATCH, ER_SUCCESS_NO_MATCH, or traditional simple request slot without resolutions
-
-        // console.log('***** slotValues: ' +  JSON.stringify(slotValues, null, 2));
-        //   SLOT: country
-        let country = slotValues.country.resolved || slotValues.country.heardAs || '';
-
-        let list = data.getCityList(country);
-        let sortedList = helpers.sortArray(list.slice());
-        const cityListShort = helpers.sayArray(helpers.shuffleArray(list).slice(0,3));
-
-        if (slotValues.country.heardAs) {
-            slotStatus += ` Here are some cities we serve in ${slotValues.country.heardAs}. ${cityListShort} `;
-
-        } else {
-
-            slotStatus += `Here are some cities we serve. ${cityListShort}. `;
-            slotStatus += `You can also ask me to filter the list.  Just say, browse by `;
-        }
-
-        if (slotValues.country.ERstatus === 'ER_SUCCESS_MATCH') {
-
-            if(slotValues.country.resolved !== slotValues.country.heardAs) {
-                slotStatus += `a valid synonym for ` + slotValues.country.resolved + `. `;
-            } else {
-               // slotStatus += `a valid match. `
-            }
-
-        }
-        if (slotValues.country.ERstatus === 'ER_SUCCESS_NO_MATCH') {
-            slotStatus += `which did not match any slot value. `;
-            console.log(`***** consider adding "${slotValues.country.heardAs}" to the custom slot type used by slot country! `);
-        }
-
-
-        if( (slotValues.country.ERstatus === 'ER_SUCCESS_NO_MATCH') ||  (!slotValues.country.heardAs) ) {
-
-            slotStatus += helpers.sayArray(helpers.shuffleArray(countryList).slice(0,3), `or`) + `, for example`;
-                 // + helpers.sayArray(helpers.getExampleSlotValues('BrowseCitiesIntent','country'), 'or');
-        }
-
-        say += slotStatus;
-
-        const cardText = helpers.displayListFormatter(sortedList, `card`);
-
-        const itemList = helpers.displayListFormatter(sortedList, `list`);
-
-        const DisplayImg1 = constants.getDisplayImg1();
-        const DisplayImg2 = constants.getDisplayImg2();
-
-        if (helpers.supportsDisplay(handlerInput)) {
-
-            const myImage1 = new Alexa.ImageHelper()
-                .addImageInstance(DisplayImg1.url)
-                .getImage();
-
-            const myImage2 = new Alexa.ImageHelper()
-                .addImageInstance(DisplayImg2.url)
-                .getImage();
-
-            const primaryText = new Alexa.RichTextContentHelper()
-                .withPrimaryText('Here is your list!')
-                .getTextContent();
-
-
-            responseBuilder.addRenderTemplateDirective({
-                type : 'ListTemplate1',
-                token : 'string',
-                backButton : 'hidden',
-                backgroundImage: myImage2,
-                image: myImage1,
-                title: helpers.capitalize(invocationName),
-                listItems : itemList
-            });
-        }
-
-        return handlerInput.responseBuilder
-            .speak(say)
-            .reprompt(`Try again.  ${say}`)
-            .withSimpleCard(` ${country} Destinations`, cardText)
-            .getResponse();
-
-    }
-};
 
 const MyNameIsHandler = {
     canHandle(handlerInput) {
@@ -391,7 +400,12 @@ const MyNameIsHandler = {
 const MyNameIsYesNoHandler = {
     canHandle(handlerInput) {
         const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-        let previousIntent = sessionAttributes.history[sessionAttributes.history.length - 2].IntentRequest;
+        let previousIntent = '';
+        if(sessionAttributes.history.length > 1) {
+            previousIntent = sessionAttributes.history[sessionAttributes.history.length - 2].IntentRequest || ``;
+        } else {
+            previousIntent = '';
+        }
 
         return handlerInput.requestEnvelope.request.type === 'IntentRequest'
            // && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.YesIntent'
@@ -406,16 +420,19 @@ const MyNameIsYesNoHandler = {
         // console.log('*** previousIntent ' + JSON.stringify(previousIntent));
 
         const firstName = previousIntent.slots.firstname || ``;
+        sessionAttributes["name"] = firstName;
 
         let say = ``;
+
         if (handlerInput.requestEnvelope.request.intent.name === 'AMAZON.YesIntent'){
-            sessionAttributes["name"] = firstName;
+
             sessionAttributes["namePronounce"] = firstName;
-            say = ` Okay great, I will remember your name. `;
+            say = ` Okay great, I will remember your name. What else can I help you with? `;
         } else {
-            sessionAttributes["name"] = '';
+            //sessionAttributes["name"] = '';
             sessionAttributes["namePronounce"] = '';
-            say = ` Sorry I could not hear your name! If you like you can teach me how to pronounce your name on the companion web page.  `;
+            say = ` Sorry I could not hear your name! `
+                    + ` You can teach me how to pronounce your name on the companion web page.  Just say, link browser. `;
         }
 
         handlerInput.attributesManager.setPersistentAttributes(sessionAttributes);
@@ -426,110 +443,6 @@ const MyNameIsYesNoHandler = {
             .reprompt(say)
             .getResponse();
 
-    }
-};
-
-const MyColorSetHandler = {
-    canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'MyColorSetIntent';
-    },
-
-    handle(handlerInput) {
-
-        const request = handlerInput.requestEnvelope.request;
-        let sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-
-        let say = '';
-
-        let slotStatus = '';
-        let resolvedSlot;
-
-        let slotValues = helpers.getSlotValues(request.intent.slots);
-        // getSlotValues returns .heardAs, .resolved, and .isValidated for each slot, according to request slot status codes ER_SUCCESS_MATCH, ER_SUCCESS_NO_MATCH, or traditional simple request slot without resolutions
-
-        // console.log('***** slotValues: ' +  JSON.stringify(slotValues, null, 2));
-        //   SLOT: color
-        if (slotValues.color.heardAs) {
-            slotStatus += ' I heard you say color, ' + slotValues.color.heardAs + '. ';
-        } else {
-            slotStatus += 'I didn\'t catch your color.  Can you repeat? ';
-        }
-
-        if (slotValues.color.ERstatus === 'ER_SUCCESS_MATCH') {
-            slotStatus += 'a valid ';
-            if(slotValues.color.resolved !== slotValues.color.heardAs) {
-                slotStatus += 'synonym for ' + slotValues.color.resolved + '. ';
-            } else {
-                slotStatus += 'match. '
-            } // else {
-            //
-        }
-        if (slotValues.color.ERstatus === 'ER_SUCCESS_NO_MATCH') {
-            slotStatus += 'which did not match any slot value. ';
-            console.log('***** consider adding "' + slotValues.color.heardAs + '" to the custom slot type used by slot color! ');
-        }
-
-        if( (slotValues.color.ERstatus === 'ER_SUCCESS_NO_MATCH') ||  (!slotValues.color.heardAs) ) {
-            slotStatus += 'A few valid values are, '
-                // + 'red, blue, or green. ';
-                + helpers.sayArray(helpers.getExampleSlotValues('MyColorSetIntent','color'), 'or');
-
-        }
-
-        say += slotStatus;
-
-        sessionAttributes['favoriteColor'] = slotValues.color.resolved || slotValues.color.heardAs;
-
-        handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
-
-
-
-        return handlerInput.responseBuilder
-            .speak(say)
-            .reprompt(say)
-            .getResponse();
-
-    }
-};
-const MyColorGetHandler = {
-    canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'MyColorGetIntent';
-    },
-    handle(handlerInput) {
-
-        let sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-
-        let color = sessionAttributes['favoriteColor'];
-        let say = '';
-        if (color) {
-            say += 'Your favorite color is  ' + color + '. ';
-        } else {
-            say += 'You don\'t have a favorite color yet. ';
-        }
-
-        return new Promise((resolve) => {
-            customhelpers.getColorSummary(recordCount=>{
-                // say += 'Records found, ' + recordCount + '.';
-
-                resolve(handlerInput.responseBuilder
-                    .speak(say)
-                    .reprompt('Try again. ' + say)
-                    .getResponse()
-                );
-            });
-        });
-
-
-
-
-        // say += 'You can set your color by saying, for example, my favorite color is, blue. ';
-        //
-        // return handlerInput.responseBuilder
-        //     .speak(say)
-        //     .reprompt('Try again. ' + say)
-        //     .getResponse();
     }
 };
 
@@ -565,75 +478,6 @@ const SpeakSpeedHandler = {
             .reprompt(say)
             .getResponse();
 
-    }
-};
-
-const BookmarkSetHandler = {
-    canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'BookmarkSetIntent';
-    },
-    handle(handlerInput) {
-
-        const request = handlerInput.requestEnvelope.request;
-
-        const currentIntent = request.intent;
-        if (request.dialogState && request.dialogState !== 'COMPLETED') {
-            return handlerInput.responseBuilder
-                .addDelegateDirective(currentIntent)
-                .getResponse();
-        }
-
-        let sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-
-        let slotStatus = '';
-        let page = {};
-
-        //   SLOT: page
-        if (request.intent.slots.page && request.intent.slots.page.value && request.intent.slots.page.value !== '?') {
-            page = request.intent.slots.page.value;
-            slotStatus += ' slot page was heard as ' + page + '. ';
-            sessionAttributes['bookmark'] = page;
-
-        } else {
-            slotStatus += ' slot page is empty. ';
-        }
-
-        handlerInput.attributesManager.setPersistentAttributes(sessionAttributes);
-
-        let say = 'I saved your bookmark for page ' + page + '. what else can I help you with?';
-
-        return handlerInput.responseBuilder
-            .speak(say)
-            .reprompt('Try again. ' + say)
-            .getResponse();
-    }
-};
-
-const BookmarkGetHandler = {
-    canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'BookmarkGetIntent';
-    },
-    handle(handlerInput) {
-
-
-        let sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-
-        let page = sessionAttributes['bookmark'];
-        let say = '';
-        if (page) {
-            say += 'Your bookmark is for page ' + page + '. ';
-        } else {
-            say += 'You don\'t have a bookmark yet. ';
-        }
-
-        say += 'You can ask me to set a new bookmark if you like. ';
-
-        return handlerInput.responseBuilder
-            .speak(say)
-            .reprompt('Try again. ' + say)
-            .getResponse();
     }
 };
 
@@ -697,56 +541,7 @@ const MyPhoneNumberHandler = {
     }
 };
 
-const GetNewFactHandler = {
-    canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'GetNewFactIntent';
-    },
-    handle(handlerInput) {
 
-        const request = handlerInput.requestEnvelope.request;
-        let fact = 0;
-        let say = '';
-        let factHistory = [];
-
-        let sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-
-        factHistory = sessionAttributes['factHistory'] || [];
-        // console.log('factHistory [ ' + factHistory.toString() + ' ]');
-
-        const facts = constants.getFacts();
-
-        if (factHistory.length === 0) {  // first time
-
-            fact = helpers.randomArrayElement(facts);
-            // console.log('fact : ' + fact);
-            factHistory.push(fact);
-
-        } else {
-
-            let availableFacts = facts.diff(factHistory);
-            fact = helpers.randomArrayElement(availableFacts);
-
-            factHistory.push(fact);
-
-            const DontRepeatLastN = constants.getDontRepeatLastN();
-
-            if (factHistory.length > DontRepeatLastN) {
-                factHistory.shift();  // remove first element
-            }
-
-        }
-        handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
-
-        say = '<say-as interpret-as="interjection">beep beep</say-as> Here is your fact, ' + fact;
-
-        return handlerInput.responseBuilder
-            .speak(say)
-            .reprompt('Try again. ' + say)
-            .withSimpleCard('card title', helpers.stripTags(say))
-            .getResponse();
-    }
-};
 
 //
 // const StatusHandler = {
@@ -795,7 +590,7 @@ const HelpHandler = {
         return handlerInput.requestEnvelope.request.type === 'IntentRequest'
             && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.HelpIntent';
     },
-    handle(handlerInput) {
+    async handle(handlerInput) {
         let say = 'You asked for help. ';
         let sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
         let history = sessionAttributes['history'];
@@ -804,7 +599,13 @@ const HelpHandler = {
             say += 'Your last intent was ' + history[history.length-2].IntentRequest + '. ';
             // prepare context-sensitive help messages here
         }
-        say += 'You can say things like, browse cities, show cities in a country, my name is, link browser, reset profile. ';
+        say += ' You can say things like, browse cities, show cities in a country, my name is, link browser, reset profile. ';
+
+        let payload = {"name":"cat"};
+
+        let thingName = sessionAttributes['IotTopic'];
+        // let IotTopic = `$aws/things/${thingName}/shadow/update/accepted`;
+            //handlerInput.requestEnvelope.session.user.userId.slice(-10);
 
         return handlerInput.responseBuilder
             .speak(say)
@@ -1009,6 +810,7 @@ exports.handler = skillBuilder
 
     .addResponseInterceptors(interceptors.ResponsePersistenceInterceptor)
     .addResponseInterceptors(interceptors.SpeechOutputInterceptor)
+    .addResponseInterceptors(interceptors.IotInterceptor)
 
     .withTableName(DYNAMODB_TABLE)
     .withAutoCreateTable(true)

@@ -16,7 +16,12 @@ const editableAttributes = [
 
     'homeAirport',
     'visitWishList',
+    'IotTopic',
+    'IdentityPoolId',
+    'mqttEndpoint'
 ];  // skipping other non-editable attributes
+
+
 
 function clearForm() {
 
@@ -27,10 +32,15 @@ function clearForm() {
     clearEditTable();
 
 }
+function clearIot() {
+    document.getElementById('iotMainPanel').innerText = '';
+
+}
 function clearEditTable () {
     document.getElementById('EditFormTable').innerHTML = '';
 
 }
+
 function setStatus(status, level) {
     if (level === 'warn' || level === 'error') {
         document.getElementById('status').className = 'statusWarn';
@@ -45,9 +55,9 @@ function setStatus(status, level) {
 
 }
 function validatePassPhrase() {
-    const word1 = document.getElementById('word1').value;
-    const word2 = document.getElementById('word2').value;
-    const number = document.getElementById('number').value;
+    const word1 = document.getElementById('word1').value.toLowerCase();
+    const word2 = document.getElementById('word2').value.toLowerCase();
+    const number = document.getElementById('number').value.toLowerCase();
     if (word1 === '' || word2 === '' || number === '') {
         setStatus('You must enter a three part pass phrase!');
         return false;
@@ -79,9 +89,17 @@ function loadAttrs() {
                 let data = JSON.parse(xhttp.responseText);
 
                 if ('attributes' in data) { // success
+                    console.log('***** data from call');
+                    console.log(data);
                     renderEditForm(data);
 
+                    ConnectIot(data.attributes.mqttEndpoint,
+                                data.attributes.IdentityPoolId,
+                                `$aws/things/${data.attributes.IotTopic}/shadow/update/accepted`);
+
                     setStatus('lookup success');
+
+
                 } else {
                     setStatus(' invalid pass phrase','error');
                 }
@@ -98,15 +116,17 @@ function loadAttrs() {
 }
 function testy(){
 
-    document.getElementById('word1').value = 'Fast';
-    document.getElementById('word2').value = 'Car';
-    document.getElementById('number').value = 789;
+    document.getElementById('word1').value = 'Loud';
+    document.getElementById('word2').value = 'Door';
+    document.getElementById('number').value = 342;
 
 }
 
 function renderEditForm(data) {
+
     clearEditTable();
-    console.log(JSON.stringify(data, null, 2));
+
+    // console.log(JSON.stringify(data, null, 2));
     let tbl = document.getElementById('EditFormTable');
     let header = tbl.createTHead();
     let hrow = header.insertRow(0);
@@ -118,7 +138,7 @@ function renderEditForm(data) {
     hcell1.className = "EditTableNameHeader";
 
     let hcell2 = hrow.insertCell(1);
-    hcell2.innerHTML = 'Value';
+    hcell2.innerHTML = 'Value for userId: ' + data.id.slice(-10);
     hcell2.className = "EditTableValueHeader";
 
     for(attrName in sortAttrsForDisplay(data.attributes)) {
@@ -207,5 +227,30 @@ function saveAttrs() {
         xhttp.send(JSON.stringify(post_data));
 
     }
+
+}
+
+// ----------------------------------------------------------------------
+
+function ConnectIot(mqttEndpoint, IdentityPoolId, IotTopic) {
+    document.getElementById("SubscribeTopicValue").innerText = IotTopic;
+    document.getElementById("mqttEndpointValue").innerText   = mqttEndpoint;
+    document.getElementById("IdentityPoolIdValue").innerText = IdentityPoolId;
+    document.getElementById("MQTTstatus").innerText = 'CONNECTED';
+
+    AWS.config.region = REGION;
+    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+        'IdentityPoolId': IdentityPoolId
+    });
+
+    console.log('***** in ConnectIot \nabout to call getAWSCredentials()');
+    console.log(AWS.config.region);
+    console.log(AWS.config.credentials);
+
+    // AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+    //     IdentityPoolId: IdentityPoolId
+    // });
+
+    getAWSCredentials();
 
 }

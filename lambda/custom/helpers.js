@@ -399,10 +399,8 @@ module.exports = {
         return arr;
     },
 
-    'updateShadow': function() {
-
-
-
+    'updateShadow': function(endpoint, thingName, payload, callback) {
+            // console.log(`in updateShadow with \n${endpoint}\n${thingName}\n`);
             // update AWS IOT thing shadow
             // var AWS = require('aws-sdk');
             // AWS.config.region = config.IOT_BROKER_REGION;
@@ -410,25 +408,27 @@ module.exports = {
             //Prepare the parameters of the update call
 
             const paramsUpdate = {
-                "thingName" : IOT_THING_NAME,
+                "thingName" : thingName,
                 "payload" : JSON.stringify(
                     { "state":
-                        { "desired": desiredState             // {"pump":1}
+                        { "desired": payload            // {"pump":1}
                         }
                     }
                 )
             };
 
-            const iotData = new AWS.IotData({endpoint: IOT_BROKER_ENDPOINT});
+            const iotData = new AWS.IotData({endpoint: endpoint});
+            // console.log(`created new iotData`);
 
             iotData.updateThingShadow(paramsUpdate, function(err, data)  {
+
                 if (err){
                     console.log(err);
 
-                    callback("not ok");
+                    callback(err);
                 }
                 else {
-                    console.log("updated thing shadow " + config.IOT_THING_NAME + ' to state ' + paramsUpdate.payload);
+                    // console.log("updated thing shadow " + thingName + ' to state ' + payload);
                     callback("ok");
                 }
 

@@ -8,6 +8,48 @@ const AWS = constants.AWS;
 const DYNAMODB_TABLE = constants.DYNAMODB_TABLE;
 
 module.exports = {
+    'IotInterceptor':{
+        process(handlerInput, responseOutput) {
+
+            return new Promise((resolve, reject) => {
+
+                // console.log('******** in IotInterceptor');
+
+                // if (responseOutput.outputSpeech && responseOutput.outputSpeech.ssml) {
+                //     // dialog delegate prompt
+                //     let speechOutput = responseOutput.outputSpeech.ssml;
+                //
+                //     speechOutput = speechOutput.replace('<speak>', '').replace('</speak>', '');
+                //
+                //     speechOutput = '' + speechOutput + '';
+                //
+                // }
+
+                const fullEvent = {
+                    "request":  handlerInput.requestEnvelope.request,
+                    "sessionAttributes":  handlerInput.requestEnvelope.session.attributes,
+                    // "sessionAttributes":  responseOutput.sessionAttributes,
+                    //"context":  handlerInput.requestEnvelope.context,  // display support
+
+                    "outputSpeech":responseOutput.outputSpeech,
+                    "reprompt":responseOutput.reprompt,
+                    // "directives":responseOutput.directives,  // nested too deep
+                    "card":responseOutput.card,
+                    "shouldEndSession":responseOutput.shouldEndSession
+                };
+
+                // console.log(JSON.stringify(responseOutput, null, 2));
+
+                helpers.updateShadow(constants.mqttEndpoint, '5YC7UID123', fullEvent, result => {
+                    // console.log(`helpers.updateShadow result ${result}`);
+                    resolve();
+                });
+
+            });
+
+            // console.log(`result : ${result}`);
+        }
+    },
 
     'RequestHistoryInterceptor': {
         process(handlerInput) {

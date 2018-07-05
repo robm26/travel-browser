@@ -8,6 +8,11 @@ AWS.config.region = process.env.AWS_REGION || 'us-east-1';
 // const helpers = require('./helpers.js');
 
 const DYNAMODB_TABLE = process.env.DYNAMODB_TABLE || 'askMemorySkillTable';
+
+const mqttEndpoint = process.env.mqttEndpoint || 'a3npzlqqmmzqo.iot.us-east-1.amazonaws.com';
+const IdentityPoolId = process.env.IdentityPoolId || 'us-east-1:583dd84a-7792-49a6-9ce5-5624f80378e7';
+
+
 console.log('DYNAMODB_TABLE ' + DYNAMODB_TABLE);
 
 const localDynamoClient = new AWS.DynamoDB({apiVersion : 'latest', endpoint : 'http://localhost:8000'});
@@ -16,6 +21,8 @@ module.exports = {
         'debug':true,
         'AWS': AWS,
         'DYNAMODB_TABLE': DYNAMODB_TABLE,
+        "mqttEndpoint":mqttEndpoint,
+        "IdentityPoolId":IdentityPoolId,
         'invocationName': 'travel browser',
 
         'getMemoryAttributes': function() {
@@ -30,15 +37,18 @@ module.exports = {
 
             "name":"",
             "namePronounce":"",
-            "preferredGreeting":"",
+            "preferredGreeting":"hello",
             "speakingSpeed":"medium",
             "mobileNumber":"",
 
-            "homeAirport":"",
+            "homeAirport":"BOS",
             "visitWishList":[],
 
-            "tempPassPhrase":""
+            "tempPassPhrase":"",
 
+            "mqttEndpoint":mqttEndpoint,
+            "IdentityPoolId":IdentityPoolId,
+            "IotTopic":"user123"
 
             // "email":"",
             // "mobileNumber":"",
