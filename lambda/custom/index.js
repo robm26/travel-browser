@@ -60,6 +60,7 @@ const LaunchHandler = {
                 // + ' and it has been ' + span.timeSpanDesc
                 // + '. There are now ' + skillUserCount + ' skill users. '
                 // + ' You joined as the <say-as interpret-as="ordinal">' + joinRank + '</say-as> user.';
+            say += ' Say help to hear some options, or say browse cities. ';
         }
 
         const responseBuilder = handlerInput.responseBuilder;
@@ -296,6 +297,7 @@ const ShowCityHandler = {
         // getSlotValues returns .heardAs, .resolved, and .isValidated for each slot, according to request slot status codes ER_SUCCESS_MATCH, ER_SUCCESS_NO_MATCH, or traditional simple request slot without resolutions
 
         // console.log('***** slotValues: ' +  JSON.stringify(slotValues, null, 2));
+
         //   SLOT: city
         if (slotValues.city.heardAs) {
             slotStatus += `${helpers.randomArrayElement([`Here is`,`Let's visit`,`Welcome to`])}, ${slotValues.city.heardAs}. `;
@@ -330,6 +332,7 @@ const ShowCityHandler = {
         // sessionAttributes['city'] = slotValues.city.resolved || slotValues.city.heardAs;
         let city = slotValues.city.resolved || slotValues.city.heardAs || ``;
 
+
         // throw artificial error
         if (city === 'unicorn') {
             let foo = constants.getUnicorns();
@@ -344,15 +347,16 @@ const ShowCityHandler = {
 
         }
 
-
-
-
-
         // const cardText = helpers.displayListFormatter(list, `card`);
         // const itemList = helpers.displayListFormatter(list, `list`);
 
+        // const itemList = helpers.displayListFormatter(sortedList, `list`);
+        //const itemList = helpers.actionListFormatter(sortedList, `list`);
+
+
         const DisplayImg1 = constants.getDisplayImg1();
         const DisplayImg2 = constants.getDisplayImg2();
+
         const img = data.getImgUrl(city);
 
         if (helpers.supportsDisplay(handlerInput)) {
@@ -369,6 +373,7 @@ const ShowCityHandler = {
                 .withPrimaryText('Here is your city!')
                 .getTextContent();
 
+
             // responseBuilder.addRenderTemplateDirective({
             //     type : 'ListTemplate1',
             //     token : 'string',
@@ -378,6 +383,16 @@ const ShowCityHandler = {
             //     title: helpers.capitalize(invocationName),
             //     listItems : itemList
             // });
+            responseBuilder.addRenderTemplateDirective({
+                              type: 'BodyTemplate6',
+                              token: 'string',
+                              backButton: 'HIDDEN',
+                              backgroundImage: myImage2,
+                              image: myImage1,
+                              title: helpers.capitalize(invocationName),
+                              textContent: primaryText
+                        });
+
         }
 
         return handlerInput.responseBuilder
@@ -416,6 +431,20 @@ const MyNameIsHandler = {
             .reprompt(say)
             .getResponse();
 
+    }
+};
+
+const ElementSelectedHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === 'Display.ElementSelected';
+    },
+    handle(handlerInput) {
+        let say = `You clicked on a city`;
+
+        return handlerInput.responseBuilder
+            .speak(say)
+            .reprompt(say)
+            .getResponse();
     }
 };
 
@@ -802,6 +831,7 @@ const skillBuilder = Alexa.SkillBuilders.standard();
 
 exports.handler = skillBuilder
     .addRequestHandlers(
+        ElementSelectedHandler,
         BrowseCitiesHandler,
         ShowCityHandler,
 

@@ -45,9 +45,10 @@ module.exports = {
             arr.forEach(function(item) {
                 // let inlineImg = `<img src='https://s3.amazonaws.com/skill-images-789/colors/CadetBlue.png' width='180' height='80' alt='City Image' />`;
                 let inlineImg = ``;
+                let token = item.city;
                 list.push(
                     {
-                        "token":"Uno",
+                        "token":token,
                         "textContent": {
                             "primaryText":{
                                 "type":"RichText",
