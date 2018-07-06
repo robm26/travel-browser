@@ -475,6 +475,88 @@ const CrimsonColorIntent =
             }
         }
     };
+
+const getSlotValuesError = {
+    "version": "1.0",
+    "session": {
+        "new": false,
+        "sessionId": "amzn1.echo-api.session.98911d94-0a98-4205-ad42-b3242ae819aa",
+        "application": {
+            "applicationId": "amzn1.ask.skill.737c8a73-d7dd-4840-bd55-4c2cc3a3100d"
+        },
+        "attributes": {
+            "launchCount": 10,
+            "namePronounce": null,
+            "mobileNumber": null,
+            "joinRank": 2,
+            "skillUserCount": 2,
+            "history": [
+                {
+                    "IntentRequest": "SessionEndedRequest"
+                },
+                {
+                    "IntentRequest": "LaunchRequest"
+                },
+                {
+                    "IntentRequest": "ShowCityIntent",
+                    "slots": {
+                        "city": "Boston"
+                    }
+                }
+            ],
+            "IotTopic": "user123",
+            "tempPassPhrase": null,
+            "name": null,
+            "speakingSpeed": "medium",
+            "mqttEndpoint": "a3npzlqqmmzqo.iot.us-east-1.amazonaws.com",
+            "IdentityPoolId": "us-east-1:583dd84a-7792-49a6-9ce5-5624f80378e7",
+            "homeAirport": null,
+            "preferredGreeting": "hello",
+            "lastUseTimestamp": 1530859778000,
+            "visitWishList": []
+        },
+        "user": {
+            "userId": "amzn1.ask.account.AFAJYCAYA7Z3BXPTZEGLF5BCKT2P2XXAY2KZT4MXG5Q5CIZXE5WRZE6SKRQHYAHO324VO2SJPQ3GBPKVLMSQKVMLHIRBRAVRPPBGFH44YO67S5KO7YO4NCAVU2N5SUVZUOLDW7UON2U5NLLBUXBN42STX7BV3KCO4KWLNLZ6AV7E6MTXMVLYJRZFO6RNQTSPTBBNWTNTG7TZGAQ"
+        }
+    },
+    "context": {
+        "Display": {
+            "token": ""
+        },
+        "System": {
+            "application": {
+                "applicationId": "amzn1.ask.skill.737c8a73-d7dd-4840-bd55-4c2cc3a3100d"
+            },
+            "user": {
+                "userId": "amzn1.ask.account.AFAJYCAYA7Z3BXPTZEGLF5BCKT2P2XXAY2KZT4MXG5Q5CIZXE5WRZE6SKRQHYAHO324VO2SJPQ3GBPKVLMSQKVMLHIRBRAVRPPBGFH44YO67S5KO7YO4NCAVU2N5SUVZUOLDW7UON2U5NLLBUXBN42STX7BV3KCO4KWLNLZ6AV7E6MTXMVLYJRZFO6RNQTSPTBBNWTNTG7TZGAQ"
+            },
+            "device": {
+                "deviceId": "amzn1.ask.device.AGH7OIX664CKTKOCIKTI3HPAQARQAOEGGF4JMEXRAGMCM66C7OOO5A6FSLPAF2GK4A7C6KN3FM3UOPW3FW632SHTG4QG43QP7DXNIZEZG5KNVFLMWMIHYUMA3MXBLRBYI246253TKBFTUV6K4KN7FQFB44KA",
+                "supportedInterfaces": {
+                    "Display": {
+                        "templateVersion": "1.0",
+                        "markupVersion": "1.0",
+                        "apmlversion": "0.2"
+                    }
+                }
+            },
+            "apiEndpoint": "https://api.amazonalexa.com",
+            "apiAccessToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjEifQ.eyJhdWQiOiJodHRwczovL2FwaS5hbWF6b25hbGV4YS5jb20iLCJpc3MiOiJBbGV4YVNraWxsS2l0Iiwic3ViIjoiYW16bjEuYXNrLnNraWxsLjczN2M4YTczLWQ3ZGQtNDg0MC1iZDU1LTRjMmNjM2EzMTAwZCIsImV4cCI6MTUzMDg2MzYwNywiaWF0IjoxNTMwODYwMDA3LCJuYmYiOjE1MzA4NjAwMDcsInByaXZhdGVDbGFpbXMiOnsiY29uc2VudFRva2VuIjpudWxsLCJkZXZpY2VJZCI6ImFtem4xLmFzay5kZXZpY2UuQUdIN09JWDY2NENLVEtPQ0lLVEkzSFBBUUFSUUFPRUdHRjRKTUVYUkFHTUNNNjZDN09PTzVBNkZTTFBBRjJHSzRBN0M2S04zRk0zVU9QVzNGVzYzMlNIVEc0UUc0M1FQN0RYTklaRVpHNUtOVkZMTVdNSUhZVU1BM01YQkxSQllJMjQ2MjUzVEtCRlRVVjZLNEtON0ZRRkI0NEtBIiwidXNlcklkIjoiYW16bjEuYXNrLmFjY291bnQuQUZBSllDQVlBN1ozQlhQVFpFR0xGNUJDS1QyUDJYWEFZMktaVDRNWEc1UTVDSVpYRTVXUlpFNlNLUlFIWUFITzMyNFZPMlNKUFEzR0JQS1ZMTVNRS1ZNTEhJUkJSQVZSUFBCR0ZINDRZTzY3UzVLTzdZTzROQ0FWVTJONVNVVlpVT0xEVzdVT04yVTVOTExCVVhCTjQyU1RYN0JWM0tDTzRLV0xOTFo2QVY3RTZNVFhNVkxZSlJaRk82Uk5RVFNQVEJCTldUTlRHN1RaR0FRIn19.FnI3BBAwmDALJjGqaK6BOkFoiqE51Gz0Qoq-LFCWK3R2wXlhNhS6fJlhiZetaUln1vefDhetAMm6kCSse3Am2_w4gDW-C6z7esa_hcAGEZmuY5zB3d-9Sm68IeDfcFRISbIjH6RQqmPDaUmpFpJ2z1yfwm6GFYDyOyPJf2VTz0-dYLzlAdNTDCuiGK3eks-nHB5dwSE8zYB-U3_WN--m9F6fTYYMFdu1Vz3fs5V8Lne7tZwliKYIQaeGKZwaBYIEbgzsytR4rQUDW0jp0iCxYZc0hci06AMb67v018HqssHnx6SAEyyqigRqAmawfPxRRRLCd2U8BqVMgey1jZiPBw"
+        }
+    },
+    "request": {
+        "type": "IntentRequest",
+        "requestId": "amzn1.echo-api.request.505f9772-04fe-47bb-be4a-0b73f40a1e5b",
+        "timestamp": "2018-07-06T06:53:27Z",
+        "locale": "en-US",
+        "intent": {
+            "name": "AMAZON.StopIntent",
+            "confirmationStatus": "NONE"
+        },
+        "dialogState": "STARTED"
+    }
+};
+
 let context = {
     'succeed': function (data) {
         console.log(JSON.stringify(data, null,'\t') );
@@ -498,4 +580,4 @@ function callback(error, data) {
 }
 
 // call the function
-MyLambdaFunction['handler'] (LaunchRequestEvent, context, callback);
+MyLambdaFunction['handler'] (getSlotValuesError, context, callback);

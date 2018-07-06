@@ -13,7 +13,6 @@ function handleMessage(msgRaw) {  // called from within connectAsThing.js
 
 
 
-
     //document.getElementById('iotIntentRequest').innerText = IntentRequest;
     //document.getElementById('iotResponse').innerText = outputSpeech;
 
@@ -31,35 +30,55 @@ function handleMessage(msgRaw) {  // called from within connectAsThing.js
 
 function prepareSessionLogEvent(msg) {
     let LogDiv = document.createElement('div');
-    let LogSpan = document.createElement('span');
+    let LogSpanIntent = document.createElement('span');
+    let LogSpanSlots = document.createElement('span');
     let LogDivResponse = document.createElement('div');
     let LogSpanResponse = document.createElement('span');
     let LogDivAttributes = document.createElement('div');
     let LogSpanAttributes = document.createElement('span');
-    let statusLine = '';
+    let statusLine = ``;
+    console.log(`*********** msg\n${JSON.stringify(msg)}`);
+
+
     if(msg.request.type === 'IntentRequest') {
+        console.log('*** in IntentRequest handlerr..');
         const intent = msg.request.intent;
 
         let slots = intent.slots;
-        console.log('*** slots \n' + slots);
+
 
         if(intent.slots && Object.keys(slots).length > 0) {
-            statusLine += ` with slots`;
+            // statusLine += ` with slots`;
             Object.keys(slots).forEach(function(key) {
-                statusLine += ` ${slots[key]}`;
+                // console.log('*** slots \n' + slots[key]);
+                let resolved = slots[key].resolved;
+                let heardAs = slots[key].heardAs;
+                let value = resolved || heardAs;
+                if(resolved && heardAs && resolved !== heardAs) {
+                    value = `${heardAs}/${resolved}`;
+                } else {
+                    value = value || ``;
+                }
+
+                statusLine += ` ${key}=<b>${value}</b>`;
             });
         }
 
-        LogSpan.innerHTML = statusLine + intent.name + statusLine;
-        LogDiv.appendChild(LogSpan);
+        LogSpanIntent.innerHTML =  intent.name;
+        LogSpanIntent.className = 'LogSpanIntent';
+        LogDiv.appendChild(LogSpanIntent);
+        LogSpanSlots.innerHTML =  statusLine;
+        LogSpanIntent.className = 'LogSpanSlots';
+        LogDiv.appendChild(LogSpanSlots);
+
         LogDiv.className = 'iotIntentDiv';
         addSessionLogEvent('intent', LogDiv, null);
 
     } else {
         // msg.request.type
-        LogSpan.innerHTML = msg.request.type;
-        LogDiv.appendChild(LogSpan);
-        LogDiv.className = 'iotRequestDiv';
+        LogSpanIntent.innerHTML = msg.request.type;
+        LogDiv.appendChild(LogSpanIntent);
+        LogDiv.className = 'LogSpanIntent';
         addSessionLogEvent('request', LogDiv, null);
     }
     // ----- output
@@ -74,7 +93,7 @@ function prepareSessionLogEvent(msg) {
     addSessionLogEvent('response', LogDivResponse, msg.shouldEndSession);
 
     // ------- attributes
-    const sa = msg.sessionAttributes;
+    const sa = msg.sessionAttributes || {};
 
     LogSpanAttributes.innerHTML = JSON.stringify(sa, null, '&nbsp;').replace(/\n/g, '<br />');
     LogSpanAttributes.className = 'iotAttributesSpan';
@@ -83,6 +102,43 @@ function prepareSessionLogEvent(msg) {
 
     LogDivAttributes.className = 'iotAttributesDiv';
     addSessionLogEvent('response', LogDivAttributes);
+
+    // ------- cards
+    const card = msg.card;
+    // document.getElementById("cardImg").src="";
+    console.log(`***** card \n${JSON.stringify(card, null, 2)}`);
+    if (card) {
+        document.getElementById('cardTitle').style.visibility = 'visible';
+        document.getElementById('cardContent').style.visibility = 'visible';
+    } else {
+        document.getElementById('cardTitle').style.visibility = 'hidden';
+        document.getElementById('cardContent').style.visibility = 'hidden';
+        document.getElementById('cardTitle').innerHTML = ``;
+        document.getElementById('cardContent').innerHTML = ``;
+        document.getElementById('cardImg').src = ``;
+    }
+    if(card && card.title) {
+        document.getElementById('cardTitle').innerHTML = card.title;
+    } else {
+        document.getElementById('cardTitle').innerHTML = ``;
+    }
+    let content = ``;
+    if (card && card.content) {
+        content = (card.content || ``).replace(/\n/g, `<br/>`);
+        document.getElementById('cardContent').innerHTML = content;
+        document.getElementById('cardImg').src = ``;
+    } else if (card && card.text) {
+        content = (card.text || ``).replace(/\n/g, `<br/>`);
+        document.getElementById('cardContent').innerHTML = content;
+    } else {
+        document.getElementById('cardContent').innerHTML = ``;
+    }
+    if (card && card.type && card.type === `Standard`) {
+        let img = document.getElementById('cardImgImg');
+        // img.style.visibility = 'visible';
+        img.src = card.image.smallImageUrl;
+    }
+
 
 }
 

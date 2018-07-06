@@ -69,7 +69,12 @@ body {
 
 .iotAttributesSpan {}
 
+.LogSpanIntent { background-color: navy; color:lightblue; font-family: Courier; padding:3px}
+.LogSpanSlots { background-color: blue; color:lightblue; font-family: Courier; padding:3px}
 
+.cardTitle {color:white;  background-color:darkgray; padding:5px;  visibility: hidden; padding:3px; border: 1px dashed gainsboro}
+.cardContent {color: dimgrey; background-color:gainsboro; padding:5px; visibility: hidden}
+.cardImg {}
 /*.iotRequestSpan {color:darkred; font-weight:bold}*/
 /*.iotIntentSpan {color:darkkhaki; font-weight:bold}*/
 

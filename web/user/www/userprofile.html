@@ -47,7 +47,7 @@
     </div>
     <div class="panel-body">
 
-        <div id="lookuppanel" class="col-sm-2">
+        <div id="lookuppanel" class="col-sm-3">
             <table class="table" border="0">
                 <tr>
                     <td>Word 1</td><td><input type="text" id="word1" size="7"></td>
@@ -63,15 +63,31 @@
 
                     <button type="button" class="btn btn-info btn-xs" onClick="clearForm();">CLEAR</button>
 
-
                     <button type="button" class="btn btn-warning btn-xs" onClick="testy();">TEST</button>
                 </td></tr>
             </table>
 
+            <div class="panel-heading" ><I>status :</I>
+                <div id="status" class="status"></div>
+            </div>
+            <div><br/></div>
+
+            <div class="panel-heading" class="status"><I>card :</I>
+                <div id="cardTitle" class="cardTitle" >card</div>
+                <div id="cardContent" class="cardContent" >content</div>
+                <div id="cardImg" class="cardImg" >
+                    <img id="cardImgImg" height="100" width="150"/>
+                </div>
+            </div>
+
+            <div>
+
+            </div>
+
         </div>
 
 
-        <div id="profilepanel" class="col-sm-8">
+        <div id="profilepanel" class="col-sm-9">
 
 
             <div id="exTab2" class="container-fluid">
@@ -163,13 +179,7 @@
 
         </div>
 
-        <div id="rightuppanel" class="col-sm-2" style="float:right">
-            <div class="panel-heading" ><I>status :</I>
-                <div id="status" class="status">
-            </div>
-        </div>
 
-    </div>
 </div>
     <hr/>
     <input type="button" name="reloader" class="btn btn-light btn-xs"  value="RELOAD PAGE" onClick="location.reload(true);" >

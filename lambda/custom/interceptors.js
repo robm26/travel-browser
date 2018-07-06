@@ -15,18 +15,12 @@ module.exports = {
 
                 // console.log('******** in IotInterceptor');
 
-                // if (responseOutput.outputSpeech && responseOutput.outputSpeech.ssml) {
-                //     // dialog delegate prompt
-                //     let speechOutput = responseOutput.outputSpeech.ssml;
-                //
-                //     speechOutput = speechOutput.replace('<speak>', '').replace('</speak>', '');
-                //
-                //     speechOutput = '' + speechOutput + '';
-                //
-                // }
+                const flattenedRequest = flattenRequest(handlerInput.requestEnvelope.request);
+
 
                 const fullEvent = {
-                    "request":  handlerInput.requestEnvelope.request,
+                    "request":  flattenedRequest,
+
                     "sessionAttributes":  handlerInput.requestEnvelope.session.attributes,
                     // "sessionAttributes":  responseOutput.sessionAttributes,
                     //"context":  handlerInput.requestEnvelope.context,  // display support
@@ -226,4 +220,70 @@ module.exports = {
 
 };
 
+function flattenRequest(obj) { // maximum of 6 levels of JSON for IOT shadow
+    if ( obj.type === 'IntentRequest' && obj.intent.slots ) {
 
+        // console.log(getSlotValues(obj.intent.slots));
+        // console.log(`flattening ${JSON.stringify(obj, null, 2)}`);
+
+        let flatter = Object.assign({}, obj);
+
+        flatter.intent.slots = getSlotValues(obj.intent.slots);
+        console.log(flatter.intent.slots);
+
+        return flatter;
+
+    } else {
+        return obj;
+    }
+}
+
+function getSlotValues(filledSlots) {
+    let slotValues = {};
+
+    Object.keys(filledSlots).forEach((item) => {
+        const name  = filledSlots[item].name;
+
+        if (filledSlots[item] &&
+            filledSlots[item].resolutions &&
+            filledSlots[item].resolutions.resolutionsPerAuthority[0] &&
+            filledSlots[item].resolutions.resolutionsPerAuthority[0].status &&
+            filledSlots[item].resolutions.resolutionsPerAuthority[0].status.code) {
+            switch (filledSlots[item].resolutions.resolutionsPerAuthority[0].status.code) {
+                case 'ER_SUCCESS_MATCH':
+
+                    let resolutions = [];
+                    let vals = filledSlots[item].resolutions.resolutionsPerAuthority[0].values;
+                    for (let i = 0; i < vals.length; i++) {
+                        resolutions.push(vals[i].value.name);
+                    }
+                    slotValues[name] = {
+                        heardAs: filledSlots[item].value,
+
+                        resolved: filledSlots[item].resolutions.resolutionsPerAuthority[0].values[0].value.name,
+                        resolutions: resolutions,
+
+                        ERstatus: 'ER_SUCCESS_MATCH'
+                    };
+                    break;
+                case 'ER_SUCCESS_NO_MATCH':
+                    slotValues[name] = {
+                        heardAs: filledSlots[item].value,
+                        resolved: '',
+                        ERstatus: 'ER_SUCCESS_NO_MATCH'
+                    };
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            slotValues[name] = {
+                heardAs: filledSlots[item].value,
+                resolved: '',
+                ERstatus: ''
+            };
+        }
+    }, this);
+
+    return slotValues;
+}

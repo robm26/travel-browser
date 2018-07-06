@@ -50,5 +50,18 @@ module.exports = {
         });
 
         return url;
+    },
+    'getAirportCode': function (city) {
+
+        //let urlBase = `https://s3.amazonaws.com/skill-images-789/travel/`;
+        let code = `unknown`;
+
+        data.forEach(function (item) {
+            if (city.toUpperCase() === item.city.toUpperCase()  ) {
+                code = `${item.code}`;
+            }
+        });
+
+        return code;
     }
 };

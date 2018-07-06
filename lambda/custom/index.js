@@ -165,7 +165,6 @@ const BrowseCitiesHandler = {
 
         let slotStatus = ``;
 
-
         let slotValues = helpers.getSlotValues(request.intent.slots);
         const countryList = await data.getCountryList();
         // getSlotValues returns .heardAs, .resolved, and .isValidated for each slot, according to request slot status codes ER_SUCCESS_MATCH, ER_SUCCESS_NO_MATCH, or traditional simple request slot without resolutions
@@ -179,7 +178,15 @@ const BrowseCitiesHandler = {
         const cityListShort = helpers.sayArray(helpers.shuffleArray(list).slice(0,3));
 
         if (slotValues.country.heardAs) {
-            slotStatus += ` Here are some cities we serve in ${slotValues.country.heardAs}. ${cityListShort} `;
+            slotStatus += ` Here are some cities we serve in ${slotValues.country.heardAs}. `;
+
+            if (slotValues.country.ERstatus === 'ER_SUCCESS_MATCH') {
+                if(slotValues.country.resolved !== slotValues.country.heardAs) {
+                    slotStatus += `a valid synonym for ` + slotValues.country.resolved + `. `;
+                }
+            }
+
+            slotStatus += `${cityListShort} `;
 
         } else {
 
@@ -187,15 +194,8 @@ const BrowseCitiesHandler = {
             slotStatus += `You can also ask me to filter the list.  Just say, browse by `;
         }
 
-        if (slotValues.country.ERstatus === 'ER_SUCCESS_MATCH') {
 
-            if(slotValues.country.resolved !== slotValues.country.heardAs) {
-                slotStatus += `a valid synonym for ` + slotValues.country.resolved + `. `;
-            } else {
-                // slotStatus += `a valid match. `
-            }
 
-        }
         if (slotValues.country.ERstatus === 'ER_SUCCESS_NO_MATCH') {
             slotStatus += `which did not match any slot value. `;
             console.log(`***** consider adding "${slotValues.country.heardAs}" to the custom slot type used by slot country! `);
@@ -217,22 +217,35 @@ const BrowseCitiesHandler = {
         const DisplayImg1 = constants.getDisplayImg1();
         const DisplayImg2 = constants.getDisplayImg2();
 
+        // const img = `https://s3.amazonaws.com/skill-images-789/travel/${city}.jpg`;
+        // const img = data.getImgUrl(city);
+
+
         if (helpers.supportsDisplay(handlerInput)) {
 
             const myImage1 = new Alexa.ImageHelper()
-                .addImageInstance(DisplayImg1.url)
+                .addImageInstance(DisplayImg2)
                 .getImage();
 
             const myImage2 = new Alexa.ImageHelper()
-                .addImageInstance(DisplayImg2.url)
+                .addImageInstance(DisplayImg2)
                 .getImage();
 
             const primaryText = new Alexa.RichTextContentHelper()
                 .withPrimaryText('Here is your list!')
                 .getTextContent();
 
+            // To do: Make template 7 work
+            // handlerInput.responseBuilder.addRenderTemplateDirective({
+            //   type: 'BodyTemplate7',
+            //   token: 'string',
+            //   backButton: 'HIDDEN',
+            //   backgroundImage: myImage2,
+            //   image: getDisplayImg1,
+            //   title: primaryText,
+            // });
 
-            responseBuilder.addRenderTemplateDirective({
+            handlerInput.responseBuilder.addRenderTemplateDirective({
                 type : 'ListTemplate1',
                 token : 'string',
                 backButton : 'hidden',
@@ -240,15 +253,24 @@ const BrowseCitiesHandler = {
                 image: myImage1,
                 title: helpers.capitalize(invocationName),
                 listItems : itemList
+
+              // type: 'BodyTemplate6',
+              // token: 'string',
+              // backButton: 'HIDDEN',
+              // backgroundImage: myImage2,
+              // image: DisplayImg1,
+              // title: helpers.capitalize(invocationName),
+              // textContent: primaryText
+
             });
         }
+
 
         return handlerInput.responseBuilder
             .speak(say)
             .reprompt(`Try again.  ${say}`)
             .withSimpleCard(` ${country} Destinations`, cardText)
             .getResponse();
-
     }
 };
 
@@ -276,7 +298,8 @@ const ShowCityHandler = {
         // console.log('***** slotValues: ' +  JSON.stringify(slotValues, null, 2));
         //   SLOT: city
         if (slotValues.city.heardAs) {
-            slotStatus += ` ${slotValues.city.heardAs} is an amazing city. `;
+            slotStatus += `${helpers.randomArrayElement([`Here is`,`Let's visit`,`Welcome to`])}, ${slotValues.city.heardAs}. `;
+
         } else {
             slotStatus += `I didn\'t catch your city.  Can you repeat? `;
         }
@@ -291,7 +314,7 @@ const ShowCityHandler = {
 
         }
         if (slotValues.city.ERstatus === 'ER_SUCCESS_NO_MATCH') {
-            slotStatus += `which did not match any slot value. `;
+            slotStatus += `which is a new city I am not familiar with yet. I am always learning from things you say.  For now, `;
             console.log(`***** consider adding "${slotValues.city.heardAs}" to the custom slot type used by slot city! `);
         }
 
@@ -305,44 +328,46 @@ const ShowCityHandler = {
         say += slotStatus;
 
         // sessionAttributes['city'] = slotValues.city.resolved || slotValues.city.heardAs;
-        let city = slotValues.city.resolved || slotValues.city.heardAs || '';
+        let city = slotValues.city.resolved || slotValues.city.heardAs || ``;
 
         // throw artificial error
         if (city === 'unicorn') {
             let foo = constants.getUnicorns();
         }
 
-        const listData = await data.getCityList(city);
-        let list = [];
+        let cardText = `${city} is an amazing city.  `;
 
-        listData.forEach(function(item) {
-            list.push(item.city);
-            // say += `${item.city}, `;
-        });
-        say += helpers.sayArray(list);
+        const airportCode = data.getAirportCode(city);
+        if (airportCode !== `unknown`) {
+            say += `To book travel here, use airport code <say-as interpret-as="characters">${airportCode}</say-as>`;
+            cardText += `To book travel here, use airport code ${airportCode}.`;
 
-        const cardText = `${city} is an amazing city`;
+        }
+
+
+
+
 
         // const cardText = helpers.displayListFormatter(list, `card`);
         // const itemList = helpers.displayListFormatter(list, `list`);
 
         const DisplayImg1 = constants.getDisplayImg1();
         const DisplayImg2 = constants.getDisplayImg2();
+        const img = data.getImgUrl(city);
 
         if (helpers.supportsDisplay(handlerInput)) {
 
             const myImage1 = new Alexa.ImageHelper()
-                .addImageInstance(DisplayImg1.url)
+                .addImageInstance(img)
                 .getImage();
 
             const myImage2 = new Alexa.ImageHelper()
-                .addImageInstance(DisplayImg2.url)
+                .addImageInstance(img)
                 .getImage();
 
             const primaryText = new Alexa.RichTextContentHelper()
-                .withPrimaryText('Here is your list!')
+                .withPrimaryText('Here is your city!')
                 .getTextContent();
-
 
             // responseBuilder.addRenderTemplateDirective({
             //     type : 'ListTemplate1',
@@ -354,9 +379,6 @@ const ShowCityHandler = {
             //     listItems : itemList
             // });
         }
-
-        // const img = `https://s3.amazonaws.com/skill-images-789/travel/${city}.jpg`;
-        const img = data.getImgUrl(city);
 
         return handlerInput.responseBuilder
             .speak(say)
@@ -599,13 +621,7 @@ const HelpHandler = {
             say += 'Your last intent was ' + history[history.length-2].IntentRequest + '. ';
             // prepare context-sensitive help messages here
         }
-        say += ' You can say things like, browse cities, show cities in a country, my name is, link browser, reset profile. ';
-
-        let payload = {"name":"cat"};
-
-        let thingName = sessionAttributes['IotTopic'];
-        // let IotTopic = `$aws/things/${thingName}/shadow/update/accepted`;
-            //handlerInput.requestEnvelope.session.user.userId.slice(-10);
+        say += ' You can say things like, browse cities, show cities in a country, go to a city, my name is, link browser, reset profile. ';
 
         return handlerInput.responseBuilder
             .speak(say)
@@ -715,9 +731,11 @@ const NoHandler = {
 
 const ExitHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+        return (handlerInput.requestEnvelope.request.type === 'IntentRequest'
             && (handlerInput.requestEnvelope.request.intent.name === 'AMAZON.CancelIntent'
-            || handlerInput.requestEnvelope.request.intent.name === 'AMAZON.StopIntent');
+            || handlerInput.requestEnvelope.request.intent.name === 'AMAZON.StopIntent')
+        ) || handlerInput.requestEnvelope.request.type === 'SessionEndedRequest';
+
     },
     handle(handlerInput) {
         const responseBuilder = handlerInput.responseBuilder;
@@ -753,9 +771,11 @@ const ErrorHandler = {
         return true;
     },
     handle(handlerInput, error) {
+        const debug = true;
         const stack = error.stack.split('\n');
         console.log(stack[0]);
         console.log(stack[1]);
+        console.log(stack[2]);
 
         let errorLoc = stack[1].substring(stack[1].lastIndexOf('/') + 1, 900);
 
@@ -765,16 +785,14 @@ const ErrorHandler = {
         let line = errorLoc.substring(errorLoc.indexOf(':') + 1, 900);
         line = line.substring(0, line.indexOf(':'));
 
-        // console.log(error.stack.indexOf('\n'));
-        // console.log(`Error handled: ${error.message}\n${error.message}`);
         let speechOutput = 'Sorry, an error occurred. ';
-        if(constants.debug) {
+        if(debug) {
             speechOutput +=  error.message + ' in ' + file + ', line ' + line;
         }
 
         return handlerInput.responseBuilder
             .speak(speechOutput)
-            .reprompt('Sorry, an error occurred.')
+            .reprompt(speechOutput)
             .getResponse();
     },
 };

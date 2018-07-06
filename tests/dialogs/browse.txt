@@ -1,5 +1,8 @@
 LaunchRequest
 BrowseCitiesIntent country=
-BrowseCitiesIntent country=Canada
-ShowCityIntent city=Toronto
+? BrowseCitiesIntent country=Canada/Canada
+? BrowseCitiesIntent country=Americas%20Hat/Canada
+? ShowCityIntent city=Toronto size=Large
+? ShowCityIntent city=Wakefield/
+? ShowCityIntent city=Boston/Boston
 AMAZON.StopIntent
