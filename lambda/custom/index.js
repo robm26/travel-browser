@@ -58,6 +58,7 @@ const LaunchHandler = {
                 // + ' and it has been ' + span.timeSpanDesc
                 // + '. There are now ' + skillUserCount + ' skill users. '
                 // + ' You joined as the <say-as interpret-as="ordinal">' + joinRank + '</say-as> user.';
+            say += ' What do you want me to do?';
         }
 
         const responseBuilder = handlerInput.responseBuilder;
@@ -294,6 +295,7 @@ const BrowseCitiesHandler = {
 
         let list = data.getCityList(country);
         let sortedList = helpers.sortArray(list.slice());
+
         const cityListShort = helpers.sayArray(helpers.shuffleArray(list).slice(0,3));
 
         if (slotValues.country.heardAs) {
@@ -331,6 +333,7 @@ const BrowseCitiesHandler = {
         const cardText = helpers.displayListFormatter(sortedList, `card`);
 
         const itemList = helpers.displayListFormatter(sortedList, `list`);
+        //const itemList = helpers.actionListFormatter(sortedList, `list`);
 
         const DisplayImg1 = constants.getDisplayImg1();
         const DisplayImg2 = constants.getDisplayImg2();
@@ -348,7 +351,6 @@ const BrowseCitiesHandler = {
             const primaryText = new Alexa.RichTextContentHelper()
                 .withPrimaryText('Here is your list!')
                 .getTextContent();
-
 
             responseBuilder.addRenderTemplateDirective({
                 type : 'ListTemplate1',
@@ -395,6 +397,20 @@ const MyNameIsHandler = {
             .reprompt(say)
             .getResponse();
 
+    }
+};
+
+const ElementSelectedHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === 'Display.ElementSelected';
+    },
+    handle(handlerInput) {
+        let say = `You clicked on a city`;
+
+        return handlerInput.responseBuilder
+            .speak(say)
+            .reprompt(say)
+            .getResponse();
     }
 };
 
@@ -993,6 +1009,7 @@ const skillBuilder = Alexa.SkillBuilders.standard();
 
 exports.handler = skillBuilder
     .addRequestHandlers(
+        ElementSelectedHandler,
         BrowseCitiesHandler,
         ShowCityHandler,
 
