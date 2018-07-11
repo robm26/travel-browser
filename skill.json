@@ -1,0 +1,30 @@
+{
+  "manifest": {
+    "publishingInformation": {
+      "locales": {
+        "en-US": {
+          "summary": "Teach Me Skill.",
+          "examplePhrases": [
+            "Alexa open teach me",
+            "Alexa tell teach me learn about colors",
+            "Alexa tell teach me to start a quiz",
+          ],
+          "name": "Teach Me",
+          "description": "An educational skill that uses Echo screen displays."
+        }
+      },
+      "isAvailableWorldwide": true,
+      "testingInstructions": "Sample Testing Instructions.",
+      "category": "EDUCATION_AND_REFERENCE",
+      "distributionCountries": []
+    },
+    "apis": {
+      "custom": {
+        "endpoint": {
+          "sourceDir": "lambda/custom"
+        }
+      }
+    },
+    "manifestVersion": "1.0"
+  }
+}

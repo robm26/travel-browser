@@ -1,0 +1,80 @@
+# https://github.com/awslabs/serverless-application-model/releases/tag/1.4.0
+
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Alexa Memory Skill and Console
+Transform: AWS::Serverless-2016-10-31
+Parameters:
+  withTableName:
+    Type: String
+    Default: askMemorySkillTable2
+Metadata:
+  Name: alexa-skills-kit-memory
+Resources:
+  askMemorySkillFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: 'askMemorySkillFunction'
+      CodeUri: ./skill-lambda/memory-skill.zip
+      Description: Alexa Memory Skill Lambda function
+      Handler: index.handler
+      MemorySize: 128
+      Runtime: nodejs8.10
+      Timeout: 7
+#      Policies: AmazonDynamoDBFullAccess
+      Events:
+        AlexaTrigger:
+          Type: AlexaSkill
+      Environment:
+        Variables:
+          S3_BUCKET: flea-bucket-789
+          DYNAMODB_TABLE: !Ref withTableName
+      Policies:
+        -
+          Version: "2012-10-17"
+          Statement:
+            -
+              Effect: "Allow"
+              Action:
+                - "dynamodb:GetItem"
+                - "dynamodb:PutItem"
+                - "dynamodb:UpdateItem"
+                - "dynamodb:DeleteItem"
+              Resource:
+                - "arn:aws:dynamodb:::table/ask*"
+
+  MemoryTable:
+     Type: AWS::Serverless::SimpleTable
+     Properties:
+       TableName: !Ref withTableName
+       PrimaryKey:
+         Name: id
+         Type: String
+       ProvisionedThroughput:
+         ReadCapacityUnits: 5
+         WriteCapacityUnits: 5
+#  !Sub '${withTableName}MyFunction'
+Outputs:
+  Greeting:
+    Value: !Ref withTableName
+  UserSite:
+    Value: !Sub 'https://s3.amazonaws.com/${withTableName}MyFunction'
+#    Export:
+#      Name: 'Exporty'
+
+#   DynamoDBTable:
+#     Type: AWS::DynamoDB::Table
+#     Properties:
+#       AttributeDefinitions:
+#         - AttributeName: id
+#           AttributeType: S
+#       KeySchema:
+#         - AttributeName: id
+#           KeyType: HASH
+#       ProvisionedThroughput:
+#         ReadCapacityUnits: 5
+#         WriteCapacityUnits: 5
+#       StreamSpecification:
+#         StreamViewType: streamview type
+
+#    Export:
+#      Name: !Sub "${AWS::StackName}-Role"
