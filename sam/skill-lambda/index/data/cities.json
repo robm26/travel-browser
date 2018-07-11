@@ -1,8 +1,7 @@
 [
 
-
-  {"city":"Bangalore",     "country":"India",   "fileName":"Bangalore.jpg",    "date":"2017-11-08", "description":"Bangalore, or Bengaluru, is the capital of the India state of Karnataka.", "code":"BLR"},
-  {"city":"Dublin",        "country":"Ireland", "fileName":"Dublin.jpg",       "date":"2018-11-21", "description":"Dublin is the capital of Ireland. Dublin is on the east coast of Ireland, at the mouth of the River Liffey and bordered on the south by the Wicklow Mountains.", "code":"DUB"},
+  {"city":"Bangalore",     "country":"India",   "fileName":"Bangalore.jpg",    "date":"2017-11-08", "description":"", "code":"BLR"},
+  {"city":"Dublin",        "country":"Ireland", "fileName":"Dublin.jpg",       "date":"2018-11-21", "description":"", "code":"DUB"},
   {"city":"Philadelphia",  "country":"USA",     "fileName":"Philadelphia.jpg", "date":"2017-12-12", "description":"", "code":"PHL"},
   {"city":"Portland",      "country":"USA",     "fileName":"Portland.jpg",     "date":"2017-12-19", "description":"", "code":"PDX"},
   {"city":"Frankfurt",     "country":"Germany", "fileName":"Frankfurt.jpg",    "date":"2018-01-18", "description":"", "code":"FRA"},
@@ -21,7 +20,7 @@
   {"city":"Melbourne",     "country":"Australia", "fileName":"Melbourne.jpg",  "date":"2018-05-15", "description":"", "code":"MEL"},
   {"city":"Sydney",        "country":"Australia", "fileName":"Sydney.jpg",     "date":"2018-05-17", "description":"", "code":"SYD"},
   {"city":"Brisbane",      "country":"Australia", "fileName":"Brisbane.jpg",   "date":"2018-05-22", "description":"", "code":"BNE"},
-  {"city":"Auckland",      "country":"New Zealand","fileName":"Auckland.jpg",  "date":"2018-05-24", "description":"", "code":"AKL"},
+  {"city":"Auckland",      "country":"Australia", "fileName":"Auckland.jpg",   "date":"2018-05-24", "description":"", "code":"AKL"},
   {"city":"Washington DC", "country":"USA",     "fileName":"Washingtondc.jpg", "date":"2018-06-12", "description":"", "code":"IAD"},
   {"city":"Mumbai",        "country":"India",   "fileName":"Mumbai.png",       "date":"2018-06-22", "description":"", "code":"BOM"},
   {"city":"Belfast",       "country":"UK",      "fileName":"Belfast.png",      "date":"2018-06-22", "description":"", "code":"BFS"},

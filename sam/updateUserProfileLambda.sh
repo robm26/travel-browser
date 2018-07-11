@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
-cd ../lambda/custom
-zip  ../../sam/skill-lambda/index.zip . -r
-cd ../../sam
+cd ../web/user/usersessionAPI/lambda
 
-aws lambda update-function-code --function-name TravelBrowser --zip-file fileb://skill-lambda/index.zip
+zip  ../../../../sam/console-user/index.zip . -r
+
+cd ../../../../sam/console-user
+
+aws lambda update-function-code --function-name AlexaMemoryUserProfileFunction --zip-file fileb://index.zip
+cd ..
 
 # cp ./index.zip ../sam/skill-lambda/memory-skill.zip

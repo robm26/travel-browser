@@ -27,11 +27,15 @@
     <script type="text/javascript" src="js/connectAsThing.js"></script>
     <script type="text/javascript" src="js/updateDom.js"></script>
 
+    <script src="js/web-audio-recorder/lib/WebAudioRecorder.js"></script>
+    <script type="text/javascript" src="js/audio.js"></script>
+
     <script src="js/userdata.js"></script>
 
     <script >
         function init() {
             testy();
+            document.getElementById('apiurl').href = serviceurl; // from userdata.js
             setStatus('ready');
         }
     </script>
@@ -42,7 +46,8 @@
 <body onLoad="init();">
 <div class="panel panel-default">
     <div class="panel-heading">
-        <span class="pagetitle">Alexa Skill User Profile Update</span>
+        <span class="pagetitle">Travel Browser : User Console</span>
+        <span class="pagetitleSub">Alexa, ask travel browser to link session</span>
 
     </div>
     <div class="panel-body">
@@ -56,7 +61,7 @@
                     <td>Word 2</td><td><input type="text" id="word2" size="7"></td>
                 </tr>
                 <tr>
-                    <td>Number</td><td><input type="text" id="number" size="4"></td>
+                    <td>Number</td><td><input type="text" id="number" size="4" onkeypress="handleEnter(event)"></td>
                 </tr>
                 <tr><td colspan="2">
                     <button type="button" class="btn btn-primary btn-xs" onClick="loadAttrs();">LOAD</button>
@@ -67,22 +72,32 @@
                 </td></tr>
             </table>
 
-            <div class="panel-heading" ><I>status :</I>
+            <div class="panel-heading side" >
+                Status
+            </div>
+            <div class="panel-body side">
                 <div id="status" class="status"></div>
             </div>
-            <div><br/></div>
 
-            <div class="panel-heading" class="status"><I>card :</I>
-                <div id="cardTitle" class="cardTitle" >card</div>
-                <div id="cardContent" class="cardContent" >content</div>
+            <br/>
+            <div class="panel-heading side">Card</div>
+            <div class="panel-body side">
+
+                <div id="cardTitle" class="cardTitle" ></div>
+                <div id="cardContent" class="cardContent" ></div>
+
                 <div id="cardImg" class="cardImg" >
                     <img id="cardImgImg" height="100" width="150"/>
                 </div>
             </div>
 
-            <div>
+            <!--<br/>-->
+            <!--<div class="panel-heading side">TXT/SMS</div>-->
+            <!--<div class="panel-body side">-->
 
-            </div>
+                <!--<div id="txtitle" class="txtTitle" ></div>-->
+                <!--<div id="txtContent" class="txtContent" ></div>-->
+            <!--</div>-->
 
         </div>
 
@@ -93,11 +108,11 @@
             <div id="exTab2" class="container-fluid">
                 <ul class="nav nav-tabs">
 
-                    <li >
+                    <li class="active">
                         <a  href="#1" data-toggle="tab">Profile</a>
                     </li>
 
-                    <li class="active"><a href="#2" data-toggle="tab" onClick="">IOT Browser</a>
+                    <li ><a href="#2" data-toggle="tab" onClick="">IOT Browser</a>
                     </li>
 
                     <li><a href="#3" data-toggle="tab">Recording</a>
@@ -106,7 +121,7 @@
                 </ul>
 
                 <div class="tab-content ">
-                    <div class="tab-pane " id="1">
+                    <div class="tab-pane active" id="1">
 
                         <div id="attrPanel" class="attrPanel">
                             <table id="EditFormTable" class="table">
@@ -118,7 +133,7 @@
 
                     </div>
 
-                    <div class="tab-pane active" id="2">
+                    <div class="tab-pane " id="2">
                         <div id="iotMainPanel" class="iotMainPanel">
 
                         </div>
@@ -153,7 +168,15 @@
 
                     </div>
                     <div class="tab-pane" id="3">
-
+                        <a href="#" id="recordstart" class="recordstart" onClick="record();" >RECORD</a>
+                       <br/>
+                        <a href="#" id="recordstop" class="recordstop" onClick="record();" >STOP</a>
+                        <br/>
+                        A web page with a
+                        <a href="https://github.com/higuma/web-audio-recorder-js">Record button</a> that records a user's voice and
+                            saves to S3 for use in a skill response.
+                        <br/>
+                        Coming soon..
                     </div>
                 </div>
             </div>
@@ -182,9 +205,17 @@
 
 </div>
     <hr/>
-    <input type="button" name="reloader" class="btn btn-light btn-xs"  value="RELOAD PAGE" onClick="location.reload(true);" >
 
+    <div id="footer" class="footer">
+        <div class="container">
 
+                <input type="button" name="reloader" class="btn btn-light btn-xs"  value="RELOAD PAGE" onClick="location.reload(true);" >
+                &nbsp;
+            This page calls a custom <a href="" id="apiurl" class="apiurl" target="_blank">Skill authentication API</a> over xhttp.
+                Learn more and build this app via the <a href="https://github.com/alexa/alexa-cookbook" class="apiurl">Alexa Cookbook</a>
+
+        </div>
+    </div>
 
 </body>
 </html>

@@ -1,0 +1,176 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Alexa Travel Browser Skill and Console
+Metadata:
+  Name:
+    Ref: ProjectName
+Outputs:
+  CognitoPoolId:
+    Export:
+      Name: IdentityPool::Id
+    Value:
+      Ref: CognitoPool
+  DatabaseTable:
+    Value:
+      Fn::Sub: ask${ProjectName}
+  Greeting:
+    Value:
+      Fn::Sub: The stack for ${ProjectName} is ready.
+  UserSite:
+    Value:
+      Fn::GetAtt:
+      - S3Bucket
+      - WebsiteURL
+Parameters:
+  ProjectName:
+    Default: travel-browser
+    Description: Enter the name for your project.  This will be used to name new stack
+      objects.
+    Type: String
+Resources:
+  CognitoAuthorizedRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRoleWithWebIdentity
+          Condition:
+            ForAnyValue:StringLike:
+              cognito-identity.amazonaws.com:amr: authenticated
+            StringEquals:
+              cognito-identity.amazonaws.com:aud:
+                Ref: CognitoPool
+          Effect: Allow
+          Principal:
+            Federated: cognito-identity.amazonaws.com
+        Version: '2012-10-17'
+    Type: AWS::IAM::Role
+  CognitoPool:
+    Properties:
+      AllowUnauthenticatedIdentities: true
+      IdentityPoolName: AlexaIotPool
+    Type: AWS::Cognito::IdentityPool
+  CognitoRoleAttachment:
+    Properties:
+      IdentityPoolId:
+        Ref: CognitoPool
+      Roles:
+        authenticated:
+          Fn::GetAtt:
+          - CognitoAuthorizedRole
+          - Arn
+        unauthenticated:
+          Fn::GetAtt:
+          - CognitoUnAuthorizedRole
+          - Arn
+    Type: AWS::Cognito::IdentityPoolRoleAttachment
+  CognitoUnAuthorizedRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRoleWithWebIdentity
+          Condition:
+            ForAnyValue:StringLike:
+              cognito-identity.amazonaws.com:amr: unauthenticated
+            StringEquals:
+              cognito-identity.amazonaws.com:aud:
+                Ref: CognitoPool
+          Effect: Allow
+          Principal:
+            Federated: cognito-identity.amazonaws.com
+        Version: '2012-10-17'
+      Policies:
+      - PolicyDocument:
+          Statement:
+          - Action:
+            - iot:Connect
+            Effect: Allow
+            Resource: '*'
+          - Action:
+            - iot:Subscribe
+            Effect: Allow
+            Resource: arn:aws:iot:::ask*
+          Version: '2012-10-17'
+        PolicyName: CognitoUnauthorizedPolicy
+    Type: AWS::IAM::Role
+  DynamoTable:
+    Properties:
+      PrimaryKey:
+        Name: id
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      TableName:
+        Fn::Sub: ask${ProjectName}
+    Type: AWS::Serverless::SimpleTable
+  S3Bucket:
+    Properties:
+      AccessControl: PublicRead
+    Type: AWS::S3::Bucket
+  SkillFunction:
+    Properties:
+      CodeUri: s3://alexaconsole789/e5c2524ad430723c90cfa4a485dd22c7
+      Description: Alexa Lambda function
+      Environment:
+        Variables:
+          DYNAMODB_TABLE:
+            Fn::Sub: ask${ProjectName}
+      Events:
+        AlexaTrigger:
+          Type: AlexaSkill
+      FunctionName:
+        Fn::Sub: ${ProjectName}-skill
+      Handler: index.handler
+      MemorySize: 128
+      Policies:
+      - Statement:
+        - Action:
+          - dynamodb:GetItem
+          - dynamodb:PutItem
+          - dynamodb:UpdateItem
+          - dynamodb:DeleteItem
+          - dynamodb:CreateTable
+          Effect: Allow
+          Resource:
+          - arn:aws:dynamodb:::table/ask*
+        Version: '2012-10-17'
+      Runtime: nodejs8.10
+      Timeout: 7
+    Type: AWS::Serverless::Function
+  userSessionAPIFunction:
+    Properties:
+      CodeUri: s3://alexaconsole789/58308a44e2a8c2e259d70898a93709c0
+      Description: DynamoDB Lambda function
+      Environment:
+        Variables:
+          DYNAMODB_TABLE:
+            Fn::Sub: ask${ProjectName}
+      Events:
+        AlexaTrigger:
+          Type: AlexaSkill
+        MyAPI:
+          Properties:
+            Method: ANY
+            Path: /{proxy+}
+          Type: Api
+      FunctionName:
+        Fn::Sub: ${ProjectName}-userSessionAPI
+      Handler: index.handler
+      MemorySize: 128
+      Policies:
+      - Statement:
+        - Action:
+          - dynamodb:GetItem
+          - dynamodb:PutItem
+          - dynamodb:UpdateItem
+          - dynamodb:DeleteItem
+          - dynamodb:CreateTable
+          Effect: Allow
+          Resource:
+          - arn:aws:dynamodb:::table/ask*
+        Version: '2012-10-17'
+      Runtime: nodejs8.10
+      Timeout: 7
+    Type: AWS::Serverless::Function
+Transform: AWS::Serverless-2016-10-31

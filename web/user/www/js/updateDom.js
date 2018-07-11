@@ -12,7 +12,6 @@ function handleMessage(msgRaw) {  // called from within connectAsThing.js
     // other custom app DOM logic
 
 
-
     //document.getElementById('iotIntentRequest').innerText = IntentRequest;
     //document.getElementById('iotResponse').innerText = outputSpeech;
 
@@ -105,8 +104,10 @@ function prepareSessionLogEvent(msg) {
 
     // ------- cards
     const card = msg.card;
+
     // document.getElementById("cardImg").src="";
     console.log(`***** card \n${JSON.stringify(card, null, 2)}`);
+
     if (card) {
         document.getElementById('cardTitle').style.visibility = 'visible';
         document.getElementById('cardContent').style.visibility = 'visible';
@@ -123,20 +124,26 @@ function prepareSessionLogEvent(msg) {
         document.getElementById('cardTitle').innerHTML = ``;
     }
     let content = ``;
+
     if (card && card.content) {
+        // content = linkify(card.content); // .replace(/\n/g, `<br/>`);
+        // alert(content);
         content = (card.content || ``).replace(/\n/g, `<br/>`);
         document.getElementById('cardContent').innerHTML = content;
-        document.getElementById('cardImg').src = ``;
+        // document.getElementById('cardImgImg').src = card.image.smallImageUrl
     } else if (card && card.text) {
         content = (card.text || ``).replace(/\n/g, `<br/>`);
         document.getElementById('cardContent').innerHTML = content;
     } else {
         document.getElementById('cardContent').innerHTML = ``;
     }
-    if (card && card.type && card.type === `Standard`) {
+
+    if (card && card.image && card.image.smallImageUrl) {
         let img = document.getElementById('cardImgImg');
-        // img.style.visibility = 'visible';
+
         img.src = card.image.smallImageUrl;
+    } else {
+        img.src = ``;
     }
 
 
@@ -193,12 +200,30 @@ function toggleView(eventType) {
         let elements = document.getElementsByClassName('iotAttributesDiv');
         if(elements.length > 0) {
             const display = elements[0].style.display;
-            alert(`${eventType} ${display}`);
+            // alert(`${eventType} ${display}`);
         }
     }
 
 }
 
+// let bod = `hello\nhttps://www.amazon.com\nbig world`;
+// console.log(bod);
+// console.log(linkify(bod));
+// document.getElementById('footer').innerHTML = 'copyright  2018';
+// // let foot = document.getElementById('footer');
+// // foot.innerHTML = 'abc';
+
+function linkifylinkify(body) {
+    let words = body.split('\n'); // assumes URL is on its own line
+
+    for(let i=0; i<words.length; i++) {
+        // alert(words[i].slice(0,4));
+        if(words[i].slice(0,4) === `http`) {
+            words[i] = `<a href="${words[i]}">${words[i]}</a>`;
+        }
+    }
+    return words.join(`<br />`);
+}
 function reloader() {
     location.reload(true);  // hard reload including .js and .css files
 

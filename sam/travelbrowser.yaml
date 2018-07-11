@@ -1,21 +1,36 @@
 # https://github.com/awslabs/serverless-application-model/releases/tag/1.4.0
 
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Alexa Memory Skill and Console
+Description: Alexa Travel Browser Skill and Console
 Transform: AWS::Serverless-2016-10-31
 Parameters:
-  withTableName:
+
+  ProjectName:
     Type: String
-    Default: askMemorySkillTable2
+    Default: travel-browser
+    Description: 'Enter the name for your project.  This will be used to name new stack objects.'
+
 Metadata:
-  Name: alexa-skills-kit-memory
+  Name: !Ref ProjectName
 Resources:
-  askMemorySkillFunction:
+
+  DynamoTable:
+     Type: AWS::Serverless::SimpleTable
+     Properties:
+       TableName: !Sub 'ask${ProjectName}'
+       PrimaryKey:
+         Name: id
+         Type: String
+       ProvisionedThroughput:
+         ReadCapacityUnits: 5
+         WriteCapacityUnits: 5
+
+  SkillFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: 'askMemorySkillFunction'
-      CodeUri: ./skill-lambda/memory-skill.zip
-      Description: Alexa Memory Skill Lambda function
+      FunctionName: !Sub '${ProjectName}-skill'
+      CodeUri: ./skill-lambda/index.zip
+      Description: Alexa Lambda function
       Handler: index.handler
       MemorySize: 128
       Runtime: nodejs8.10
@@ -26,8 +41,7 @@ Resources:
           Type: AlexaSkill
       Environment:
         Variables:
-          S3_BUCKET: flea-bucket-789
-          DYNAMODB_TABLE: !Ref withTableName
+          DYNAMODB_TABLE: !Sub 'ask${ProjectName}'
       Policies:
         -
           Version: "2012-10-17"
@@ -39,25 +53,149 @@ Resources:
                 - "dynamodb:PutItem"
                 - "dynamodb:UpdateItem"
                 - "dynamodb:DeleteItem"
+                - "dynamodb:CreateTable"
               Resource:
                 - "arn:aws:dynamodb:::table/ask*"
 
-  MemoryTable:
-     Type: AWS::Serverless::SimpleTable
-     Properties:
-       TableName: !Ref withTableName
-       PrimaryKey:
-         Name: id
-         Type: String
-       ProvisionedThroughput:
-         ReadCapacityUnits: 5
-         WriteCapacityUnits: 5
+  userSessionAPIFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub '${ProjectName}-userSessionAPI'
+      CodeUri: ./console-user/index.zip
+      Description: DynamoDB Lambda function
+      Handler: index.handler
+      MemorySize: 128
+      Runtime: nodejs8.10
+      Timeout: 7
+#      Policies: AmazonDynamoDBFullAccess
+      Events:
+        AlexaTrigger:
+          Type: AlexaSkill
+        MyAPI:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+      Environment:
+        Variables:
+          DYNAMODB_TABLE: !Sub 'ask${ProjectName}'
+      Policies:
+        -
+          Version: "2012-10-17"
+          Statement:
+            -
+              Effect: "Allow"
+              Action:
+                - "dynamodb:GetItem"
+                - "dynamodb:PutItem"
+                - "dynamodb:UpdateItem"
+                - "dynamodb:DeleteItem"
+                - "dynamodb:CreateTable"
+              Resource:
+                - "arn:aws:dynamodb:::table/ask*"
+
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+#      BucketName: !Sub '${ProjectName}'
+      AccessControl: PublicRead
+
+  # Create a role for unauthorized acces to AWS resources. Very limited access. Only allows users in the previously created Identity Pool
+  CognitoUnAuthorizedRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Federated: "cognito-identity.amazonaws.com"
+            Action:
+              - "sts:AssumeRoleWithWebIdentity"
+            Condition:
+              StringEquals:
+                "cognito-identity.amazonaws.com:aud": !Ref CognitoPool
+              "ForAnyValue:StringLike":
+                "cognito-identity.amazonaws.com:amr": unauthenticated
+      Policies:
+        - PolicyName: "CognitoUnauthorizedPolicy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+
+              - Effect: "Allow"
+                Action:
+                  - "iot:Connect"
+                Resource: "*"
+
+              - Effect: "Allow"
+                Action:
+                  - "iot:Subscribe"
+                Resource: "arn:aws:iot:::ask*"
+
+  # Create a role for unauthorized acces to AWS resources. Very limited access. Only allows users in the previously created Identity Pool
+  CognitoAuthorizedRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Federated: "cognito-identity.amazonaws.com"
+            Action:
+              - "sts:AssumeRoleWithWebIdentity"
+            Condition:
+              StringEquals:
+                "cognito-identity.amazonaws.com:aud": !Ref CognitoPool
+              "ForAnyValue:StringLike":
+                "cognito-identity.amazonaws.com:amr": authenticated
+#      Policies:
+#        - PolicyName: "CognitoAuthorizedPolicy"
+#          PolicyDocument:
+#            Version: "2012-10-17"
+#            Statement:
+#
+#              - Effect: "Allow"
+#                Action:
+#                  - "iot:Connect"
+#                Resource: "*"
+#
+#              - Effect: "Allow"
+#                Action:
+#                  - "iot:Subscribe"
+#                Resource: "arn:aws:iot:::ask*"
+
+  CognitoPool:
+    Type: AWS::Cognito::IdentityPool
+    Properties:
+      IdentityPoolName: 'AlexaIotPool'
+      AllowUnauthenticatedIdentities: True
+
+  CognitoRoleAttachment:
+    Type: AWS::Cognito::IdentityPoolRoleAttachment
+    Properties:
+      IdentityPoolId: !Ref CognitoPool
+      Roles:
+        authenticated: !GetAtt CognitoAuthorizedRole.Arn
+        unauthenticated: !GetAtt CognitoUnAuthorizedRole.Arn
 #  !Sub '${withTableName}MyFunction'
 Outputs:
   Greeting:
-    Value: !Ref withTableName
+    Value: !Sub 'The stack for ${ProjectName} is ready.'
+#  Status:
+#    Value: !Ref projectName
   UserSite:
-    Value: !Sub 'https://s3.amazonaws.com/${withTableName}MyFunction'
+    Value: !GetAtt S3Bucket.WebsiteURL
+
+  CognitoPoolId:
+    Value: !Ref CognitoPool
+    Export:
+      Name: "IdentityPool::Id"
+
+  DatabaseTable:
+    Value: !Sub 'ask${ProjectName}'
+#    Value: !Sub 'https://s3.amazonaws.com/${ProjectName}/'
 #    Export:
 #      Name: 'Exporty'
 

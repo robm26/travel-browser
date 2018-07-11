@@ -5,9 +5,8 @@
 const DYNAMODB_TABLE = 'askMemorySkillTable';
 
 const serviceurl = "https://2f1u50gvwh.execute-api.us-east-1.amazonaws.com/prod";
-    // ?tempPassPhrase=deeprecord758
 
-const editableAttributes = [
+const editableAttributes = [ // for display in profile form
     'name',
     'namePronounce',
     'preferredGreeting',
@@ -21,7 +20,13 @@ const editableAttributes = [
     'mqttEndpoint'
 ];  // skipping other non-editable attributes
 
+function testy(){
 
+    document.getElementById('word1').value = 'fast';
+    document.getElementById('word2').value = 'memory';
+    document.getElementById('number').value = 511;
+
+}
 
 function clearForm() {
 
@@ -114,13 +119,7 @@ function loadAttrs() {
     // xhttp.send(JSON.stringify(payload));
 
 }
-function testy(){
 
-    document.getElementById('word1').value = 'Loud';
-    document.getElementById('word2').value = 'Door';
-    document.getElementById('number').value = 342;
-
-}
 
 function renderEditForm(data) {
 
@@ -253,4 +252,12 @@ function ConnectIot(mqttEndpoint, IdentityPoolId, IotTopic) {
 
     getAWSCredentials();
 
+}
+
+function handleEnter(e){
+    const keycode = (e.keyCode ? e.keyCode : e.which);
+    if (keycode == '13') {
+        // console.log('You pressed enter!');
+        loadAttrs();
+    }
 }

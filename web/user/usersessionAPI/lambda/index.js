@@ -1,11 +1,19 @@
+// This is an authentication and user profile service.
+// A user will pass in a three part tempPassPhrase
+// This is used to scan a DynamoDB table for a matching record
+// But only if the record's tempPassPhrase is less than 5 minutes old
+
+// Upon success, the user's entire attribute record is returned
+// The user may update their attribute map with the same fresh tempPassPhrase
+
+
 const AWSregion = 'us-east-1';  // us-east-1
 const TableName = process.env.DYNAMODB_TABLE || 'askMemorySkillTable';
 
-const AWS = require('aws-sdk');
-AWS.config.update({
-    region: AWSregion
-});
+const tempPassPhraseExpiryMinutes = 5;
 
+const AWS = require('aws-sdk');
+AWS.config.region = process.env.AWS_REGION || 'us-east-1';
 
 console.log('*** loading AlexaMemoryUserProfileFunction\n\n');
 
@@ -76,30 +84,46 @@ exports.handler = function(event, context, callback) {
 
 function scanDynamoTableForPhrase(tempPassPhrase, TableName, callback) {
 
+    const Now = new Date();
+    const CutoffTime = new Date(Now - tempPassPhraseExpiryMinutes * 60000);
+
+    console.log(Now);
+    console.log(CutoffTime);
+
     const params = {
         TableName: TableName,
-        FilterExpression: "attributes.tempPassPhrase = :tempPassPhrase",
-        ExpressionAttributeValues: { ":tempPassPhrase": tempPassPhrase }
-
+        FilterExpression: "attributes.tempPassPhrase = :tempPassPhrase AND attributes.linkTimestamp > :linkTimestamp",
+        ExpressionAttributeValues: { ":tempPassPhrase": tempPassPhrase, ":linkTimestamp": CutoffTime.getTime() }
     };
 
     let docClient = new AWS.DynamoDB.DocumentClient();
 
-    // console.log('scanning items from DynamoDB table');
+    console.log('###############\nscanning items from DynamoDB table\n');
 
     docClient.scan(params, (err, data) => {
         if (err) {
             console.error("Unable to read item. Error JSON:", JSON.stringify(err, null, 2));
 
         } else {
+            console.log(`\n##### found ${data.Items.length} records`);
 
             if (data.Items.length === 1) {  // lookup success, one record found
+                const rec = data.Items[0];
+                // const lastUseTime = JSON.stringify(rec.attributes.lastUseTimestamp);
+                // const span = timeDelta(t1, t2);
+                // if(span.timeSpanMIN <= 5) {
+                //
+                callback(rec);
+                // } else {
+                //     //
+                // }
+                // console.log(`rec.lastUseTimestamp :  `);
 
-                callback(data.Items[0]);
+
 
             } else {
 
-                callback({"error":"single record not found"});
+                callback({"error":"session not found"});
 
             }
 
@@ -110,35 +134,13 @@ function scanDynamoTableForPhrase(tempPassPhrase, TableName, callback) {
 }
 // -----------------------------------------
 
-function readDynamoItem(params, callback) {
 
-    var AWS = require('aws-sdk');
-    AWS.config.update({region: AWSregion});
-
-    var docClient = new AWS.DynamoDB.DocumentClient();
-
-    console.log('reading item from DynamoDB table');
-
-    docClient.get(params, (err, data) => {
-        if (err) {
-            console.error("Unable to read item. Error JSON:", JSON.stringify(err, null, 2));
-        } else {
-            // console.log("readDynamoItem succeeded:", JSON.stringify(data, null, 2));
-
-            callback(JSON.stringify(data));
-
-
-        }
-    });
-
-}
-// -----------------------------------------
 function writeDynamoItem(params, callback) {
 
-    var AWS = require('aws-sdk');
+    const AWS = require('aws-sdk');
     AWS.config.update({region: AWSregion});
 
-    var docClient = new AWS.DynamoDB.DocumentClient();
+    let docClient = new AWS.DynamoDB.DocumentClient();
 
     console.log('writing item to DynamoDB table');
 
@@ -152,5 +154,30 @@ function writeDynamoItem(params, callback) {
 
         }
     });
+
+}
+
+
+function timeDelta(t1, t2) {
+
+    const dt1 = new Date(t1);
+    const dt2 = new Date(t2);
+    const timeSpanMS = dt2.getTime() - dt1.getTime();
+    const span = {
+        "timeSpanMIN": Math.floor(timeSpanMS / (1000 * 60 )),
+        "timeSpanHR":  Math.floor(timeSpanMS / (1000 * 60 * 60)),
+        "timeSpanDAY": Math.floor(timeSpanMS / (1000 * 60 * 60 * 24)),
+        "timeSpanDesc" : ""
+    };
+
+    if (span.timeSpanHR < 2) {
+        span.timeSpanDesc = span.timeSpanMIN + " minutes";
+    } else if (span.timeSpanDAY < 2) {
+        span.timeSpanDesc = span.timeSpanHR + " hours";
+    } else {
+        span.timeSpanDesc = span.timeSpanDAY + " days";
+    }
+
+    return span;
 
 }

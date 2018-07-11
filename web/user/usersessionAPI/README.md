@@ -1,6 +1,5 @@
 ### Travel Browser - usersessionAPI
 
-
 The User Profile application consists of three parts.
 
 1. The AWS API Gateway web service that performs the interactions to AWS
@@ -14,8 +13,7 @@ The User Profile application consists of three parts.
 
 Define AWS API Gateway trigger, it asks you if you want to create a new API, say yes
 
-api-gateway/x2wisfyebg/*/*/AlexaMemoryUserProfileAPI
 
 API Gateway setup notes
 
-choose proxy integration or custom integration to lambda?  proxy
+choose proxy integration to Lambda?

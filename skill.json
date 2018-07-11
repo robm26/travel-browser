@@ -3,14 +3,14 @@
     "publishingInformation": {
       "locales": {
         "en-US": {
-          "summary": "Teach Me Skill.",
+          "summary": "Travel Browser",
           "examplePhrases": [
-            "Alexa open teach me",
-            "Alexa tell teach me learn about colors",
-            "Alexa tell teach me to start a quiz",
+            "Alexa open travel browser",
+            "ask travel browser to browse cities",
+            "ask travel browser to go to Boston"
           ],
-          "name": "Teach Me",
-          "description": "An educational skill that uses Echo screen displays."
+          "name": "Trave Browser",
+          "description": "A sample skill that uses screen displays."
         }
       },
       "isAvailableWorldwide": true,

@@ -20,7 +20,7 @@ if (process.argv[2]) {
 const options = {
     delay        : 1.2,     // seconds between requests
     stdout       : true,    // standard output, show any errors or console.log() messages
-    attributes   : 'country',   // true, false, or a string with the name of an attribute such as 'history' or 'favoriteColor'
+    attributes   : true,   // true, false, or a string with the name of an attribute such as 'history' or 'favoriteColor'
     speechOutput : true,
     reprompt     : false,
     slots        : true,

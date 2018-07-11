@@ -24,15 +24,6 @@
           "samples": []
         },
         {
-          "name": "LinkSessionIntent",
-          "slots": [],
-          "samples": [
-            "link",
-            "link session",
-            "link browser"
-          ]
-        },
-        {
           "name": "ResetIntent",
           "slots": [],
           "samples": [
@@ -81,19 +72,6 @@
             "my mobile is {mobileNumber}",
             "my number is {mobileNumber}",
             "my phone number is {mobileNumber}"
-          ]
-        },
-        {
-          "name": "MyNameIsIntent",
-          "slots": [
-            {
-              "name": "firstname",
-              "type": "AMAZON.US_FIRST_NAME"
-            }
-          ],
-          "samples": [
-            "my name is {firstname}",
-            "call me {firstname}"
           ]
         },
         {
@@ -185,7 +163,7 @@
           ]
         },
         {
-          "name": "citySlotTypecitySlotType",
+          "name": "citySlotType",
           "values": [
             {
               "name": {

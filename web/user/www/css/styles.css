@@ -1,11 +1,17 @@
 
 .panel-heading {background-color:whitesmoke}
 
-.status {background-color:#eee; padding:3px; border: 1px dashed gainsboro; }
+/*.status {background-color:#eee; padding:3px; border: 1px dashed gainsboro; }*/
 
 .table {background-color: gainsboro; }
-.pagetitle{font-size:larger}
+.pagetitle{font-size:larger; float:left}
+.pagetitleSub{ float:right; font-style:italic}
+.panel-heading {height:42px; background-color:#eee}
+.panel-heading.side { }
+.panel-body.side { background-color:whitesmoke}
 .tablename {font-weight:bold}
+.footer {color:silver;}
+.apiurl {text-decoration:none; color:gray}
 
 .EditTableNameHeader {width:30%; background-color:gainsboro}
 .EditTableValueHeader { background-color:whitesmoke}
@@ -22,8 +28,8 @@
 .savebuttons{background-color:gainsboro; padding:3px}
 .attrPanel{background-color:whitesmoke; padding:3px}
 
-.statusNormal{background-color:whitesmoke; padding:3px; border: 1px dashed gainsboro}
-.statusWarn{background-color:coral; padding:3px}
+.statusNormal{background-color:whitesmoke; padding:3px; border: 1px solid gainsboro}
+.statusWarn{background-color:lightpink; padding:3px}
 .statusError{background-color:hotpink; padding:3px}
 
 .connectStatus {background-color:yellow; float:right}
@@ -73,7 +79,7 @@ body {
 .LogSpanSlots { background-color: blue; color:lightblue; font-family: Courier; padding:3px}
 
 .cardTitle {color:white;  background-color:darkgray; padding:5px;  visibility: hidden; padding:3px; border: 1px dashed gainsboro}
-.cardContent {color: dimgrey; background-color:gainsboro; padding:5px; visibility: hidden}
+.cardContent {color: dimgrey; background-color:gainsboro; padding:5px; visibility: hidden; font-size:smaller}
 .cardImg {}
 /*.iotRequestSpan {color:darkred; font-weight:bold}*/
 /*.iotIntentSpan {color:darkkhaki; font-weight:bold}*/

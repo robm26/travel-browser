@@ -45,7 +45,6 @@ module.exports = {
             "visitWishList":[],
 
             "tempPassPhrase":"",
-            "linkTimestamp":0,
 
             "mqttEndpoint":mqttEndpoint,
             "IdentityPoolId":IdentityPoolId,

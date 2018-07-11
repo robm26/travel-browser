@@ -43,8 +43,9 @@ module.exports = {
 
             let list = [];
             arr.forEach(function(item) {
+                // let inlineImg = `<img src='https://s3.amazonaws.com/skill-images-789/colors/CadetBlue.png' width='180' height='80' alt='City Image' />`;
                 let inlineImg = ``;
-                let token = item;
+                let token = item.city;
                 list.push(
                     {
                         "token":token,
@@ -401,18 +402,24 @@ module.exports = {
 
     'updateShadow': function(endpoint, thingName, payload, callback) {
             // console.log(`in updateShadow with \n${endpoint}\n${thingName}\n`);
+            // update AWS IOT thing shadow
+            // var AWS = require('aws-sdk');
+            // AWS.config.region = config.IOT_BROKER_REGION;
+
+            //Prepare the parameters of the update call
 
             const paramsUpdate = {
                 "thingName" : thingName,
                 "payload" : JSON.stringify(
                     { "state":
-                        { "desired": payload
+                        { "desired": payload            // {"pump":1}
                         }
                     }
                 )
             };
 
             const iotData = new AWS.IotData({endpoint: endpoint});
+            // console.log(`created new iotData`);
 
             iotData.updateThingShadow(paramsUpdate, function(err, data)  {
 
@@ -439,3 +446,16 @@ Array.prototype.diff = function(a) {
     return this.filter(function(i) {return a.indexOf(i) < 0;});
 };
 
+//
+// return new Promise((resolve) => {
+//
+//     updateShadow(newState, status => {
+//
+//         resolve(responseBuilder
+//             .speak(say)
+//             .reprompt('try again, ' + say)
+//             .getResponse());
+//
+//     });
+//
+// });
