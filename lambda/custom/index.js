@@ -37,7 +37,7 @@ const LaunchHandler = {
 
         const joinRank = '3'; // sessionAttributes['joinRank'];
         const skillUserCount = sessionAttributes['skillUserCount'];
-        const preferredGreeting = sessionAttributes['preferredGreeting'];
+        const preferredGreeting = sessionAttributes['preferredGreeting'] || `Welcome, `;
 
         const thisTimeStamp = new Date(handlerInput.requestEnvelope.request.timestamp).getTime();
         // console.log('thisTimeStamp: ' + thisTimeStamp);
