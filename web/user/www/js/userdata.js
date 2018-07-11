@@ -27,7 +27,26 @@ function testy(){
     document.getElementById('number').value = 511;
 
 }
+function init() {
+    testy();
+    document.getElementById('apiurl').href = serviceurl; // from userdata.js
+    setStatus('ready');
 
+    $('.nav-tabs a').on('shown.bs.tab', function(event){
+        const x = $(event.target).text();         // active tab
+        // const y = $(event.relatedTarget).text();  // previous tab
+        if(x === 'Recording') {
+            // console.log('audio tab shown');
+
+        } else {
+
+
+        }
+
+
+    });
+
+}
 function clearForm() {
 
     document.getElementById('word1').value = '';
@@ -261,3 +280,7 @@ function handleEnter(e){
         loadAttrs();
     }
 }
+
+
+
+

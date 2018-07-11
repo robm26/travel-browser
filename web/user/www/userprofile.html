@@ -28,16 +28,12 @@
     <script type="text/javascript" src="js/updateDom.js"></script>
 
     <script src="js/web-audio-recorder/lib/WebAudioRecorder.js"></script>
-    <script type="text/javascript" src="js/audio.js"></script>
+    <!--<script type="text/javascript" src="js/recorder.js"></script>-->
 
     <script src="js/userdata.js"></script>
 
     <script >
-        function init() {
-            testy();
-            document.getElementById('apiurl').href = serviceurl; // from userdata.js
-            setStatus('ready');
-        }
+        // body.onLoad = init() in userdata.js
     </script>
 
     <link rel="stylesheet" href="css/styles.css" />
@@ -112,7 +108,7 @@
                         <a  href="#1" data-toggle="tab">Profile</a>
                     </li>
 
-                    <li ><a href="#2" data-toggle="tab" onClick="">IOT Browser</a>
+                    <li ><a href="#2" data-toggle="tab" >IOT Browser</a>
                     </li>
 
                     <li><a href="#3" data-toggle="tab">Recording</a>
@@ -168,15 +164,32 @@
 
                     </div>
                     <div class="tab-pane" id="3">
-                        <a href="#" id="recordstart" class="recordstart" onClick="record();" >RECORD</a>
-                       <br/>
-                        <a href="#" id="recordstop" class="recordstop" onClick="record();" >STOP</a>
+
+                        <div class="wrapper">
+
+                            <div class="container">
+                                <h4>Web Audio Recorder</h4>
+                                Record your own welcome message, saved to the skill's S3 bucket.
+                                * Coming Soon *
+                                <hr>
+
+                                <span id="time">00:00</span>&nbsp;&nbsp;
+                                <button class="btn btn-success" id="start">Start Recording</button>
+                                <button class="btn btn-danger" id="stop" disabled>Stop Recording</button>
+
+                                <hr>
+
+                                <ul class="list-group clearfix" id="audio-list">
+                                </ul>
+
+                            </div>
+
+                        </div><!-- .wrapper -->
+
+
                         <br/>
-                        A web page with a
-                        <a href="https://github.com/higuma/web-audio-recorder-js">Record button</a> that records a user's voice and
-                            saves to S3 for use in a skill response.
-                        <br/>
-                        Coming soon..
+                        <a href="https://github.com/higuma/web-audio-recorder-js">web-audio-recorder-js</a>
+
                     </div>
                 </div>
             </div>
