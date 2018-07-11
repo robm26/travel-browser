@@ -39,10 +39,11 @@ module.exports = {
                 // console.log(`updating shadow\n${userIdShort}`);
 
 
-                helpers.updateShadow(constants.mqttEndpoint, userIdShort, fullEvent, result => {
+                // helpers.updateShadow(constants.mqttEndpoint, userIdShort, fullEvent, result => {
                     // console.log(`helpers.updateShadow result ${result}`);
                     resolve();
-                });
+                // });
+
 
             });
 
