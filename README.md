@@ -18,7 +18,7 @@ If the user says "show Seattle" or "go to Boston" or just "London", the skill wi
 
 
 ### Learning Objectives
-* Multi-modal: Strategies for cards, Echo displays and browser
+* Multi-modal: Strategies for cards and Echo displays
 * Using Echo display templates for list, detail and image
 * Guiding the user with sample slot values
 * Context using a history session attribute

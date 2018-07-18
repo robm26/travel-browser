@@ -169,7 +169,7 @@
                                 <h4>Web Audio Recorder</h4>
                                 Record a message here, play it back,<br/>
                                 then save it to the skill's S3 bucket, <br/>
-                                which updates the "mediaClip" profile attribute with a new filename.
+                                which updates the "audioClip" profile attribute with a new filename.
 
                                 <hr>
 
@@ -206,8 +206,9 @@
     <div id="footer" class="footer">
         <div class="container">
 
-            <input type="button" name="reloader" class="btn btn-light btn-xs"  value="RELOAD PAGE" onClick="location.reload(true);" >
-                &nbsp;
+            <!--<input type="button" name="reloader" class="btn btn-light btn-xs"  value="RELOAD PAGE" onClick="location.reload(true);" >-->
+            <span id="MQTTstatus" class="MQTTstatus">STOPPED</span>
+            &nbsp;&nbsp;&nbsp;
             This page calls a custom <a href="" id="apiurl" class="apiurl" target="_blank">Skill authentication API</a> over xhttp.
                 Learn more and build this app via the <a href="https://github.com/alexa/alexa-cookbook" class="apiurl">Alexa Cookbook</a>
 
@@ -228,7 +229,7 @@
 
         </div>
 
-        <span id="MQTTstatus" class="MQTTstatus">STOPPED</span>
+
         <!--<textarea id="debugmsg" rows="10" columns="40">-->
         <!--</textarea>-->
     </div>
