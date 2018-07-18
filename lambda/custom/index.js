@@ -48,11 +48,11 @@ const LaunchHandler = {
             || sessionAttributes['name']
             || helpers.randomArrayElement(['friend','buddy','dear user']);
 
-
         let say = ``;
         if (launchCount == 1) {
             say = `welcome new user! `
                 + `<audio src='https://s3.amazonaws.com/ask-soundlibrary/magic/amzn_sfx_magic_blast_1x_01.mp3'/> `
+                // + `<audio src='https://s3.amazonaws.com/skill-images-789/mp3/abc.mp3' /> `
                 + `This skill will tell you about travel destinations. `;
                 // + ` You are the <say-as interpret-as="ordinal">${joinRank}</say-as> user to join!`;
         } else {
@@ -159,6 +159,7 @@ const BrowseCitiesHandler = {
         return handlerInput.requestEnvelope.request.type === 'IntentRequest'
             && handlerInput.requestEnvelope.request.intent.name === 'BrowseCitiesIntent';
     },
+
 
     async handle(handlerInput) {
 
@@ -291,7 +292,7 @@ const ShowCityHandler = {
             let foo = constants.getUnicorns();
         }
 
-        let cardText = `${city} is an amazing city.  `;
+        let cardText = `${city} is an amazing city. `;
 
         const airportCode = data.getAirportCode(city);
         if (airportCode !== `unknown`) {
@@ -315,7 +316,7 @@ const ShowCityHandler = {
                 .getImage();
 
             const primaryText = new Alexa.RichTextContentHelper()
-                .withPrimaryText('Here is your city!')
+                .withPrimaryText(`Here is ${city}!`)
                 .getTextContent();
 
             responseBuilder.addRenderTemplateDirective({
@@ -533,15 +534,21 @@ const HelpHandler = {
             && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.HelpIntent';
     },
     async handle(handlerInput) {
-        let say = 'You asked for help. ';
+        let say = `You asked for help. `;
         let sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
         let history = sessionAttributes['history'];
 
+        // if(sessionAttributes.audioClip && sessionAttributes.audioClip.length === 26) {
+            // say += `<audio src="https://s3.amazonaws.com/skill-images-789/mp3/user/5YC7UID123pSNhtEF7u6dB.mp3" />`;
+            say += `<audio src="${constants.bucketUrlPath}${sessionAttributes.audioClip}" />`;
+
+        // }
+
         if (!handlerInput.requestEnvelope.session.new) {
-            say += 'Your last intent was ' + history[history.length-2].IntentRequest + '. ';
+            say += `Your last intent was ${history[history.length-2].IntentRequest}. `;
             // prepare context-sensitive help messages here
         }
-        say += ' You can say things like, browse cities, show cities in a country, go to a city, my name is, link browser, reset profile. ';
+        say += `You can say things like, browse cities, show cities in a country, go to a city, my name is, link browser, reset profile. `;
 
         return handlerInput.responseBuilder
             .speak(say)

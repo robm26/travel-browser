@@ -1,5 +1,5 @@
 # travel-browser
-## Alexa skill sample with integrated web browser
+### Alexa skill sample with integrated web browser
 
 Welcome voice developers!
 This sample project includes a skill for searching and finding information about travel destinations.
@@ -26,20 +26,38 @@ If the user says "show Seattle" or "go to Boston" or just "London", the skill wi
 
 
 ### Advanced Learning Objectives
+* Simulating the skill with TestFlow
 * Tracking data with user's permission
-* Tracking user against all users
+* Clearing the user's profile data
 * Integrating Web Browsers
- * Authentication page
- * User profile page
- * Live session page
-* Simulation with TestFlow
+ * User profile panel
+ * Live session panel
+ * Web audio recorder panel
 
 
 ### User Console
 A sample web page application is included that allows users to update settings and
 and follow the conversation from their browser.
-The user console is a solution built from several AWS cloud services.
+The user console is a single page webapp that calls AWS cloud services.
+You run the userprofile.html page from a browser and type in the pass phrase that the skill provides.
+Once authenticated, you can update profile fields, view live skill usage, or record a new audio message for your skill.
 
+### Authentication Service
+The Console relies on an external public https API Gateway web service.
+First it issues a GET with a valid tempPassPhrase parameter less than five minutes old, and receives the user's profile attributes.
+The save button will call a POST that updates attributes to the skill record,
+also when saving an audio recording to the skill's S3 bucket.
 
+### Services Used
+ * AWS Lambda
+ * AWS DynamoDB
+ * AWS S3
+ * AWS API Gateway
+ * AWS Cognito
+ * AWS IOT
+ * AWS IAM
 
+### Get Started
+
+Check out the application's [ARCHITECTURE](./tutorials/ARCHITECTURE.md) or dive into the [SETUP](./tutorials/SETUP.md)
 

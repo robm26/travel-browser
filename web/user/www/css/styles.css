@@ -33,6 +33,9 @@
 .statusError{background-color:hotpink; padding:3px}
 
 .connectStatus {background-color:yellow; float:right}
+.timeLeft { display:none}
+.timeLeftVisible {color:silver; font-weight:bold; display:visible}
+
 
 body {
     padding : 10px ;
@@ -66,32 +69,53 @@ body {
 
 .iotIntentDiv {background-color:lemonchiffon; padding:3px}
 .iotRequestDiv {background-color:palegoldenrod; padding:3px}
+
 .iotResponseDiv {background-color:azure; width:100%; float:right; padding:3px; border-bottom:1px solid gainsboro}
 .iotResponseEndDiv {background-color:azure; width:100%; float:right; padding:3px; border-bottom:3px solid silver }
-
 .iotResponseSpan {color:cornflowerblue; float:right; width:80% }
 
-.iotAttributesDiv {color:deeppink; background-color: pink; font-size:smaller;display:none}
-
+.iotAttributesDiv {color:magenta; background-color: #FFEEFF; font-size:smaller;font-family:"Courier"; }
 .iotAttributesSpan {}
 
-.LogSpanIntent { background-color: navy; color:lightblue; font-family: Courier; padding:3px}
-.LogSpanSlots { background-color: blue; color:lightblue; font-family: Courier; padding:3px}
+.LogSpanIntent { background-color: darkkhaki; color:yellow; font-family: 'Courier New'; padding:3px}
+.LogSpanSlots { color:dimgray; padding:3px}
+
+/*.iotViewPref {display:""}*/
 
 .cardTitle {color:white;  background-color:darkgray; padding:5px;  visibility: hidden; padding:3px; border: 1px dashed gainsboro}
 .cardContent {color: dimgrey; background-color:gainsboro; padding:5px; visibility: hidden; font-size:smaller}
-.cardImg {}
+.cardImg {height:100px; width:150px; content:url("") }
+
 /*.iotRequestSpan {color:darkred; font-weight:bold}*/
 /*.iotIntentSpan {color:darkkhaki; font-weight:bold}*/
-
-
 /*.iotInactive {color:dimgray; background-color:gainsboro}*/
 
+.recList{border-bottom:2px silver}
+.recListTable{padding:10px}
+.MQTTstatus {float:center}
+
+.time{font-size:larger; color:silver}
+.timeRec{font-size:larger; color:red}
+.timeDone{font-size:larger; color:green}
+
+.row {}
 
 .btn.btn-light{
     background-color: white;
     border: 1px solid gainsboro;
     color: gainsboro;
+
+}
+.btn.btn-xs.req {
+     background-color:lightblue;
+
+ }
+.btn.btn-xs.res {
+    background-color:lightblue;
+
+}
+.btn.btn-xs.att {
+    background-color:white;
 
 }
 

@@ -1,0 +1,7 @@
+LaunchRequest
+BrowseCitiesIntent country=
+BrowseCitiesIntent country=Canada
+BrowseCitiesIntent country=France
+? ShowCityIntent city=Beantown/Boston
+ShowCityIntent city=Hogsmeade/
+AMAZON.StopIntent

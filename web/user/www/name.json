@@ -1,0 +1,31 @@
+{
+  "request": {
+    "type": "IntentRequest",
+    "timestamp": "2018-07-12T19:00:18.721Z",
+    "requestId": "amzn1.echo-api.request.90e15a67-dd2d-4cf2-93bd-7a1234d0139f",
+    "shouldLinkResultBeReturned": false,
+    "intent": {
+      "name": "MyNameIsIntent",
+      "slots": {
+        "firstname": {
+          "heardAs": "Dale",
+          "resolved": "",
+          "ERstatus": ""
+        }
+      }
+    },
+    "locale": "en-US"
+  },
+  "sessionAttributes": {},
+  "outputSpeech": {
+    "type": "SSML",
+    "ssml": "<speak><prosody rate='fast'>Hello, Dale. Did I pronounce that right?</prosody></speak>"
+  },
+  "reprompt": {
+    "outputSpeech": {
+      "type": "SSML",
+      "ssml": "<speak>Hello, Dale. Did I pronounce that right?</speak>"
+    }
+  },
+  "shouldEndSession": false
+}

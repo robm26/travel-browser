@@ -27,10 +27,9 @@
     <script type="text/javascript" src="js/connectAsThing.js"></script>
     <script type="text/javascript" src="js/updateDom.js"></script>
 
-    <script src="js/web-audio-recorder/lib/WebAudioRecorder.js"></script>
-    <!--<script type="text/javascript" src="js/recorder.js"></script>-->
-
-    <script src="js/userdata.js"></script>
+    <script type="text/javascript" src="lib/WebAudioRecorder.js"></script>
+    <script type="text/javascript" src="js/userdata.js"></script>
+    <script type="text/javascript" src="js/tests.js"></script>
 
     <script >
         // body.onLoad = init() in userdata.js
@@ -43,7 +42,9 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <span class="pagetitle">Travel Browser : User Console</span>
+
         <span class="pagetitleSub">Alexa, ask travel browser to link session</span>
+
 
     </div>
     <div class="panel-body">
@@ -73,6 +74,7 @@
             </div>
             <div class="panel-body side">
                 <div id="status" class="status"></div>
+                <div id="timeLeft" class="timeLeft"></div>
             </div>
 
             <br/>
@@ -83,7 +85,7 @@
                 <div id="cardContent" class="cardContent" ></div>
 
                 <div id="cardImg" class="cardImg" >
-                    <img id="cardImgImg" height="100" width="150"/>
+                    <img id="cardImgImg"  class="cardImg"/>
                 </div>
             </div>
 
@@ -99,7 +101,6 @@
 
 
         <div id="profilepanel" class="col-sm-9">
-
 
             <div id="exTab2" class="container-fluid">
                 <ul class="nav nav-tabs">
@@ -119,47 +120,43 @@
                 <div class="tab-content ">
                     <div class="tab-pane active" id="1">
 
+                        <div id="savebuttons" class="savebuttons">
+                            <button type="button" id="saveButton" class="btn btn-primary btn-xs" style="display:none" onClick="saveAttrs(null);">SAVE</button>
+                        </div>
+
                         <div id="attrPanel" class="attrPanel">
                             <table id="EditFormTable" class="table">
+
                             </table>
-                        </div>
-                        <div id="savebuttons" class="savebuttons">
-                            <button type="button" class="btn btn-primary btn-xs" onClick="saveAttrs();">SAVE</button>
                         </div>
 
                     </div>
 
                     <div class="tab-pane " id="2">
+                        <div id="iotViewPref">
+                            <input type="hidden" id="viewRequest" class="iotViewPref" value="true" >
+                            <input type="hidden" id="viewResponse" class="iotViewPref" value="true" >
+                            <input type="hidden" id="viewAttributes" class="iotViewPref" value="false" >
+                        </div>
                         <div id="iotMainPanel" class="iotMainPanel">
-
+                            Start the skill again and view live messages here.<br/>
+                            You can filter with the buttons below.
                         </div>
 
 
                         <div id="iotButtons" class="tab-pane iot">
-                            <button type="button" class="btn btn-warn btn-xs" onClick="clearIot();">CLEAR</button>
-                            Toggle:
-                            <button type="button" class="btn btn-info btn-xs" onClick="toggleView('request');">Request</button>
-                            <button type="button" class="btn btn-info btn-xs" onClick="toggleView('response');">Response</button>
-                            <button type="button" class="btn btn-info btn-xs" onClick="toggleView('attributes');">Attributes</button>
 
+                            Show:
+                            <!--<button type="button" class="btn btn-info btn-xs" onClick="testUpdateDom('launch');">LAUNCH</button>-->
+                            <!--<button type="button" class="btn btn-info btn-xs" onClick="testUpdateDom('name');">NAME</button>-->
+
+                            <button type="button" class="btn btn-xs req" id="requestBtn"    onClick="toggleView('request');"   >Request</button>
+                            <button type="button" class="btn btn-xs res" id="responseBtn"   onClick="toggleView('response');"  >Response</button>
+                            <button type="button" class="btn btn-xs att" id="attributesBtn" onClick="toggleView('attributes');">Attributes</button>
+
+                            <button type="button" class="btn btn-warn btn-xs" onClick="clearIot();">CLEAR PANEL</button>
                         </div>
 
-
-
-                        <div class="tableclass" id="table">
-
-                            <table class="table1">
-                                <tr><td class="tdlabel">Status</td><td class="tdvalue"><span id="MQTTstatus">STOPPED</span></td></tr>
-                                <tr><td class="tdlabel">Identity Pool ID</td><td class="tdvaluesmall"><span id="IdentityPoolIdValue"></span></td></tr>
-
-                            </table>
-
-                            <table class="table1">
-                                <tr><td class="tdlabel">Subscribe Topic</td><td class="tdvaluesmall"><span id="SubscribeTopicValue"></span></td></tr>
-                                <tr><td class="tdlabel">MQTT Endpoint</td><td class="tdvaluesmall"><span id="mqttEndpointValue"></span></td></tr>
-                            </table>
-
-                        </div>
 
 
                     </div>
@@ -168,14 +165,17 @@
                         <div class="wrapper">
 
                             <div class="container">
+
                                 <h4>Web Audio Recorder</h4>
-                                Record your own welcome message, saved to the skill's S3 bucket.
-                                * Coming Soon *
+                                Record a message here, play it back,<br/>
+                                then save it to the skill's S3 bucket, <br/>
+                                which updates the "mediaClip" profile attribute with a new filename.
+
                                 <hr>
 
-                                <span id="time">00:00</span>&nbsp;&nbsp;
-                                <button class="btn btn-success" id="start">Start Recording</button>
-                                <button class="btn btn-danger" id="stop" disabled>Stop Recording</button>
+                                <span id="time" class="time">00:00</span>&nbsp;&nbsp;
+                                <button class="btn btn-success" id="start" >Start Recording</button>
+                                <button class="btn btn-danger" id="stop" disabled >Stop Recording</button>
 
                                 <hr>
 
@@ -185,36 +185,20 @@
                             </div>
 
                         </div><!-- .wrapper -->
+                        <span >
+                            <!--Upload your file <input type="file" onchange="">-->
 
-
-                        <br/>
-                        <a href="https://github.com/higuma/web-audio-recorder-js">web-audio-recorder-js</a>
+                                </span>
+                        <span style="color:silver" >
+                        Thanks to <a href="https://twitter.com/JedEspo">Jed</a> for building the <a href="https://github.com/higuma/web-audio-recorder-js">web-audio-recorder-js</a>
+                        </span>
 
                     </div>
+
                 </div>
             </div>
 
-
-
-            <!--<ul class="nav nav-tabs" id="myTab" role="tablist">-->
-                <!--<li class="nav-item">-->
-                    <!--<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>-->
-                <!--</li>-->
-                <!--<li class="nav-item">-->
-                    <!--<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>-->
-                <!--</li>-->
-                <!--<li class="nav-item">-->
-                    <!--<a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>-->
-                <!--</li>-->
-            <!--</ul>-->
-            <!--<div class="tab-content" id="myTabContent">-->
-                <!--<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">homey</div>-->
-                <!--<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">profily</div>-->
-                <!--<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">contacty</div>-->
-            <!--</div>-->
-
         </div>
-
 
 </div>
     <hr/>
@@ -222,13 +206,33 @@
     <div id="footer" class="footer">
         <div class="container">
 
-                <input type="button" name="reloader" class="btn btn-light btn-xs"  value="RELOAD PAGE" onClick="location.reload(true);" >
+            <input type="button" name="reloader" class="btn btn-light btn-xs"  value="RELOAD PAGE" onClick="location.reload(true);" >
                 &nbsp;
             This page calls a custom <a href="" id="apiurl" class="apiurl" target="_blank">Skill authentication API</a> over xhttp.
                 Learn more and build this app via the <a href="https://github.com/alexa/alexa-cookbook" class="apiurl">Alexa Cookbook</a>
 
         </div>
     </div>
+    <div id="debugdiv">
 
+        <div class="tableclass" id="table" style="display:none">
+
+            <table class="table1" >
+                <tr ><td class="tdlabel">Status</td><td class="tdvalue"><span id="MQTTstatus">STOPPED</span></td></tr>
+                <tr ><td class="tdlabel">Identity Pool ID</td><td class="tdvaluesmall"><span id="IdentityPoolIdValue"></span></td></tr>
+            </table>
+            <table class="table1">
+                <tr ><td class="tdlabel">Subscribe Topic</td><td class="tdvaluesmall"><span id="SubscribeTopicValue"></span></td></tr>
+                <tr ><td class="tdlabel">MQTT Endpoint</td><td class="tdvaluesmall"><span id="mqttEndpointValue"></span></td></tr>
+            </table>
+
+        </div>
+
+        <span id="MQTTstatus" class="MQTTstatus">STOPPED</span>
+        <!--<textarea id="debugmsg" rows="10" columns="40">-->
+        <!--</textarea>-->
+    </div>
+
+    <script type="text/javascript" src="js/recorder.js"></script>
 </body>
 </html>

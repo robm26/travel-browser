@@ -2,19 +2,24 @@
  * Created by mccaul on 4/7/18.
  */
 
-const DYNAMODB_TABLE = 'askMemorySkillTable';
+// const DYNAMODB_TABLE = 'askMemorySkillTable';
 
-const serviceurl = "https://2f1u50gvwh.execute-api.us-east-1.amazonaws.com/prod";
+const serviceurl = `https://24kzsfwcoi.execute-api.us-east-1.amazonaws.com/prod`;
+
+//"https://2f1u50gvwh.execute-api.us-east-1.amazonaws.com/prod";
+
 
 const editableAttributes = [ // for display in profile form
     'name',
     'namePronounce',
     'preferredGreeting',
     'speakingSpeed',
-    'mobileNumber',
 
+    'audioClip',
+    'mobileNumber',
     'homeAirport',
     'visitWishList',
+
     'IotTopic',
     'IdentityPoolId',
     'mqttEndpoint'
@@ -22,15 +27,17 @@ const editableAttributes = [ // for display in profile form
 
 function testy(){
 
-    document.getElementById('word1').value = 'fast';
-    document.getElementById('word2').value = 'memory';
-    document.getElementById('number').value = 511;
+    document.getElementById('word1').value = 'sweet';
+    document.getElementById('word2').value = 'dog';
+    document.getElementById('number').value = 721;
 
 }
 function init() {
     testy();
     document.getElementById('apiurl').href = serviceurl; // from userdata.js
     setStatus('ready');
+    document.getElementById('word1').focus();
+    document.getElementById('word1').select();
 
     $('.nav-tabs a').on('shown.bs.tab', function(event){
         const x = $(event.target).text();         // active tab
@@ -40,9 +47,7 @@ function init() {
 
         } else {
 
-
         }
-
 
     });
 
@@ -55,6 +60,9 @@ function clearForm() {
     setStatus('ready');
     clearEditTable();
 
+    document.getElementById('word1').focus();
+    document.getElementById('word1').select();
+
 }
 function clearIot() {
     document.getElementById('iotMainPanel').innerText = '';
@@ -62,6 +70,7 @@ function clearIot() {
 }
 function clearEditTable () {
     document.getElementById('EditFormTable').innerHTML = '';
+    document.getElementById('saveButton').style.display = 'none';
 
 }
 
@@ -73,7 +82,6 @@ function setStatus(status, level) {
     }
 
     document.getElementById('status').innerHTML = status;
-
 
     // document.getElementById('status').className = 'statuslookup';
 
@@ -123,6 +131,8 @@ function loadAttrs() {
 
                     setStatus('lookup success');
 
+                    setTimeLeft(data.timeLeft);
+
 
                 } else {
                     setStatus(' invalid pass phrase','error');
@@ -152,16 +162,28 @@ function renderEditForm(data) {
     hrow.className = 'maintableheader';
 
     let hcell1 = hrow.insertCell(0);
+
     hcell1.innerHTML = 'Attribute';
+
     hcell1.className = "EditTableNameHeader";
 
     let hcell2 = hrow.insertCell(1);
-    hcell2.innerHTML = 'Value for userId: ' + data.id.slice(-10);
+
+    hcell2.innerHTML = `Values for userId: ${data.id.slice(-10)} `;
+
+    // let saveButton = document.createElement('button');
+    // saveButton.innerHTML = 'SAVE';
+    // saveButton.className = 'btn btn-primary btn-xs';
+    // saveButton.addEventListener("click", saveAttrs());
+    //
+    // hcell2.appendChild(saveButton);
     hcell2.className = "EditTableValueHeader";
 
     for(attrName in sortAttrsForDisplay(data.attributes)) {
         addTableRow(attrName, data.attributes[attrName] || '', tbl);
     }
+
+    document.getElementById('saveButton').style.display = '';
 
 }
 
@@ -203,18 +225,46 @@ function addTableRow(attrName, attrValue, tbl) {
 
 }
 
-function saveAttrs() {
+function toBase64(blob) {
+    let reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = function() {
+
+        file64 = reader.result;
+        saveAttrs(file64);
+
+    };
+}
+
+function saveAttrs(withFile) {
     setStatus('saving...');
+    console.log('***** in saveAttrs();');
+    console.log(withFile !== null);
+
     // input.setAttribute("id", 'update-' + attrValue);
     let updates = {};
 
     let tbl = document.getElementById('EditFormTable');
+    if (withFile !== null) {
+        updates['audioClip'] = "new";
 
-    for (let i = 1, row; row = tbl.rows[i]; i++) {
-        let name = row.cells[0].innerHTML;
-        let value = row.cells[1].childNodes[0].value;
-        if (value !== '' && value !== null) {
-            updates[name] = value;
+        // let reader = new FileReader();
+        //
+        // reader.readAsDataURL(withFile);
+        //
+        // reader.onloadend = function() {
+        //
+        //     file64 = reader.result;
+        //
+        // };
+
+    } else {
+        for (let i = 1, row; row = tbl.rows[i]; i++) {
+            let name = row.cells[0].innerHTML;
+            let value = row.cells[1].childNodes[0].value;
+            if (value !== '' && value !== null) {
+                updates[name] = value;
+            }
         }
     }
 
@@ -228,7 +278,8 @@ function saveAttrs() {
         xhttp.open("POST", url, true);
 
         let post_data = {  // will appear on API Lambda as event.body
-                "attributes": updates
+                "attributes": updates,
+                "file": withFile
         };
 
         xhttp.setRequestHeader('Content-Type', 'application/json');
@@ -243,8 +294,32 @@ function saveAttrs() {
         };
 
         xhttp.send(JSON.stringify(post_data));
-
     }
+}
+
+function setTimeLeft(seconds) {
+    // let label = `update form within ${seconds} seconds`;
+    const Now = new Date();
+    const expireTime = Now.getTime() + (seconds * 1000);
+
+    document.getElementById('timeLeft').className = 'timeLeftVisible';
+    // document.getElementById('timeLeft').innerHTML = label;
+
+    let secondsLeft = seconds;
+
+    let timeinterval = setInterval(function(){
+
+        const NowNew = new Date();
+        let tl = Math.round((expireTime - NowNew.getTime()) / 1000);
+        if (tl >= 0) {
+            document.getElementById('timeLeft').innerHTML = `update form within ${tl} seconds`;
+        } else {
+            clearInterval(timeinterval);
+            // setStatus('new pass phrase needed', 'warn');
+            document.getElementById('timeLeft').innerHTML = `new pass phrase needed`
+        }
+
+    },1000); // 1 second
 
 }
 

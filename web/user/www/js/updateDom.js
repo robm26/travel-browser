@@ -9,42 +9,27 @@ function handleMessage(msgRaw) {  // called from within connectAsThing.js
 
     prepareSessionLogEvent(msg);
 
-    // other custom app DOM logic
-
-
-    //document.getElementById('iotIntentRequest').innerText = IntentRequest;
-    //document.getElementById('iotResponse').innerText = outputSpeech;
-
-    //document.getElementById('iotMainPanel').innerHTML += `<br/>${JSON.stringify(msg)}`;
-
-    // stateFilter(JSON.parse(msg).state);
-    // document.getElementById('panel').innerHTML = msg;
-    //
-    // // unpack the message and find the city value.  Pop a child browser window to display images.
-    // var myCity = JSON.parse(msg).city;
-    // var ImgUrl = "https://www.google.com/search?tbm=isch&q=" + encodeURI(myCity);  // Message Body (Image Search URL)
-    //
-    // pop(ImgUrl);
 }
 
 function prepareSessionLogEvent(msg) {
     let LogDiv = document.createElement('div');
     let LogSpanIntent = document.createElement('span');
     let LogSpanSlots = document.createElement('span');
+
     let LogDivResponse = document.createElement('div');
     let LogSpanResponse = document.createElement('span');
+
     let LogDivAttributes = document.createElement('div');
     let LogSpanAttributes = document.createElement('span');
+
     let statusLine = ``;
     console.log(`*********** msg\n${JSON.stringify(msg)}`);
-
 
     if(msg.request.type === 'IntentRequest') {
         console.log('*** in IntentRequest handlerr..');
         const intent = msg.request.intent;
 
         let slots = intent.slots;
-
 
         if(intent.slots && Object.keys(slots).length > 0) {
             // statusLine += ` with slots`;
@@ -66,11 +51,13 @@ function prepareSessionLogEvent(msg) {
         LogSpanIntent.innerHTML =  intent.name;
         LogSpanIntent.className = 'LogSpanIntent';
         LogDiv.appendChild(LogSpanIntent);
+
         LogSpanSlots.innerHTML =  statusLine;
-        LogSpanIntent.className = 'LogSpanSlots';
+        LogSpanSlots.className = 'LogSpanSlots';
         LogDiv.appendChild(LogSpanSlots);
 
         LogDiv.className = 'iotIntentDiv';
+
         addSessionLogEvent('intent', LogDiv, null);
 
     } else {
@@ -80,15 +67,31 @@ function prepareSessionLogEvent(msg) {
         LogDiv.className = 'LogSpanIntent';
         addSessionLogEvent('request', LogDiv, null);
     }
+
+    LogDiv.className = 'iotRequestDiv';
+
+    if(getViewStatus('request').value === 'true' ) {
+        LogDiv.style.display = '';
+    } else {
+        LogDiv.style.display = 'none';
+    }
+
     // ----- output
     const outputSpeech = msg.outputSpeech.ssml || msg.outputSpeech.text;
 
-    LogSpanResponse.innerHTML = outputSpeech;
     LogSpanResponse.className = 'iotResponseSpan';
+
+    LogSpanResponse.innerHTML = outputSpeech;
 
     LogDivResponse.appendChild(LogSpanResponse);
 
-    LogDivResponse.className = (msg.shouldEndSession ? 'iotResponseEndDiv' : 'iotResponseDiv');
+    LogDivResponse.className = 'iotResponseDiv';
+    if(getViewStatus('response').value === 'true' ) {
+        LogDivResponse.style.display = '';
+    } else {
+        LogDivResponse.style.display = 'none';
+    }
+
     addSessionLogEvent('response', LogDivResponse, msg.shouldEndSession);
 
     // ------- attributes
@@ -98,9 +101,17 @@ function prepareSessionLogEvent(msg) {
     LogSpanAttributes.className = 'iotAttributesSpan';
 
     LogDivAttributes.appendChild(LogSpanAttributes);
-
     LogDivAttributes.className = 'iotAttributesDiv';
-    addSessionLogEvent('response', LogDivAttributes);
+    if(getViewStatus('attributes').value === 'true' ) {
+        LogDivAttributes.style.display = '';
+    } else {
+        LogDivAttributes.style.display = 'none';
+    }
+
+    // alert(LogSpanAttributes.innerHTML);
+
+    addSessionLogEvent('attributes', LogDivAttributes, null);
+
 
     // ------- cards
     const card = msg.card;
@@ -114,6 +125,7 @@ function prepareSessionLogEvent(msg) {
     } else {
         document.getElementById('cardTitle').style.visibility = 'hidden';
         document.getElementById('cardContent').style.visibility = 'hidden';
+
         document.getElementById('cardTitle').innerHTML = ``;
         document.getElementById('cardContent').innerHTML = ``;
         document.getElementById('cardImg').src = ``;
@@ -130,79 +142,74 @@ function prepareSessionLogEvent(msg) {
         // alert(content);
         content = (card.content || ``).replace(/\n/g, `<br/>`);
         document.getElementById('cardContent').innerHTML = content;
-        // document.getElementById('cardImgImg').src = card.image.smallImageUrl
+
     } else if (card && card.text) {
         content = (card.text || ``).replace(/\n/g, `<br/>`);
         document.getElementById('cardContent').innerHTML = content;
     } else {
         document.getElementById('cardContent').innerHTML = ``;
     }
+    let img = document.getElementById('cardImgImg');
 
     if (card && card.image && card.image.smallImageUrl) {
-        let img = document.getElementById('cardImgImg');
+
 
         img.src = card.image.smallImageUrl;
     } else {
         img.src = ``;
     }
 
-
 }
 
-function addSessionLogEvent(event, IntentRequestDiv, shouldEndSession) {
+function addSessionLogEvent(event, newDiv, shouldEndSession) {
     let panel = document.getElementById('iotMainPanel');
-    const pastDivs = panel.getElementsByTagName('div');
-
-    for(let i = 0; i < pastDivs.length - 2; i++) {
-        const spans = pastDivs[i].getElementsByTagName('span');
-        // pastDivs[i].style.backgroundColor = 'whitesmoke';
-        // spans[0].style.color = 'grey';
-    }
-
-    //
-    //
-    // let div = document.createElement('div');
-    // let span = document.createElement('span');
-    //
-    // if(event === 'request') {
-    //     div.className = 'iotRequestDiv';
-    //     span.className = 'iotRequestSpan';
-    //
-    // } else if (event === 'intent') {
-    //     div.className = 'iotIntentDiv';
-    //     span.className = 'iotIntentSpan';
-    //
-    // } else { // response
-    //
-    //     if (shouldEndSession) {
-    //         div.className = 'iotResponseEndDiv';
-    //     } else {
-    //         div.className = 'iotResponseDiv';
-    //     }
-    //     span.className = 'iotResponseSpan';
-    // }
-    //
-    // span.innerHTML = data;
-    // div.appendChild(span);
-
-    panel.appendChild(IntentRequestDiv);
-
+    panel.appendChild(newDiv);
     panel.scrollTop = panel.scrollHeight;
 
 }
+function getViewStatus(eventType) {
+    let viewStatus = 'true';
+    if(eventType === 'request') {
+        viewStatus = document.getElementById('viewRequest');
+    } else if (eventType === 'response') {
+        viewStatus = document.getElementById('viewResponse');
+    } else if (eventType === 'attributes') {
+        viewStatus = document.getElementById('viewAttributes');
+    }
+    return viewStatus;
+}
 function toggleView(eventType) {
 
+    let elements;
+    let viewStatus = getViewStatus(eventType);
+
+    // document.getElementById(`${eventType}Btn`).className = (viewStatus.value === 'true' ? 'btn btn-warn btn-xs' : 'btn btn.info btn-xs') ;
+    document.getElementById(`${eventType}Btn`).style = (viewStatus.value === 'true' ? 'background-color:white' : 'background-color:lightblue' );
+
     if(eventType === 'request') {
+        elements = document.getElementsByClassName('iotRequestDiv');
 
     } else if (eventType === 'response') {
+        elements = document.getElementsByClassName('iotResponseDiv');
 
     } else if (eventType === 'attributes') {
-        let elements = document.getElementsByClassName('iotAttributesDiv');
-        if(elements.length > 0) {
-            const display = elements[0].style.display;
-            // alert(`${eventType} ${display}`);
-        }
+        elements = document.getElementsByClassName('iotAttributesDiv');
+
     }
+
+    viewStatus.value = (viewStatus.value === 'true' ? 'false' : 'true');
+
+    for(let i = 0; i < elements.length; i++) {
+        if(elements.length > 0) {
+            if(viewStatus.value === 'true') {
+                elements[i].style.display = '';
+            } else {
+                elements[i].style.display = 'none';
+            }
+        }
+
+    }
+
 
 }
 

@@ -1,5 +1,6 @@
 LaunchRequest
 MyNameIsIntent firstname=Dale
+end
 AMAZON.NoIntent
 # LinkSessionIntent
 AMAZON.StopIntent

@@ -1,0 +1,329 @@
+== Info:   Trying 54.236.160.34...
+== Info: TCP_NODELAY set
+== Info: Connected to 2f1u50gvwh.execute-api.us-east-1.amazonaws.com (54.236.160.34) port 443 (#0)
+== Info: ALPN, offering http/1.1
+== Info: Cipher selection: ALL:!EXPORT:!EXPORT40:!EXPORT56:!aNULL:!LOW:!RC4:@STRENGTH
+== Info: successfully set certificate verify locations:
+== Info:   CAfile: /Users/mccaul/anaconda2/ssl/cacert.pem
+  CApath: none
+== Info: TLSv1.2 (OUT), TLS header, Certificate Status (22):
+=> Send SSL data, 5 bytes (0x5)
+0000: .....
+== Info: TLSv1.2 (OUT), TLS handshake, Client hello (1):
+=> Send SSL data, 512 bytes (0x200)
+0000: ........i....r...z..2?....S..3.<<.Y.......0.,.(.$.............k.
+0040: j.i.h.9.8.7.6.........2...*.&.......=.5.../.+.'.#.............g.
+0080: @.?.>.3.2.1.0.........E.D.C.B.1.-.).%.......<./...A.............
+00c0: ............3...3.1...2f1u50gvwh.execute-api.us-east-1.amazonaws
+0100: .com........................................... ................
+0140: .....................3t.........http/1.1........................
+0180: ................................................................
+01c0: ................................................................
+<= Recv SSL data, 5 bytes (0x5)
+0000: ....h
+== Info: TLSv1.2 (IN), TLS handshake, Server hello (2):
+<= Recv SSL data, 104 bytes (0x68)
+0000: ...d..3...f......M..* ".d..m.$f.RSjU.. .........B.C.."K^...6....
+0040: ......%./.......................http/1.1
+<= Recv SSL data, 5 bytes (0x5)
+0000: .....
+== Info: TLSv1.2 (IN), TLS handshake, Certificate (11):
+<= Recv SSL data, 4593 bytes (0x11f1)
+0000: ..........0..~0..f..........0.E..>.......0...*.H........0F1.0...
+0040: U....US1.0...U....Amazon1.0...U....Server CA 1B1.0...U....Amazon
+0080: 0...170912000000Z..181012120000Z001.0,..U...%*.execute-api.us-ea
+00c0: st-1.amazonaws.com0.."0...*.H.............0.............%h.O.].Q
+0100: %..,..9...082......qH.Z..^4W......b..-.o.9s..!.e...!y.......f...
+0140: ..c.\N...B."....v.z.S_B.N..AN.Vw.../..g.H/*j..........c..+A.8..s
+0180: f..w}....P.H{`k<.U.pe.!...O..>Zk.W..'..`..1|.-....+K.._...M.....
+01c0: L..fHh...2&E.l%.8....Hz...P......AW..?....O.....t.........|0..x
+0200: 0...U.#..0...Y.f.R.{..<...'.t[.=.0...U......L[.?+............rf.
+0240: 00..U...)0'.%*.execute-api.us-east-1.amazonaws.com0...U.........
+0280: ..0...U.%..0...+.........+.......0;..U...40200...,.*http://crl.s
+02c0: ca1b.amazontrust.com/sca1b.crl0...U. ..0.0...g.....0u..+........
+0300: i0g0-..+.....0..!http://ocsp.sca1b.amazontrust.com06..+.....0..*
+0340: http://crt.sca1b.amazontrust.com/sca1b.crt0...U.......0.0...*.H.
+0380: .............p.~...0.RK.t.j.Y/l..p+p...........N..Y...W]....[C..
+03c0: Yb..`'......VjT{<.V.X...{.N/p-./Pqj.......EA....i.7....x.6..Z;.
+0400: :...:v{k.S.)J..E4...k........R|%.~...W+)..#=..p.5.......2.] `.W.
+0440: .. G.. .".h'....L.p,......L../X...j7.;.G.....*..!M...Gv...)h..L.
+0480: ...A-.c.}.....M0..I0..1.........W....w..S2[...V.0...*.H........
+04c0: 091.0...U....US1.0...U....Amazon1.0...U....Amazon Root CA 10...1
+0500: 51022000000Z..251019000000Z0F1.0...U....US1.0...U....Amazon1.0..
+0540: .U....Server CA 1B1.0...U....Amazon0.."0...*.H.............0....
+0580: .....N.g...j.7Z.:0.......(H..)..nS....9..w.....p..k....q..m...*N
+05c0: ........<..9...X...V%.>Rz..)...nP.._1....Jb...>G..'... .....5._.
+0600: .M.k7..P>D..Z.f..~.jU...5.....uNXU}Sk.k..B...........+....S..g..
+0640: ..:..s._...r.~...0c*..z-......2>.....<...P..C..*..h....Je.J...L.
+0680: U...........;0..70...U.......0.......0...U...........0...U......
+06c0: Y.f.R.{..<...'.t[.=.0...U.#..0.......4.......Y....N..0{..+......
+0700: ..o0m0/..+.....0..#http://ocsp.rootca1.amazontrust.com0:..+.....
+0740: 0...http://crt.rootca1.amazontrust.com/rootca1.cer0?..U...80604.
+0780: 2.0..http://crl.rootca1.amazontrust.com/rootca1.crl0...U. ..0.0.
+07c0: ..g.....0...*.H................5.y...B...csS9R5........../..o..N
+0800: r. 0a.....'.E..v>.J....E..C...m.n.1.../1..ma7{X..Q..(.O.v......^
+0840: .f........). `H.....Se5..k.Q@UW_...">..^.......AZ.R...6.O-...h5.
+0880: .r....}W.y.7.{`....-.w.I.'.8.......H.........vR...Axp.m..J.x-^..
+08c0: .L`..G.x-...R..9,../.3........0...0..z.........J*'.....+......
+0900: .0...*.H........0..1.0...U....US1.0...U....Arizona1.0...U....Sco
+0940: ttsdale1%0#..U....Starfield Technologies, Inc.1;09..U...2Starfie
+0980: ld Services Root Certificate Authority - G20...150525120000Z..37
+09c0: 1231010000Z091.0...U....US1.0...U....Amazon1.0...U....Amazon Roo
+0a00: t CA 10.."0...*.H.............0.........x.q.x..q.G.Pt}n...v..h.X
+0a40: !`.t../..-...CzN...6.....H...6L...#.>.7....Ih....v8.a....6..JV.E
+0a80: ......t...59/.. P.lz.......G..P8....9X.....Hg0...x^o..Q.0.f.Ef.T
+0ac0: .....H....0-}-tp5..$...Yn.s...2F(.C........$.-K.q\^i.....8..P8o.
+0b00: .-b....T.w.g....#.?@  ...L>;$&...l............10..-0...U.......
+0b40: 0....0...U...........0...U..........4.......Y....N..0...U.#..0..
+0b80: .._.....0+8...mJ.....0x..+........l0j0...+.....0.."http://ocsp.r
+0bc0: ootg2.amazontrust.com08..+.....0..,http://crt.rootg2.amazontrust
+0c00: .com/rootg2.cer0=..U...60402.0...,http://crl.rootg2.amazontrust.
+0c40: com/rootg2.crl0...U. ..0.0...U. .0...*.H.............b7B\...>.,.
+0c80: ..lE...z..X....>..%<.oP..5j..4.2!.HD...=..sm....l.(...Gy..~0[.;
+0cc0: .`.w.....|^....{"....~.F....&W.09b.........>.ChlW.... ....j]..Jm
+0d00: .X...91_|s...j...'....F.~.r..R>...cw.i..9....EM.Q:.]]7dL~0.U$B.6
+0d40: .]...a.....$...t..{E)P9....5%..jG#1/\.....bQ.*...4.!...y0..u0..]
+0d80: ..........JL4..0...*.H........0h1.0...U....US1%0#..U....Starfie
+0dc0: ld Technologies, Inc.1200..U...)Starfield Class 2 Certification 
+0e00: Authority0...090902000000Z..340628173916Z0..1.0...U....US1.0...U
+0e40: ....Arizona1.0...U....Scottsdale1%0#..U....Starfield Technologie
+0e80: s, Inc.1;09..U...2Starfield Services Root Certificate Authority 
+0ec0: - G20.."0...*.H.............0..........:.*.N....._..S..?... .m):
+0f00: ..}<.kv8c.6`..^\.../Y...%C..i.R...q..-.No..I....V.+.t....&.....
+0f40: .j;X..GV.%..pS...t..g..h:..@Z.JN.C.;.V..p.R.{}.:..1.E..`..Y.+..4
+0f80: G....em..,.......I|fN.:m...4.....3.G..k.%.....EF2.p....IC..ls.d.
+0fc0: aA...T../.".&..YTh...*/.U.u@`...U9..........0..0...U.......0...
+1000: .0...U...........0...U......._.....0+8...mJ.....0...U.#..0...._.
+1040: ......[U.........0O..+........C0A0...+.....0...http://o.ss2.us/0
+1080: !..+.....0...http://x.ss2.us/x.cer0&..U....0.0.......http://s.ss
+10c0: 2.us/r.crl0...U. ..0.0...U. .0...*.H.............#...W.}..yL..U.
+1100: .Sn>G...U...6...S.]4(k..U.g..?..3..X...../..`.........u.O..m...
+1140: ...~@,....v.3.w...S..d..'.i.M^....u.XD-.<p...i..w.1^,...:Gi.y_
+1180: ..T..^.x.`'...w.#Sw]...Y.......$.5.z....}..?...rT....Y{..R.F...d
+11c0: v.H..y.nV..,....8.....[.....4I.V..._.3..G.0.]...
+<= Recv SSL data, 5 bytes (0x5)
+0000: ....M
+== Info: TLSv1.2 (IN), TLS handshake, Server key exchange (12):
+<= Recv SSL data, 333 bytes (0x14d)
+0000: ...I...A.L &T.r.^..!.H..?...fn.h....]..L..)=..L.l...[`.$g6..+...
+0040: ......SK.......b...f3....:..../.U`,..@...U..c_....j....5.+.h...c
+0080: #.X.. Y...s.$Q.d),..M:S..];...g_\.F...yQ2..V<.!..'6..D&.C..^...f
+00c0: SJ.^{...V....P....KB.t.....q.'.(().4..0..?.l....G....i0......$;
+0100: d.k3........r.e...u.E.&).^..)...rl7.....Q4.6/....."4.|#..@+B..*g
+0140: .K..A..p.....
+<= Recv SSL data, 5 bytes (0x5)
+0000: .....
+== Info: TLSv1.2 (IN), TLS handshake, Server finished (14):
+<= Recv SSL data, 4 bytes (0x4)
+0000: ....
+=> Send SSL data, 5 bytes (0x5)
+0000: ....F
+== Info: TLSv1.2 (OUT), TLS handshake, Client key exchange (16):
+=> Send SSL data, 70 bytes (0x46)
+0000: ...BA......M^}..C.z`.....B...........].G|.>R........U~.NKA.X...C
+0040: ,.....
+=> Send SSL data, 5 bytes (0x5)
+0000: .....
+== Info: TLSv1.2 (OUT), TLS change cipher, Client hello (1):
+=> Send SSL data, 1 bytes (0x1)
+0000: .
+=> Send SSL data, 5 bytes (0x5)
+0000: ....(
+== Info: TLSv1.2 (OUT), TLS handshake, Finished (20):
+=> Send SSL data, 16 bytes (0x10)
+0000: ..........8...D;
+<= Recv SSL data, 5 bytes (0x5)
+0000: .....
+== Info: TLSv1.2 (IN), TLS change cipher, Client hello (1):
+<= Recv SSL data, 1 bytes (0x1)
+0000: .
+<= Recv SSL data, 5 bytes (0x5)
+0000: ....(
+== Info: TLSv1.2 (IN), TLS handshake, Finished (20):
+<= Recv SSL data, 16 bytes (0x10)
+0000: ....Fq.....`...#
+== Info: SSL connection using TLSv1.2 / ECDHE-RSA-AES128-GCM-SHA256
+== Info: ALPN, server accepted to use http/1.1
+== Info: Server certificate:
+== Info:  subject: CN=*.execute-api.us-east-1.amazonaws.com
+== Info:  start date: Sep 12 00:00:00 2017 GMT
+== Info:  expire date: Oct 12 12:00:00 2018 GMT
+== Info:  subjectAltName: host "2f1u50gvwh.execute-api.us-east-1.amazonaws.com" matched cert's "*.execute-api.us-east-1.amazonaws.com"
+== Info:  issuer: C=US; O=Amazon; OU=Server CA 1B; CN=Amazon
+== Info:  SSL certificate verify ok.
+=> Send SSL data, 5 bytes (0x5)
+0000: .....
+=> Send header, 234 bytes (0xea)
+0000: POST /prod/lookup?tempPassPhrase=sweet-dog-721 HTTP/1.1
+0039: Host: 2f1u50gvwh.execute-api.us-east-1.amazonaws.com
+006f: User-Agent: curl/7.55.1
+0088: Accept: */*
+0095: Content-Type:application/octet-stream
+00bc: Content-Length: 7523
+00d2: Expect: 100-continue
+00e8: 
+<= Recv SSL data, 5 bytes (0x5)
+0000: ....1
+<= Recv header, 23 bytes (0x17)
+0000: HTTP/1.1 100 Continue
+=> Send SSL data, 5 bytes (0x5)
+0000: ....{
+=> Send data, 7523 bytes (0x1d63)
+0000: ..`d............H.@...rL......i"....;........._...C......<....3.
+0040: .Y.......\n...$....0...........G........R.7.`.q...+S....\....c..
+0080: 0...9...|..R..0@z......P......bd...} .......H....Qu-..D.<S...d..
+00c0: f........Ssc".&..t.$.]TfGPM...Ot.>...... ./R...`.S..l.-....[.#u.
+0100: ..K.g.q...,&wie.....mX....._..l...00..I.;....K.....P.......bd..9
+0140: m3/.4....H.....!.]8..P.......AK5ok.......E..T.jLAME3.99.5.......
+0180: .......a........5k.I......a&.#,.....a.9.O2.W.M....i.g.....ZtG...
+01c0: .d...-...5T...5.B.4..t..bd...}C/)#....H....K..}...6]x?7..e.LAME3
+0200: .99.5.................................j..RXdi.$Np.|..}.9.h$.I }.
+0240: 2..I.'....<..w"YR%!P.#.M4.%m."..?...edc........U.-...`d....(*<..
+0280: ...H.....k.....T.b<&/...LAME3.99.5UUUUUUUl..(..F.....5......o.Tx
+02c0: *.....S..R.."2C...UcH-...T.~..A.P....M..-n.%fpz.~...8.^4...&.9.:
+0300: m...R.<...g......bd...q*{.e....H........e.;Md.B.7.Y..LAME3.99.$.
+0340: .1l.H.........)Y..k!f_...M..._.d...3.[....=F ...Q........k .....
+0380: .Sh&.2.>....FV..NQi.^.t..v..!{....j~...4...o..bd...s..$f....H...
+03c0: ..w|n.......D.....LAME3.99.5UUUUU..9|@"...4}...u.}cp...>...N.V..
+0400: .\[.Q......U("...'....b....}*X@..a.P.sX......s....g.yxfY..{m.f..
+0440: S....;.=...bd...s .%.....H.....P....g.0..k...*h.-.....yd.|.....X
+0480: .....[.m....]Z..T..k.&._..I....,...3..Kb..4..;....<CM..3......(}
+04c0: .FY]].....[..RV.8O.......}SZ..._........`d...q..=#....H.....Q.GM
+0500: ..>.L.!W.J..*....8Bx....ru..x.`{:....{Z.....B..L#toi......Q...G
+0540: b)V....,..G.. ..<z`.8...#."|...7...j...y=U...O.2......A.+f.Y.t..
+0580: #...bd..)w..=#....H........-....W3W.$.q-..)F.t.@H......[...2..6Z
+05c0: ...F[.......F%l..:.3}]..@.y$.9.!E.id.DOhM.5... ...PI.mAHI....:o
+0600: .NJ!,..h...f.BV.f6.....S=........bd...u..=.\...H....6c.z.TMc$...
+0640: .e..%x.6...^.s..).....e.'.....:....]..MF.H....Q.F#..a...\.....u.
+0680: ......{(..4...Y.JV.k.)N.qL!.Q+;...$..aJ...`.$..{.....#........bd
+06c0: .....f<.....H....I....o.^.].VH9...m..F..KaU..S.$X......Lw?.P5.z.
+0700: .m.H.......,............D...`.<@.%.oXW.l.........pI.<....+...#6.
+0740: gw...\._..:.Ljle>).q....Z..`d......a&n...H.....yf.|m......x.WQ.(
+0780: ..W0..LAME.8.M.@0-.b..s.....X...u...do.,C.. ......B..1,^H.cH.P..
+07c0: X!..G5..[.[....%..?....}.m..2......=.5K...n...k._..?...bd......=
+0800: &~...H....^.X.....y.....S..z\u.....4.K.\.V.4..X..V.y.....H.....e
+0840: .VU.(......D.J..Kj.;.......H.gp....^..1y.P...-.|..*9...a)cs6.y.u
+0880: .9...V_...._d8:L....bd..u...1.....H....;.....UNw.. .5.f...%.s.T.
+08c0: C....A..........D..k...\.o....y..$..w.Y<.c5..HDg.L6_g.W........a
+0900: (....o!.......dIw.p..u..m............. D,....}6..bd..aw..e.~...H
+0940: .......B.....C7..m..\c.#x.y.-Sm..CRE.....aU..p...![.{....vH..6.-
+0980: J..2._OOjY.-W.....-5o~...l./!.<..?..`.......^...t0.....{D.... .I
+09c0: .@P.k:........`d..q"za&x...H.....B..o...w........F..k7...A5...
+0a00: .............`te.BA&....3..1;.8rrs.k.i...!p...F&...=..(....H.(..
+0a40: ..".6..C....m..Ty....=."..J..C\%.q[...v...bd..q'&da.....H....d.
+0a80: .......|b..KdC.$.cP...!.C....{.x.#......s...........yG..`......D
+0ac0: Y.......].#.....MZ7...C3p..g..:.....E!...kh.*.?3NL.oG.F..0A. ..M
+0b00: Ut.....bd...SA/m.....H....c............g...MB...%<,f.H.B.*L...P
+0b40: ....__.s..>0h...........on.8.....O.u.qK ...@w.B$...$..?........#
+0b80: ..S......".......|..D}./.^n.........`d..UaQ/m.....H.......t_.:..
+0bc0: ...X....Q.<..%.e...)...........7.H.;R......O.w...e.`J,.`.F*S~X.d
+0c00: r...tU..}n....$.........(fcn...@2.. ...ZR:....h.&.3s9.%..C./.%..
+0c40: bd..IwY.dI....H....EnU...P..j./3.....IO.6.`...~>.l0 1.r.2.F.....
+0c80: ......?../u.*..2P@......th...Y.Ua.)&...>......S....F........,g..
+0cc0: .\.....;...B\q.c.h8$.p..z....bd..UYP.i.x...H.....0E.q..f.*-./q..
+0d00: ..yRT.ps..J+b........r(...^.O.^.9...FW.b_.....G..Z.....a..*...rR
+0d40: .4....../~&.dyB:[w.5.._.sw..Ag..^.... ...n. <.S....%.%h...bd.../
+0d80: L.h.....H....g......{...kv...Pu.gh.a..@@......E......C}.....>,|.
+0dc0: .....j.|uLk..............{..5...sXY....x.+.^.....&p...T........3
+0e00: .h..}........1.*.......`d...uR/i.....H........]l......[g...8.\iR
+0e40: r....Q.@.J...U.y..f....$$..`.4):}{L,n..z&.c....:<<*.G..j/.jm.r..
+0e80: ..'...Ja.M0..m....}...:.X..X..........E.....@..h...bd..]w]/`....
+0ec0: .H.........}..B'.b...F.9..%1YB.R..'......).)-.zb.#7...d..+vAo...
+0f00: .......QL.:....0...<..2....t....E5.a.;..Q.....2......8..F..%{].
+0f40: ...U..s...*.....bd...iZ/`.....H....r....L..i..E....{.{.....>..#.
+0f80: ....$eT..l=...a...<,.2V.....1...V..*...R.........Q.x....c....-.z
+0fc0: o.zb...:}...Z1...p.WqS(.\..o.1D.......(......bd..Iic/a.j...H....
+1000: .!F.o....Z.\(..&...LAME3.99.5UUUUUUUUUUUUUUUUUU.......Y......8$v
+1040: ...2[...D.j..25......s...."`du..O*.h.......<.#.P..*'.8`&=...9@Ir
+1080: .QE.uQ._..`d..=em/<.=...H.....&....uC*.1...*LAME3.99.5....4\.V.
+10c0: ?f...hI....h.W.91...2...8.....&.. . ....o...)....bu!.......g.F..
+1100: ..t..is5...A a.8....E..2.!....0....t..bd...eT.d.h...H....7....4.
+1140:  r........L:G.i.>0..... .`.....#........1...".(.y.T.n.1h?.3.e...
+1180: G......i...e.E&.....?"......X...t.%....d....P`......5..8....*...
+11c0: ...bd..qCFoi.v...H.......lTa..U..5.....5..|.@R.aQ.L....K..Y....Z
+1200: ...4....I.......t(r'Ma.n.Ct.lp.p.....l.a.x....q.\.......!.g1io#r
+1240: ...vg..].,# .t.........L...p....bd...s@.s%X...H.....Q....a.:.h..
+1280: .U.T..{..~.x.Pc...#....$.jC.QBQ...HG....Lb...D.E..B..'..q...U2.
+12c0: ..w....t(.1X.....E.$...B......[.E=..$.2.R."....c......``....`d.
+1300: ..mB.sEX...H........M.\.s.H.D.(....N.....H....A..t....FHa..;.g6g
+1340: ..T1.0c.......@..6,......`>.... @k..n.I.A..P.....d.pf..P.../..
+1380: .Qq...-...V..,6H........bd..!mP.i.}...H......H....Y.,..QC......
+13c0: .....+w.zM........Y..j.....v.7...@.fT........4:3.a..N..........]
+1400: ..`...._.5......1.z......3..W.?>..`.jlL.O.%........D..bd...uB.oK
+1440: J...H........$"..p.M....... iKWF;......^.Pmv*.wa......N?..P..Sx.
+1480: *...A*$.S]K......g.....T....y[.r....&..F8.QQ.\.|....."..e..em..
+14c0: ..i.Q<h.f....)..b..`d...si.=b....H.....Ie........,,..7C.........
+1500: ..0<=R"W.yX....Q.X..9...........jC9...Xt..r_p&(IBj..D`....i8..b^
+1540: .P.JTL.D..<...W.N6.l...0......PP....|...IjC....bd...gT.ee....H..
+1580: ...]Q.....'.b..U.:.U8...8.M6..b......Z`.*.:X....F*.....n..81..@.
+15c0: .....*b..I... .)5....)J.tF.8j&..~..YsWi8.t9..n.L....p...U;..8...
+1600: ....6..d.B..bd...gH[ie....H....l_........k.xK2_....k.lS..3.K;.
+1640: .ASQU....@5j....J..%.2m+...5../P_.{...a ......x<...{...c.....5..
+1680: -..+..%...\..... .e....4..0..d.H0.......bd...oD+eb....H....;...
+16c0: ..r7_.....2..@07.g3.....F...+2 .4#.....6.'....%<KIxgi..pl.......
+1700: ..;\..{...6...Y.............!.6..I&.G@<.,...r&..j.:..+.......Ib
+1740: ".....`d..ImH.=.....H....?O....ud(....Am.z..k!.#.&..N.T.........
+1780: =LAMEUUU....f.JA"t- ....K7k... .S...T.juP.j..Wl..c.q;...T.;H..S
+17c0: (aB._..o.)...._1l.."..2.....=.....bd....L.=.....H..........S.*..
+1800: ...t.bLAME3.99.5..........+.!KEv...H.W..e..ng.........F..A.i..0
+1840: .w..2..1..=..\...h.1.I.......*)..d1e.........^.[(...t.Pk'EK....b
+1880: d....K/=.....H...... .Jgp..uR..XT..LAME3.99...K...7..z.KruJ..N.'
+18c0: ....g.-.S..-..+C..{..B..3s3C...{).f.5I7.dL.Et.2I..uH.h?...$M....
+1900: ...3...(L...b......b.F..._..bd....D?=.V...H....].Oz}3.}I/.GLy.U)
+1940: $.M.C...l..@......!.Yd0..+.a..y8mS..-4..+..`....0C`t.{.".ypq....
+1980: /..<N.n.Qr..l..w..7.*.).x...f...dl.0.'l.%..)..G..z....`d...k2
+19c0: .......H.@..OP.. ..9...LJa..WX...,..Z.......y....=...U..\.%=..
+1a00: ...3.(@......ar2.L.6.8.BP.,^.?\kH.X..p.A.A....f.2EM...EJ5...|n..
+1a40: k......(.N.uE..}{...bd..=)I/......H..........I.C..00HT.o..n.N.q
+1a80: (].4i...~. .X.E$.....es..*..*..Q.e......K.0.k;XQK..v.rY9..9,-.B]
+1ac0: r...r...J.U.....R...]V.Sd..{]V.....7....u..Y...v..bd..y.:;......
+1b00: H..........3.>1.,Ur..Y..U.SuLAME3.99.5UUUUUUUUUUUJ$.}kZ.:=....2
+1b40: .w.Iq|.Y.......66,.t.K....$.f..(.6.."Q+..9Z...Y...T..S8r.B[.../X
+1b80: r\.....`W..Q...bd...U .=.n...H.......D..F.BG......LAME3.99.5....
+1bc0: ..............................%.|d..&..s~..Q.D@.......{-!U%.kb2<
+1c00: ....RU.M4........j....P..h..R.L.Z4.M5.J.DE..`d..L...1.b...H.....
+1c40: ..r.QR.i..Z*Y-5LAME3.99.5UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU
+1c80: UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU
+1cc0: UUUUUU..bd...l..$#....H....UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU
+1d00: UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU
+1d40: UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU
+== Info: We are completely uploaded and fine
+<= Recv SSL data, 5 bytes (0x5)
+0000: .....
+<= Recv header, 17 bytes (0x11)
+0000: HTTP/1.1 200 OK
+<= Recv header, 37 bytes (0x25)
+0000: Date: Mon, 16 Jul 2018 17:46:05 GMT
+<= Recv header, 32 bytes (0x20)
+0000: Content-Type: application/json
+<= Recv header, 21 bytes (0x15)
+0000: Content-Length: 882
+<= Recv header, 24 bytes (0x18)
+0000: Connection: keep-alive
+<= Recv header, 56 bytes (0x38)
+0000: x-amzn-RequestId: 1cbb0f2d-8920-11e8-8691-c13bcbb2e7f7
+<= Recv header, 32 bytes (0x20)
+0000: Access-Control-Allow-Origin: *
+<= Recv header, 34 bytes (0x22)
+0000: x-amz-apigw-id: KIb6gEZqIAMFoUw=
+<= Recv header, 69 bytes (0x45)
+0000: X-Amzn-Trace-Id: Root=1-5b4cd9dc-28e5c13085161b99fb1e54ab;Sample
+0040: d=0
+<= Recv header, 2 bytes (0x2)
+0000: 
+<= Recv data, 882 bytes (0x372)
+0000: {"id":"amzn1.ask.account.AG4BEMGBJIJYRAGKP5YLYGJDISRIQVPWOEABD3O
+0040: QW66MTPOF4JRHLAEETH5TBIOT652I3KUYZSWA5MAZ33GUTIBLEMUQ4YQBPKXVG4Y
+0080: SFHLQL27UEC6YQDXTEYH5MD4NMK4M7UJ4FWTRPKTSII4R733EX3TVC3UKLKOBMHX
+00c0: XM5CHOX2TDUV2WPF6NCWF5KLJETNGQ5YC7UID123","attributes":{"launchC
+0100: ount":18,"namePronounce":null,"mobileNumber":null,"joinRank":1,"
+0140: skillUserCount":2,"audioClip":"Recordsing.mp3","linkTimestamp":1
+0180: 531709205201,"history":[{"IntentRequest":"LaunchRequest"},{"slot
+01c0: s":{},"IntentRequest":"AMAZON.HelpIntent"},{"slots":{},"IntentRe
+0200: quest":"AMAZON.StopIntent"}],"IotTopic":"ask5YC7UID123","tempPas
+0240: sPhrase":"sweet-dog-721","mqttEndpoint":"a3npzlqqmmzqo.iot.us-ea
+0280: st-1.amazonaws.com","name":null,"speakingSpeed":"medium","Identi
+02c0: tyPoolId":"us-east-1:583dd84a-7792-49a6-9ce5-5624f80378e7","home
+0300: Airport":"BOS","preferredGreeting":"hello","lastUseTimestamp":15
+0340: 31712700601,"visitWishList":[]},"timeLeft":246040}
+== Info: Connection #0 to host 2f1u50gvwh.execute-api.us-east-1.amazonaws.com left intact

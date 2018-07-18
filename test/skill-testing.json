@@ -1,0 +1,10 @@
+{
+  "handler": "../lambda/custom/index.js",
+  "interactionModel": "../models/en-US.json",
+  "locale": "en-US",
+  "trace": false,
+  "jest": {
+    "silent": false,
+    "collectCoverageFrom": ["../lambda/custom/**/*.js"]
+  }
+}

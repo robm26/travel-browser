@@ -17,7 +17,6 @@ module.exports = {
 
                 const flattenedRequest = flattenRequest(handlerInput.requestEnvelope.request);
 
-
                 const fullEvent = {
                     "request":  flattenedRequest,
 
@@ -39,10 +38,10 @@ module.exports = {
                 // console.log(`updating shadow\n${userIdShort}`);
 
 
-                // helpers.updateShadow(constants.mqttEndpoint, userIdShort, fullEvent, result => {
+                helpers.updateShadow(constants.mqttEndpoint, userIdShort, fullEvent, result => {
                     // console.log(`helpers.updateShadow result ${result}`);
                     resolve();
-                // });
+                });
 
 
             });

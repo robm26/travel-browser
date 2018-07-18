@@ -56,24 +56,15 @@ function connect(client) {
 
 // called when the client connects
 function onConnect() {
-    //show image
-    console.log('***** in onConnect()');
-    // Once a connection has been made, make a subscription and send a message.
+    // console.log('***** in onConnect()');
 
     document.getElementById("MQTTstatus").innerText = 'CONNECTED';
     document.getElementById("MQTTstatus").className = 'connected';
 
     const SubscribeTopic = document.getElementById("SubscribeTopicValue").innerText;
-    //alert('subscribing to topic\n' + SubscribeTopic);
-    //UPDATE TO MATCH YOUR THINGS
+
 
     mqttClient.subscribe(SubscribeTopic);
-
-    // document.getElementById("MQTTstatus").innerText = 'CONNECTED';
-
-    // message = new Paho.MQTT.Message("Hello");
-    // message.destinationName = "alexa/demo/color";
-    // mqttClient.send(message);
 }
 
 // called when client can not connect
@@ -101,7 +92,7 @@ function onConnectionLost(responseObject) {
 
 // called when a message arrives
 function onMessageArrived(message) {
-    // console.log("onMessageArrived");
+
     // console.log("onMessageArrived:" + message.payloadString);
 
     payload = JSON.parse(message.payloadString);
@@ -111,14 +102,12 @@ function onMessageArrived(message) {
             payload.state.desired
         )
     );
-
-
-} // close onMessageArrive
+}
 
 // generate a random UUID v4
 function clientId() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+        let r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
         return v.toString(16);
     });
 }

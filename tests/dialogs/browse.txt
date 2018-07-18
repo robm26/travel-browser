@@ -1,8 +1,0 @@
-LaunchRequest
-BrowseCitiesIntent country=
-BrowseCitiesIntent country=Canada/Canada
-? BrowseCitiesIntent country=Aussie/Australia
-? ShowCityIntent city=Toronto
-? ShowCityIntent city=Hogsmeade/
-ShowCityIntent city=Boston/Boston
-AMAZON.StopIntent

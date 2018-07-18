@@ -1,0 +1,39 @@
+#=====================================================================================================================
+#     ______    _ ____  ______        __  _
+#    / __/ /__ (_) / / /_  __/__ ___ / /_(_)__  ___ _
+#   _\ \/  '_// / / /   / / / -_|_-</ __/ / _ \/ _ `/
+#  /___/_/\_\/_/_/_/   /_/  \__/___/\__/_/_//_/\_, /
+#                                             /___/
+#
+# Created by Bespoken
+# Learn more at https://read.bespoken.io/unit-testing/getting-started/
+#
+# Skill name: "Travel Browser" by Amazon
+# Test scope: LaunchRequest, BrowseCitiesIntent, ShowCityIntent, AMAZON.HelpIntent, AMAZON.StopIntent, AMAZON.CancelIntent,
+# Description: General test suite for all intents
+#=====================================================================================================================
+---
+configuration:
+  locale: en-US
+  supportedInterfaces: Display
+
+---
+- test: "Sequence 01. Test scenario: launch request, no further interaction."
+- LaunchRequest: # LaunchRequest is not an utterance but a request type and "reserved" word
+  - response.outputSpeech.ssml:
+    - welcome *!
+    - hi new user!
+  - response.outputSpeech.ssml: <audio src='https://s3.amazonaws.com/ask-soundlibrary/magic/amzn_sfx_magic_blast_1x_01.mp3'/> This skill will tell you about travel destinations.  Say help to hear some options, or say browse cities.
+  - response.card.type: Standard
+  - response.card.title: Welcome!
+  - response.card.text: "*" # Regular expression indicating any text will match
+
+---
+- test: "Sequence 06. Test test"
+- LaunchRequest:
+- link session intent:
+  - intent: LinkSessionIntent
+  - response.outputSpeech.ssml: Okay I will tell you a web site and then a three part password.
+- my name intent:
+  - intent: MyNameIsIntent
+    firstname: Joe

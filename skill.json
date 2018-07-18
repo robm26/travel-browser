@@ -1,15 +1,15 @@
 {
-  "manifest": {
+  "skillManifest": {
     "publishingInformation": {
       "locales": {
         "en-US": {
-          "summary": "Travel Browser",
+          "summary": "A sample skill that uses screen displays.",
           "examplePhrases": [
             "Alexa open travel browser",
-            "ask travel browser to browse cities",
-            "ask travel browser to go to Boston"
+            "Alexa tell travel browser to browse cities",
+            "Alexa ask city guide to show Dublin"
           ],
-          "name": "Trave Browser",
+          "name": "Travel Browser",
           "description": "A sample skill that uses screen displays."
         }
       },

@@ -10,6 +10,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "ask-sdk": "^2.0.5",
-    "aws-sdk": "latest"
+    "aws-sdk": "latest",
+    "bespoken-tools": "^2.0.9"
   }
 }

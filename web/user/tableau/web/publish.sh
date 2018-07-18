@@ -1,1 +1,0 @@
-aws s3 sync . s3://webappvui/dashboard/ --acl public-read

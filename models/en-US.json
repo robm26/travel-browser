@@ -185,7 +185,7 @@
           ]
         },
         {
-          "name": "citySlotTypecitySlotType",
+          "name": "citySlotType",
           "values": [
             {
               "name": {
@@ -397,15 +397,6 @@
       ]
     },
     "prompts": [
-      {
-        "id": "Elicit.Slot.1298640133108.110887262871",
-        "variations": [
-          {
-            "type": "PlainText",
-            "value": "what page"
-          }
-        ]
-      },
       {
         "id": "Confirm.Intent.1018158812104",
         "variations": [

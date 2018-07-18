@@ -9,7 +9,6 @@ const fs = require("fs");
 const SourceCodeFile = '../lambda/custom/index.js';
 const handlerName =  'handler'; //'lambda_handler'
 
-
 let MyDialog = './dialogs/default.txt';
 
 if (process.argv[2]) {
@@ -18,9 +17,9 @@ if (process.argv[2]) {
 
 // Toggle on or off various debugging outputs
 const options = {
-    delay        : 1.2,     // seconds between requests
+    delay        : 1.5,     // seconds between requests
     stdout       : true,    // standard output, show any errors or console.log() messages
-    attributes   : true,   // true, false, or a string with the name of an attribute such as 'history' or 'favoriteColor'
+    attributes   : 'tempPassPhrase',   // true, false, or a string with the name of an attribute such as 'history' or 'favoriteColor'
     speechOutput : true,
     reprompt     : false,
     slots        : true,

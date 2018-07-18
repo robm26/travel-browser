@@ -29,25 +29,28 @@ User flow:
 and stores this as a persistent attribute, i.e. a value in the DynamoDB record for the user.
 1. The skill instructs the user to visit a short URL such as bit.ly/travelbrowser
 1. The user enters the three part pass phrase on the web form, which is sent to the user session API.
-1. The API scans all records in the DynamoDB table and if it finds a match, retrieves the user profile.
+1. The API scans all records in the DynamoDB table and if it finds a match less than five minutes old, retrieves the user profile.
 1. The web page displays a form containing text fields for each persistent attribute.
 1. The user can update the page, for example, by correcting the name spelling,
 adding a "name pronounce" hint, updating their contact information, etc.
 1. The user presses "save" and the page calls the service with the pass phrase and new data, for update in DynamoDB.
 1. The user re-launches the skill.  Now the user is greeted with the new name or "name pronounce" that the user had entered.
+1. The user can click the Recording tab to record a new audio clip from their browser.
+1. The recording file is is saved to a cloud bucket and filename is saved to the user profile.
+1. The recording can be heard as ssml audio during the next skill session.
 
-
-#### User Session API
-The user session API is defined in [web/user/usersessionAPI](./web/user/usersessionAPI).
-The API acts like an authentication service.  It sits atop the DynamoDB table used by the skill,
+## User Session API
+The user session API is defined in [web/user/usersessionAPI](../web/user/usersessionAPI/).
+The API is a simple authentication service.  It sits atop the DynamoDB table used by the skill,
 and grants read and update access to callers with a valid pass phrase.
 The API is a pass through to a Lambda function that performs the database interactions.
-The API itself provides a layer of separation between public internet users and your DynamoDB table.
-For example, you could add throttling, define custom security settings, or disable the API,
-without affecting the DynamoDB table or skill.
+The API itself provides a layer of separation between public internet users and your DynamoDB table or S3 bucket.
+For example, you can increase security by lowering the per-second throttling,
+define custom security settings in your code, or disable the API altogether,
+without affecting function, DynamoDB table or skill.
 
 #### User Session Lambda function
-The Lambda function is defined in [web/user/usersessionAPI/lambda](./web/user/usersessionAPI/lambda)
+The Lambda function is defined in [web/user/usersessionAPI/lambda](../web/user/usersessionAPI/lambda)
 This function performs the lookups and updates as described above.
 It loads the AWS SDK and uses DynamoDB.DocumentClient to interact with the skill table.
 
@@ -55,27 +58,24 @@ This Lambda function requires a trigger to be set for the API Gateway service,
 and an IAM role with appropriate DynamoDB permissions.
 
 
-#### IOT console
+## IOT console
 Browsers that connect to the IOT service can reflect the skill's state and be controlled by the skill,
 as documented in the
 [alexa-cookbook](https://github.com/alexa/alexa-cookbook/tree/master/aws/Amazon-IOT)
 or via the [State Games](https://alexa.design/stategames) demo.
 
 User Flow:
-1. The user successfully authenticates via the web app, as described above.
+1. The user successfully authenticates via the web app, as described above.  This starts a new mqtt connection to the IOT broker endpoint.
 1. The user clicks the IOT tab in the web console.
-1. The user watches their skill session reflected in a live dialog simulator.
-1. The user can see a rendering of card data and images too
+1. The user watches their next skill session reflected in a live dialog simulator.
+1. The user can see a rendering of card data and images
 
-
-The 'link session' handler in the skill populates an attribute with the pass phrase.
-This handler also fills in certain additional attributes with connection information
+The 'link session' handler in the skill populates an attribute with a new random pass phrase.
+This handler also fills in certain additional profile attributes with connection information
 to allow the browser to connect to the AWS IOT service,
 such as "Identity Pool ID", "MQTT Endpoint", and "IOT Topic".
 
-
-Once the user has been authenticated, the session service will return
-all user attributes to the browser including these connection details.
-The IOT tab of the browser will use these to initiate a connection to the AWS IOT service as an anonymous user.
+The IOT tab of the browser will use these to initiate a connection
+to the AWS IOT service via Cognito as an anonymouse user.
 
 
