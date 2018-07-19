@@ -8,7 +8,7 @@
 
 const TableName = process.env.DYNAMODB_TABLE || 'askMemorySkillTable';
 
-const tempPassPhraseExpiryMinutes = 999995;   // 5 minutes
+const tempPassPhraseExpiryMinutes = 5;   // 5 minutes
 
 
 const AWS = require('aws-sdk');

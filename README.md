@@ -34,21 +34,40 @@ If the user says "show Seattle" or "go to Boston" or just "London", the skill wi
  * Live session panel
  * Web audio recorder panel
 
+### The Problem
+The Alexa Language model is highly accurate in hearing slot values like
+COUNTRY, CITY, NUMBER, NAME, or custom slot values.
+However, certain data values like Last Name and Email Address for example
+are notoriously difficult to use in voice, due to their limitless variation.
+
+**Alexa Account Linking** is one approach thousands of voice developers use for getting and using a complete user profile.
+Account Linking assumes you have an existing user directory, setup and shared via an OAuth service.
+Then, you as a developer must make your skill interact with this OAuth service.
+Read more at [Understanding Account Linking](https://developer.amazon.com/docs/account-linking/understand-account-linking.html)
+
+While the Account Linking model works great for many of the most popular skills,
+some developers may find the requirements to be daunting.
+
+Presented here is an alternate approach, where you build your own custom auth service for the skill.
 
 ### User Console
-A sample web page application is included that allows users to update settings and
+A sample web page application is included that allows users to update profile attributes and
 and follow the conversation from their browser.
-The user console is a single page webapp that calls AWS cloud services.
-You run the userprofile.html page from a browser and type in the pass phrase that the skill provides.
-Once authenticated, you can update profile fields, view live skill usage, or record a new audio message for your skill.
+The user console is a single page web app that calls AWS cloud services.
+The user loads the userprofile.html page from a browser and types into a form the pass phrase that the skill provides.
+Once authenticated, the user can review and update profile fields, view live skill usage, or record a new audio message for the skill.
+
+* See the live sample console at [bit.ly/travelbrowser](https://bit.ly/travelbrowser)
 
 ### Authentication Service
 The Console relies on an external public https API Gateway web service.
-First it issues a GET with a valid tempPassPhrase parameter less than five minutes old, and receives the user's profile attributes.
+First it issues a GET with a valid tempPassPhrase parameter less than five minutes old,
+and receives the user's profile attributes.
 The save button will call a POST that updates attributes to the skill record,
 also when saving an audio recording to the skill's S3 bucket.
 
-### Services Used
+
+### Cloud Services Used
  * AWS Lambda
  * AWS DynamoDB
  * AWS S3

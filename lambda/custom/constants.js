@@ -11,7 +11,7 @@ const DYNAMODB_TABLE = process.env.DYNAMODB_TABLE || 'askMemorySkillTable';
 
 const mqttEndpoint = process.env.mqttEndpoint || 'a3npzlqqmmzqo.iot.us-east-1.amazonaws.com';
 const IdentityPoolId = process.env.IdentityPoolId || 'us-east-1:583dd84a-7792-49a6-9ce5-5624f80378e7';
-const bucketUrlPath = `https://s3.amazonaws.com/skill-images-789/mp3/user/`;
+const bucketUrlPath = process.env.bucketUrlPath || `https://s3.amazonaws.com/skill-images-789/mp3/user/`;
 
 
 console.log('DYNAMODB_TABLE ' + DYNAMODB_TABLE);
@@ -42,7 +42,7 @@ module.exports = {
             "preferredGreeting":"hello",
             "speakingSpeed":"medium",
             "mobileNumber":"",
-            "audioClip": "Recording.mp3",
+            "audioClip": "",
             "homeAirport":"BOS",
             "visitWishList":[],
 

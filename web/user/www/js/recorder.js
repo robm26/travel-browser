@@ -75,7 +75,7 @@
         const html = '<li class="recList" data-blob="total">' +
             '<div class="row">' +
             '<table border="0" class="recListTable" width="90%" ><tr><td width="200px">' +
-            '<audio controls src="' + url + '"></audio></td><td>' +
+            '<audio controls src="' + url + '"></audio></td><td>&nbsp;</td><td>' +
             'Recording_' + total + '.mp3' + '</td><td>' +
             '<button class="btn btn-xs btn-info upload">Save to Skill</button> ' +
             '<button class="btn btn-xs btn-secondary delete">[X]</button></td></tr></table>' +

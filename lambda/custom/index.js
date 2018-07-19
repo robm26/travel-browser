@@ -64,6 +64,11 @@ const LaunchHandler = {
                 // + ' and it has been ' + span.timeSpanDesc
                 // + '. There are now ' + skillUserCount + ' skill users. '
         }
+        if(sessionAttributes.audioClip && sessionAttributes.audioClip.length === 26) {
+        // say += `<audio src="https://s3.amazonaws.com/skill-images-789/mp3/user/5YC7UID123pSNhtEF7u6dB.mp3" />`;
+        say += `Here is your audio message, <audio src="${constants.bucketUrlPath}${sessionAttributes.audioClip}" />`;
+
+        }
         say += ' Say help to hear some options, or say browse cities. ';
 
         const responseBuilder = handlerInput.responseBuilder;
@@ -538,11 +543,6 @@ const HelpHandler = {
         let sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
         let history = sessionAttributes['history'];
 
-        // if(sessionAttributes.audioClip && sessionAttributes.audioClip.length === 26) {
-            // say += `<audio src="https://s3.amazonaws.com/skill-images-789/mp3/user/5YC7UID123pSNhtEF7u6dB.mp3" />`;
-            say += `<audio src="${constants.bucketUrlPath}${sessionAttributes.audioClip}" />`;
-
-        // }
 
         if (!handlerInput.requestEnvelope.session.new) {
             say += `Your last intent was ${history[history.length-2].IntentRequest}. `;
