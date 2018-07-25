@@ -1,3 +1,4 @@
+body {  padding : 10px ;  }
 
 .panel-heading {background-color:whitesmoke}
 
@@ -36,11 +37,14 @@
 .timeLeft { display:none}
 .timeLeftVisible {color:silver; font-weight:bold; display:visible}
 
+.magictable {  background-color: whitesmoke; padding:10px}
+.magicbuttontd {padding:10px; }
 
-body {
-    padding : 10px ;
+.otheranswer { cursor:pointer; font-size:12pt; color:dimgray; }
 
-}
+.button.yes {  background-color:forestgreen; padding:10px; color:white; font-family:Arial; font-size:16pt; width:120px; text-align: center; cursor:pointer }
+.button.dontknow {  background-color:grey; padding:10px; color:white; font-family:Arial; font-size:11pt;  width:120px; text-align: center; cursor:pointer }
+.button.no {  background-color:lightcoral; padding:10px; color:white; font-family:Arial; font-size:16pt;  width:120px; text-align: center; cursor:pointer }
 
 
 #exTab2 h3 {

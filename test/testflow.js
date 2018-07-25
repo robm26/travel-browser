@@ -23,8 +23,8 @@ const options = {
     speechOutput : true,
     reprompt     : false,
     slots        : true,
-    cards        : true,
-    display      : true,
+    cards        : false,
+    display      : false,
     userId       : '123',  // final 3 chars of test user Id, can be overridden
     timestamp    : ''      // defaults to now, can set via '2018-04-03T21:47:49Z'
     // , requestEvent : false,    // show the request JSON sent to your code

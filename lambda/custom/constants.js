@@ -74,7 +74,8 @@ module.exports = {
     'getDisplayImg1': function() {
         return {
             title: 'Jet Plane',
-            url: 'https://s3.amazonaws.com/skill-images-789/display/plane340_340.png'
+            url: 'https://s3.amazonaws.com/skill-images-789/display/plane340_340.png',
+
         };
     },
     'getDisplayImg2': function() {

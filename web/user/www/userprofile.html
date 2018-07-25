@@ -27,7 +27,7 @@
     <script type="text/javascript" src="js/connectAsThing.js"></script>
     <script type="text/javascript" src="js/updateDom.js"></script>
 
-    <script type="text/javascript" src="lib/WebAudioRecorder.js"></script>
+    <script type="text/javascript" src="js/lib-audio/WebAudioRecorder.js"></script>
     <script type="text/javascript" src="js/userdata.js"></script>
     <script type="text/javascript" src="js/tests.js"></script>
 
@@ -78,14 +78,17 @@
             </div>
 
             <br/>
-            <div class="panel-heading side">Card</div>
-            <div class="panel-body side">
+            <div id="card" style="display:none">
+                <div class="panel-heading side">Card</div>
+                <div class="panel-body side" >
 
-                <div id="cardTitle" class="cardTitle" ></div>
-                <div id="cardContent" class="cardContent" ></div>
 
-                <div id="cardImg" class="cardImg" >
-                    <img id="cardImgImg"  class="cardImg"/>
+                    <div id="cardTitle" class="cardTitle" ></div>
+                    <div id="cardContent" class="cardContent" ></div>
+
+                    <div id="cardImg" class="cardImg" >
+                        <img id="cardImgImg"  class="cardImg"/>
+                    </div>
                 </div>
             </div>
 
@@ -99,8 +102,7 @@
 
         </div>
 
-
-        <div id="profilepanel" class="col-sm-9">
+        <div id="profilepanel" class="col-sm-9" style="display:none">
 
             <div id="exTab2" class="container-fluid">
                 <ul class="nav nav-tabs">
@@ -114,6 +116,12 @@
 
                     <li><a href="#3" data-toggle="tab">Recording</a>
                     </li>
+
+                    <!--<li><a href="#4" data-toggle="tab">Magic</a>-->
+                    <!--</li>-->
+
+                    <!--<li><a href="#5" data-toggle="tab">Tableau</a>-->
+                    <!--</li>-->
 
                 </ul>
 
@@ -194,6 +202,40 @@
                         </span>
 
                     </div>
+
+                    <!--<div class="tab-pane" id="4" style="padding:10px">-->
+
+                        <!--<table border="0" class="magictable" id="magictable">-->
+                            <!--<tr ><td colspan="3">-->
+                                <!--Current Message: <div id="savedanswer" class="savedanswer">&nbsp;</div>-->
+                            <!--</td></tr>-->
+                            <!--<tr>-->
+                                <!--<td class="magicbuttontd"><button class="button yes"  onClick="setAnswer('yes');">YES</button></td>-->
+                                <!--<td class="magicbuttontd"><button class="button dontknow"  onClick="setAnswer('i do not know');" >DON'T KNOW</button></td>-->
+                                <!--<td class="magicbuttontd"><button class="button no"  onClick="setAnswer('no');">NO</button></td>-->
+                            <!--</tr>-->
+
+                            <!--<tr><td colspan="3">&nbsp;</td></tr>-->
+                            <!--<tr><td colspan="3" class="otheranswer" onClick="setAnswer('most definitely');" >Most definitely!</td></tr>-->
+                            <!--<tr><td colspan="3" class="otheranswer" onClick="setAnswer('i think so');" >I think so</td></tr>-->
+                            <!--<tr><td colspan="3" class="otheranswer" onClick="setAnswer('probably not');" >Probably not</td></tr>-->
+                            <!--<tr><td colspan="3" class="otheranswer" onClick="setAnswer('i would rather not say');">I would rather not say</td></tr>-->
+                            <!--<tr><td colspan="3">&nbsp;</td></tr>-->
+                            <!--<tr><td colspan="3" class="inputcell">-->
+                                <!--<input type="text"  class="inputbox" id="inputtext" value="yes of course">-->
+                                <!--<br /><br />-->
+
+                                <!--<input id="savebutton" type="button" value="SAVE" onClick="setAnswer(document.getElementById('inputtext').value);"  class="inputbutton" > &nbsp;-->
+                                <!--<input id="clearbutton" type="button" value="CLEAR" onClick="clearText();" class="inputbutton" >-->
+
+                            <!--</td>-->
+                            <!--</tr>-->
+                        <!--</table>-->
+
+                    <!--</div>-->
+                    <!--<div class="tab-pane" id="5">-->
+                        <!--Tableau-->
+                    <!--</div>-->
 
                 </div>
             </div>

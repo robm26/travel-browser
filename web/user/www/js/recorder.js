@@ -33,7 +33,7 @@
         $list  = $('#audio-list');
 
     let audioRecorder = new WebAudioRecorder(mixer, {
-        workerDir : 'lib/',
+        workerDir : 'js/lib-audio/',
         encoding  : 'mp3',
     });
 

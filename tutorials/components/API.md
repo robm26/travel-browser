@@ -49,7 +49,7 @@ We can review the settings, test, and deploy the API.
 1. CLick on your new API.
 1. Underneath Resources, you should see the tag "ANY".
 1. Click the Test lightning bolt.
-1. Choose method GET and Query String tempPassPhrase=fast-car-345
+1. Choose method GET, proxy of "lookup", and Query String like tempPassPhrase=fast-car-345
 1. Click TEST.  You should see some raw log messages and JSON.  Scan for any errors, particularly at the end of the log.
 
 Your API needs to be deployed in order to be used by anyone else.

@@ -50,6 +50,7 @@ function init() {
         }
 
     });
+    // toggleConnected(false);
 
 }
 function clearForm() {
@@ -151,7 +152,7 @@ function loadAttrs() {
 
 
 function renderEditForm(data) {
-
+    toggleConnected(true);
     clearEditTable();
 
     // console.log(JSON.stringify(data, null, 2));
@@ -241,22 +242,12 @@ function saveAttrs(withFile) {
     console.log('***** in saveAttrs();');
     console.log(withFile !== null);
 
-    // input.setAttribute("id", 'update-' + attrValue);
     let updates = {};
 
     let tbl = document.getElementById('EditFormTable');
     if (withFile !== null) {
         updates['audioClip'] = "new";
 
-        // let reader = new FileReader();
-        //
-        // reader.readAsDataURL(withFile);
-        //
-        // reader.onloadend = function() {
-        //
-        //     file64 = reader.result;
-        //
-        // };
 
     } else {
         for (let i = 1, row; row = tbl.rows[i]; i++) {
@@ -356,6 +347,22 @@ function handleEnter(e){
     }
 }
 
+function toggleConnected(connected) {
+    console.log(`toggleConnected(${connected})`);
 
+    if(connected) {
+        document.getElementById('profilepanel').style.display = 'block';
+        document.getElementById('card').style.display = 'block';
+    } else {
+        document.getElementById('profilepanel').style.display = 'none';
+        document.getElementById('card').style.display = 'block';
+    }
+    // let pan = document.getElementById('profilepanel');
+    // // alert(`connected\n${connected}\ndisplay\n${pan.style.display}`);
+    //
+    // pan.style.display = (connected ? 'block' : 'none');
+}
 
-
+function setAnswer(answer) {
+    //alert(answer);
+}
