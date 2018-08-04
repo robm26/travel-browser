@@ -355,7 +355,7 @@ function toggleConnected(connected) {
         document.getElementById('card').style.display = 'block';
     } else {
         document.getElementById('profilepanel').style.display = 'none';
-        document.getElementById('card').style.display = 'block';
+        document.getElementById('card').style.display = 'none';
     }
     // let pan = document.getElementById('profilepanel');
     // // alert(`connected\n${connected}\ndisplay\n${pan.style.display}`);

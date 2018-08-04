@@ -1,13 +1,22 @@
 #!/usr/bin/env bash
 
-# CloudFormation scripts
+S3_BUCKET="alexaconsole789"
 
-# aws dynamodb delete-table  --table-name askMemorySkillTable
+    cd ../lambda
+    rm index.zip
+    cd custom
+    zip  ../index.zip * –X -r
+    cd ..
+#   aws lambda update-function-code --function-name MyFunction --zip-file fileb://index.zip
+    cd ../sam
+
+
+# CloudFormation scripts
 
 # aws cloudformation validate-template --template-body file://travelbrowser.yaml
 
-aws cloudformation package --template-file ./travelbrowser.yaml --s3-bucket alexaconsole789 --output-template-file ./travelbrowser-packaged.yaml
+aws cloudformation package --template-file ./travelbrowser.yaml --s3-bucket $S3_BUCKET --output-template-file ./travelbrowser-packaged.yaml
 
-aws cloudformation deploy --template-file ./travelbrowser-packaged.yaml --stack-name travel-browser-stack  --capabilities CAPABILITY_IAM --parameter-overrides projectName=travel
+# aws cloudformation deploy --template-file ./travelbrowser-packaged.yaml --stack-name travel-browser-stack  --capabilities CAPABILITY_IAM --parameter-overrides projectName=travel
 
 

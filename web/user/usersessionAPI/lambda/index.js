@@ -4,11 +4,11 @@
 // But only if the record's tempPassPhrase is less than 5 minutes old
 // Upon success, the user's entire attribute record is returned
 // The user may update their attribute map with the same fresh tempPassPhrase
-
+const bucket = 'skill-images-789';
 
 const TableName = process.env.DYNAMODB_TABLE || 'askMemorySkillTable';
 
-const tempPassPhraseExpiryMinutes = 555888555;   // 5 minutes
+const tempPassPhraseExpiryMinutes = 55555555;  // default 5 minutes
 
 
 const AWS = require('aws-sdk');
@@ -42,12 +42,12 @@ exports.handler = function(event, context, callback) {
     // if (event.path === '/update') {
 
         scanDynamoTableForPhrase(tempPassPhrase, TableName, userRecord=>{
-
-            // console.log(userRecord);
+            console.log(`userRecord\n${JSON.stringify(userRecord)}`);
             if ('attributes' in userRecord) {  // found user
                 // console.log(`**** event.body.attributes: ${event.body.attributes}`);
 
                 if(event.path === `/lookup`) { // GET read user profile
+
                     const response = {
                         statusCode: 200,
                         headers: {"Access-Control-Allow-Origin": "*"},
@@ -64,12 +64,8 @@ exports.handler = function(event, context, callback) {
 
                     let bodyObj = (typeof event.body === 'string' ? JSON.parse(event.body) : event.body );
 
-                    // console.log(`$$$$$ ev ${typeof event.body}`);
-                    // console.log(`$$$$$ ev ${event.body}`);
-                    // console.log(`$$$$$ typeof bO ${typeof bodyObj}`);
-                    // console.log(`$$$$$ bO.file ${typeof bodyObj.file}`);
+                    console.log(`***** event.body\n${event.body}`);
 
-                    // console.log(`$$$$$ ev ${bod}`);
 
                     let newAttrObj = Object.assign(userRecord.attributes, bodyObj.attributes);
 
@@ -215,7 +211,7 @@ function saveFile(file, fileName, callback) {
     let fn = `mp3/user/${fileName}`;
 
     params = {
-        Bucket: 'skill-images-789',
+        Bucket: bucket,
         Key: fn,
         Body: file,
         ACL: "public-read"

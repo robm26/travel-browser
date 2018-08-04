@@ -52,17 +52,16 @@ const LaunchHandler = {
         if (launchCount == 1) {
             say = `welcome new user! `
                 + `<audio src='https://s3.amazonaws.com/ask-soundlibrary/magic/amzn_sfx_magic_blast_1x_01.mp3'/> `
-                // + `<audio src='https://s3.amazonaws.com/skill-images-789/mp3/abc.mp3' /> `
                 + `This skill will tell you about travel destinations. `;
-                // + ` You are the <say-as interpret-as="ordinal">${joinRank}</say-as> user to join!`;
+
         } else {
 
             say = `${preferredGreeting} ${namePronounce}.  `;
-            if(launchCount % 10 == 0) {
+            if(launchCount % 2 == 0) {
                 say += `This is your <say-as interpret-as="ordinal">${launchCount}</say-as> time using the skill.`;
+                say += ` and it has been ${span.timeSpanDesc}. `;
             }
-                // + ' and it has been ' + span.timeSpanDesc
-                // + '. There are now ' + skillUserCount + ' skill users. '
+
         }
         if(sessionAttributes.audioClip && sessionAttributes.audioClip.length === 26) {
         // say += `<audio src="https://s3.amazonaws.com/skill-images-789/mp3/user/5YC7UID123pSNhtEF7u6dB.mp3" />`;
@@ -419,8 +418,8 @@ const MyNameIsYesNoHandler = {
             say = ` Okay great, I will remember your name. What else can I help you with? `;
         } else {
             //sessionAttributes["name"] = '';
-            sessionAttributes["namePronounce"] = '';
-            sessionAttributes["name"] = '';
+            sessionAttributes["namePronounce"] = ' ';
+            sessionAttributes["name"] = ' ';
             say = ` Sorry I could not hear your name! `
                     + ` You can teach me how to pronounce your name on the companion web page.  Just say, link browser. `;
         }

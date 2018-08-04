@@ -15,12 +15,15 @@ The manual steps for deploying this project are presented here.
 
 Laptop environment:
 * [Node.JS](https://nodejs.org/en/download/) version 8 or higher
-* [AWS CLI](https://aws.amazon.com/cli/) or [ASK CLI](https://developer.amazon.com/docs/smapi/quick-start-alexa-skills-kit-command-line-interface.html) for zipping and deploying your project to AWS Lambda.
+* [AWS CLI](https://aws.amazon.com/cli/) and [ASK CLI](https://developer.amazon.com/docs/smapi/quick-start-alexa-skills-kit-command-line-interface.html) for zipping and deploying your project to AWS Lambda.
 * [AWS-SDK](https://www.npmjs.com/package/aws-sdk) Run ```npm install aws-sdk --global```
 * Clone or download this repository to a local folder
 
 
-
-### Next Step
- * [Setup the Skill](./components/SKILL.md)
+### Next Steps
+ * Setup the [Skill](./components/SKILL.md)
+ * Setup the [Web Service](./components/API.md)
+ * Setup the [Cognito Pool](./components/COGNITO.md)
+ * Setup the [IOT Endpoint](./components/IOT.md)
+ * Setup the [S3 Bucket](./components/S3.md)
 

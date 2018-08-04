@@ -41,7 +41,7 @@ Resources:
           Type: AlexaSkill
       Environment:
         Variables:
-          DYNAMODB_TABLE: !Sub 'ask${ProjectName}'
+          DYNAMODB_TABLE: !Sub 'ask-${ProjectName}'
       Policies:
         -
           Version: "2012-10-17"
@@ -62,15 +62,15 @@ Resources:
     Properties:
       FunctionName: !Sub '${ProjectName}-userSessionAPI'
       CodeUri: ./console-user/index.zip
-      Description: DynamoDB Lambda function
+      Description: DynamoDB Lambda function for API
       Handler: index.handler
       MemorySize: 128
       Runtime: nodejs8.10
       Timeout: 7
 #      Policies: AmazonDynamoDBFullAccess
       Events:
-        AlexaTrigger:
-          Type: AlexaSkill
+#        AlexaTrigger:
+#          Type: AlexaSkill
         MyAPI:
           Type: Api
           Properties:
@@ -78,7 +78,7 @@ Resources:
             Method: ANY
       Environment:
         Variables:
-          DYNAMODB_TABLE: !Sub 'ask${ProjectName}'
+          DYNAMODB_TABLE: !Sub 'ask-${ProjectName}'
       Policies:
         -
           Version: "2012-10-17"
@@ -194,7 +194,7 @@ Outputs:
       Name: "IdentityPool::Id"
 
   DatabaseTable:
-    Value: !Sub 'ask${ProjectName}'
+    Value: !Sub 'ask-${ProjectName}'
 #    Value: !Sub 'https://s3.amazonaws.com/${ProjectName}/'
 #    Export:
 #      Name: 'Exporty'

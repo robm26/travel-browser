@@ -213,12 +213,6 @@ function toggleView(eventType) {
 
 }
 
-// let bod = `hello\nhttps://www.amazon.com\nbig world`;
-// console.log(bod);
-// console.log(linkify(bod));
-// document.getElementById('footer').innerHTML = 'copyright  2018';
-// // let foot = document.getElementById('footer');
-// // foot.innerHTML = 'abc';
 
 function linkifylinkify(body) {
     let words = body.split('\n'); // assumes URL is on its own line

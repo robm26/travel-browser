@@ -69,6 +69,9 @@
                 </td></tr>
             </table>
 
+
+
+
             <div class="panel-heading side" >
                 Status
             </div>
@@ -102,7 +105,7 @@
 
         </div>
 
-        <div id="profilepanel" class="col-sm-9" style="display:none">
+        <div id="profilepanel" class="col-sm-9" >
 
             <div id="exTab2" class="container-fluid">
                 <ul class="nav nav-tabs">
@@ -252,7 +255,9 @@
             <span id="MQTTstatus" class="MQTTstatus">STOPPED</span>
             &nbsp;&nbsp;&nbsp;
             This page calls a custom <a href="" id="apiurl" class="apiurl" target="_blank">Skill authentication API</a> over xhttp.
-                Learn more and build this app via the <a href="https://github.com/alexa/alexa-cookbook" class="apiurl">Alexa Cookbook</a>
+            Returned MQTT connection details are used to setup a websocket connection, through Cognito, to an IOT topic subscription.
+            Audio is recorded to S3.
+            Learn more and build this skill & app at <a href="https://github.com/robm26/travel-browser" class="apiurl">travel-browser</a>.
 
         </div>
     </div>

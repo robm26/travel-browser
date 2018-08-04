@@ -52,6 +52,7 @@ const updateTestMp3 =
 let context = {
     'succeed': function (data) {
         console.log(JSON.stringify(data, null,'\t') );
+        console.log('context.succeed');
     },
     'fail': function (err) {
         console.log('context.fail occurred');
@@ -67,10 +68,11 @@ function callback(error, data) {
         // console.log(JSON.stringify(JSON.parse(data.body), null, 2));
         // result = JSON.parse(data.body);
         // data = data.body.attributes.audioClip;
+        console.log('callback');
         console.log(JSON.stringify(data, null,2) );
 
     }
 }
 
 // call the function
-MyLambdaFunction['handler'] (updateTestMp3, context, callback);
+MyLambdaFunction['handler'] (lookupTest, context, callback);

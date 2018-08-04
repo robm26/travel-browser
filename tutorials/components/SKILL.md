@@ -28,8 +28,9 @@ There will be many AWS components by the time the entire app is finished.  To be
 
 ### Deploy and Test
 1. From a command prompt, navigate to /lambda/custom
-1. Type "npm install"  Node.JS will download and install several packages to the node_modules folder.  You can optionally delete the node_modules/aws folder to save space.
-1. Zip and upload the contents of the /lambda/custom folder to your Lambda function. You can use the CLI or  ./deploylambda.sh to automate this step.
+1. Type ```npm install```  Node.JS will download and install several packages to the node_modules folder.  You can optionally delete the node_modules/aws folder to save space.
+1. Type ```cd ../..```
+1. Zip and upload the contents of the /lambda/custom folder to your Lambda function. You can use the CLI or run ./deploylambda.sh to automate this step.  First run ```chmod 755 *.sh``` to make the script executable.
 1. Test your skill with a complete interaction, such as "open travel browser" and "stop".
 1. The skill may fail the first time, it will be creating a new DynamoDB table for you called **askMemorySkillTable**.
 1. Test again, for example, "tell travel browser my name is sam", then "stop".  When you return to the skill you should be greeted with a first name.
@@ -41,10 +42,10 @@ The skill can generate a new random pass phrase.
 1. The skill should respond with instructions including a three-part pass phrase, such as Fast Car 345.
 
 ### New DynamoDB Table
-The ask-sdk will create a new table for you automatically upon first use of persistent attributes.
-The table name, and many other settings, are set in the /lambda/custom/constants.js file.
-You can view the [Tables console](https://console.aws.amazon.com/dynamodb/home#tables) to see the new table and records.
-You can create this table manually if desired, just use a primary key of "id".
+You may create the table in advance, just use a primary key of "id" (string).
+The ask-sdk will create a new table if needed upon first use of persistent attributes.
+The table name, and many other settings, are set in the /lambda/custom/constants.js file (or when launching a SAM stack).
+You can view the [Tables Console](https://console.aws.amazon.com/dynamodb/home#tables) to create and query the table.
 
 ### Next Step
  * [Setup the Web Service](./API.md)

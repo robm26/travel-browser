@@ -23,6 +23,10 @@ Navigate to the [/web/user/www] folder.  You will see the following files.
 1. Type in a valid three part pass phrase and press LOAD.
 1. You should see a success status and some profile data in the edit form.
 
+You can deploy this www folder to your website, or public S3 bucket.
+1. Create a shortened link to this page for users to visit, such as [bit.ly/travelbrowser](bit.ly/travelbrowser)
+1. Update the /lambda/custom/index.js file, LinkSessionHandler function, to tell the user the correct website to visit.
+
 
 ### Next Step
  * Setup the [Cognito Pool](./COGNITO.md)
