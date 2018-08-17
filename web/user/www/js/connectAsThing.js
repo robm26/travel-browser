@@ -32,7 +32,7 @@ function onCredentialsAvailable(creds) {
 
     mqttClient = createMQTTClient(clientObj);
 
-    // console.log('mqttClient *****\n' + JSON.stringify(clientObj, null, 2));
+    console.log('mqttClient *****\n' + JSON.stringify(clientObj, null, 2));
 
     connect(mqttClient);
 

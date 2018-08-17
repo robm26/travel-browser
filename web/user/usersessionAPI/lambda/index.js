@@ -149,7 +149,7 @@ function scanDynamoTableForPhrase(tempPassPhrase, TableName, callback) {
 
     let docClient = new AWS.DynamoDB.DocumentClient();
 
-    // console.log('###############\nscanning items from DynamoDB table\n');
+
 
     docClient.scan(params, (err, data) => {
         if (err) {

@@ -62,7 +62,7 @@ You can install (and later delete) the entire stack within the AWS CloudFormatio
 The stack will take a minute or two to be created. Click the refresh circle button near the top right.
 
 1. Once complete, review the tabs shown. Click on the Outputs tab.
-1. Copy the "SkillLambdaFunction" value.
+1. Copy the "SkillLambdaFunction" value (aka the Lambda ARN).
 1. In another tab, review your Skill (on developer.amazon.com ) and click the Endpoint link near the bottom left of the Build page.
 1. Click on Endpoint Type: AWS Lambda ARN.
 1. Paste in the SkillLambdaFunction to the Default Region box.
@@ -73,12 +73,13 @@ The stack will take a minute or two to be created. Click the refresh circle butt
 The web app needs the userprofileAPI URL to be updated.
 With this, and a user-typed pass phrase, the remaining MQTT configuration values will be returned dynamically to the browser app.
 1. From the CloudFormation console, travel-browser-stack, drill into the Outputs.
-1. Locate the "usersessionAPI" value.  Copy this URL (an example: https://t7t524d7m2.execute-api.us-east-1.amazonaws.com/Prod/ )
+1. Locate the "usersessionAPI" value.  Copy this URL (an example: https://t7t524d7m2.execute-api.us-east-1.amazonaws.com/Prod )
 1. On your laptop, from the cloned travel-browser project folder, open the file ```/web/user/www/js/userdata.js```
 1. Update the usersessionApiUrl field at the top of this file with your new API URL, and save.
 1. An empty S3 bucket has been created for you to host your web app.  See the CloudFormation output for the bucket name and public URL.
- * OPTIONAL: copy the entire /web/user/www folder contents to this S3 bucket, or to your own web server.
- * See the www/sync.sh file for a command to automate publlishing your static web content to S3.
+ * OPTIONAL:
+   * Copy the entire /web/user/www folder contents to this S3 bucket, or to your own web server.
+   * See the www/sync.sh file for a command to automate publishing your static web content to S3.
 
 ### 5. Test components
 

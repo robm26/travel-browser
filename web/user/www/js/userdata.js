@@ -1,5 +1,5 @@
 
-const usersessionApiUrl = `https://t7t524d7m2.execute-api.us-east-1.amazonaws.com/Prod`;
+const usersessionApiUrl = `https://pgnsdro44d.execute-api.us-east-1.amazonaws.com/Prod`;
 
     //`https://24kzsfwcoi.execute-api.us-east-1.amazonaws.com/prod`;
 

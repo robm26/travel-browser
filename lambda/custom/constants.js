@@ -41,7 +41,7 @@ module.exports = {
             "tempPassPhrase":"sweet-dog-721",
             "linkTimestamp":0,
 
-            // "mqttEndpoint":mqttEndpoint,
+            "mqttEndpoint":" ",
             "IdentityPoolId":IdentityPoolId,
             "IotTopic":"ask-thing-topic"
 

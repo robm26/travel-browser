@@ -119,15 +119,29 @@ module.exports = {
                             sessionAttributes['launchCount'] += 1;
                             // sessionAttributes['tempPassPhrase'] = generatePassPhrase().word1 + '-' + generatePassPhrase().word2 + '-' + generatePassPhrase().number;
 
-                            handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
+                            const iot = new AWS.Iot();
 
-                            handlerInput.attributesManager.savePersistentAttributes()
-                                .then(() => {
-                                    resolve();
-                                })
-                                .catch((err) => {
-                                    reject(err);
-                                });
+                            iot.describeEndpoint({}, function(err, data) {
+
+                                sessionAttributes.mqttEndpoint = data.endpointAddress;
+
+                                handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
+
+                                handlerInput.attributesManager.savePersistentAttributes()
+                                    .then(() => {
+                                        resolve();
+                                    })
+                                    .catch((err) => {
+                                        reject(err);
+                                    });
+
+
+
+                            });
+
+
+
+
 
                         });
 

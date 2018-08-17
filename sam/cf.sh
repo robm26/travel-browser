@@ -25,6 +25,6 @@ aws cloudformation package --template-file ./travelbrowser.yaml --s3-bucket $S3_
 
 aws s3 cp ./travelbrowser-packaged.yaml s3://skill-building-labs/travel-browser/ --acl public-read
 
-# aws cloudformation deploy --template-file ./travelbrowser-packaged.yaml --stack-name travel-browser-stack  --capabilities CAPABILITY_IAM --parameter-overrides projectName=travel
+aws cloudformation deploy --template-file ./travelbrowser-packaged.yaml --stack-name travel-browser-stack  --capabilities CAPABILITY_IAM --parameter-overrides projectName=travel
 
 

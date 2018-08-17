@@ -1,5 +1,13 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Alexa Travel Browser Skill and Console
+Globals:
+  Api:
+    Cors:
+      AllowHeaders: '''*'''
+      AllowMethods: '''*'''
+      AllowOrigin: '''*'''
+  Function:
+    Runtime: nodejs8.10
 Metadata:
   Name:
     Ref: ProjectName
@@ -92,16 +100,13 @@ Resources:
           Statement:
           - Action:
             - iot:Connect
-            - iot:DescribeEndpoint
+            - iot:Subscribe
+            - iot:Receive
+            - iot:GetThingShadow
             Effect: Allow
             Resource: '*'
-          - Action:
-            - iot:Subscribe
-            Effect: Allow
-            Resource:
-            - Fn::Sub: arn:aws:iot:${AWS::Region}:${AWS::AccountId}:thing/ask*
           Version: '2012-10-17'
-        PolicyName: CognitoUnauthorizedPolicy
+        PolicyName: AWSIoTDataAccessSubscribe
     Type: AWS::IAM::Role
   DynamoTable:
     Properties:
@@ -120,7 +125,7 @@ Resources:
     Type: AWS::S3::Bucket
   SkillLambdaFunction:
     Properties:
-      CodeUri: s3://alexaconsole789/cb0bf9c43016bc01d1aa6edb49004b94
+      CodeUri: s3://alexaconsole789/b363b3dfa6120a4cfc310b0e8abfbdac
       Description: Alexa Lambda function
       Environment:
         Variables:
@@ -171,7 +176,7 @@ Resources:
     Type: AWS::Serverless::Function
   userSessionAPIFunction:
     Properties:
-      CodeUri: s3://alexaconsole789/5699685fb45cbf9a839aa33be216498f
+      CodeUri: s3://alexaconsole789/5b3c5028088e41f87f9694d8bc0ebf68
       Description: DynamoDB Lambda function for API
       Environment:
         Variables:

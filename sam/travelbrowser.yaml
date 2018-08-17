@@ -139,24 +139,53 @@ Resources:
               "ForAnyValue:StringLike":
                 "cognito-identity.amazonaws.com:amr": unauthenticated
       Policies:
-        - PolicyName: "CognitoUnauthorizedPolicy"
+        - PolicyName: AWSIoTDataAccessSubscribe
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
-
               - Effect: "Allow"
                 Action:
-                  - "iot:Connect"
-                  - "iot:DescribeEndpoint"
+                    - "iot:Connect"
+                    - "iot:Subscribe"
+                    - "iot:Receive"
+                    - "iot:GetThingShadow"
                 Resource: "*"
 
-              - Effect: "Allow"
-                Action:
-                  - "iot:Subscribe"
-                Resource:
-                  - !Sub 'arn:aws:iot:${AWS::Region}:${AWS::AccountId}:thing/ask*'
-#                 "arn:aws:iot:::ask*"
+#        -
+#          PolicyName: "CognitoUnauthorizedPolicyDescribeEndpoint"
+#          PolicyDocument:
+#            Version: "2012-10-17"
+#            Statement:
+#              - Effect: "Allow"
+#                Action:
+#                  - "iot:DescribeEndpoint"
+#                Resource: "*"
+#        -
+#          PolicyName: "CognitoUnauthorizedPolicyConnect"
+#          PolicyDocument:
+#            Version: "2012-10-17"
+#            Statement:
+#              - Effect: "Allow"
+#                Action:
+#                  - "iot:Connect"
+#                Resource: "arn:aws:iot:*:*:client/*"
+#        -
+#          PolicyName: "CognitoUnauthorizedPolicy"
+#          PolicyDocument:
+#            Version: "2012-10-17"
+#            Statement:
+#              -
+#                Effect: "Allow"
+#                Action:
+#                  - "iot:Subscribe"
+#                Resource: !Sub 'arn:aws:iot:${AWS::Region}:${AWS::AccountId}:topicfilter/$aws/things/ask*'
+#              -
+#                Effect: "Allow"
+#                Action: "iot:Connect"
+#                Resource: "arn:aws:iot:*:*:client/*"
 
+#                 "arn:aws:iot:::ask*"
+#                   - "iot:DescribeEndpoint"
   # Create a role for unauthorized acces to AWS resources. Very limited access. Only allows users in the previously created Identity Pool
   CognitoAuthorizedRole:
     Type: "AWS::IAM::Role"
@@ -211,3 +240,11 @@ Outputs:
     Value: !GetAtt S3Bucket.WebsiteURL
 
 
+Globals:
+  Function:
+    Runtime: nodejs8.10
+  Api:
+    Cors:
+      AllowMethods: "'*'"
+      AllowHeaders: "'*'"
+      AllowOrigin: "'*'"
