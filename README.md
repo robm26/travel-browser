@@ -78,5 +78,5 @@ also when saving an audio recording to the skill's S3 bucket.
 
 ### Get Started
 
-Check out the application's [ARCHITECTURE](./tutorials/ARCHITECTURE.md) or dive into the [SETUP](./tutorials/SETUP.md)
+Check out the application's [ARCHITECTURE](./tutorials/ARCHITECTURE.md) or dive into the manual [SETUP](./tutorials/SETUP.md)
 

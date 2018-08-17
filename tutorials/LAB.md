@@ -18,15 +18,15 @@ Accounts:
 Laptop environment:
 
 * [Node.JS](https://nodejs.org/en/download/) version 8 or higher
- * Type ```node -v``` to check
+  * Type ```node -v``` to check
 * [AWS-SDK](https://www.npmjs.com/package/aws-sdk)
- * Run ```npm install aws-sdk --global```
+  * Run ```npm install aws-sdk --global```
 
 * Clone or download this repository to a local folder.
- * Run ```git clone https://github.com/robm26/travel-browser.git```
+  * Run ```git clone https://github.com/robm26/travel-browser.git```
 * AWS command line interface [AWS CLI](https://aws.amazon.com/cli/)
- * [Mac instructions](https://docs.aws.amazon.com/cli/latest/userguide/cli-install-macos.html)
- * [Windows instructions](https://docs.aws.amazon.com/cli/latest/userguide/awscli-install-windows.html)
+  * [Mac instructions](https://docs.aws.amazon.com/cli/latest/userguide/cli-install-macos.html)
+  * [Windows instructions](https://docs.aws.amazon.com/cli/latest/userguide/awscli-install-windows.html)
 
 Optional:
 * The Alexa command line interface: [ASK CLI](https://developer.amazon.com/docs/smapi/quick-start-alexa-skills-kit-command-line-interface.html)
