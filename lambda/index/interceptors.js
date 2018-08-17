@@ -17,26 +17,26 @@ module.exports = {
 
                 const flattenedRequest = flattenRequest(handlerInput.requestEnvelope.request);
 
-
                 const fullEvent = {
                     "request":  flattenedRequest,
 
                     "sessionAttributes":  handlerInput.requestEnvelope.session.attributes,
-                    // "sessionAttributes":  responseOutput.sessionAttributes,
-                    //"context":  handlerInput.requestEnvelope.context,  // display support
 
                     "outputSpeech":responseOutput.outputSpeech,
                     "reprompt":responseOutput.reprompt,
-                    // "directives":responseOutput.directives,  // nested too deep
+
                     "card":responseOutput.card,
                     "shouldEndSession":responseOutput.shouldEndSession
                 };
 
                 // console.log(JSON.stringify(responseOutput, null, 2));
                 let userId = handlerInput.requestEnvelope.session.user.userId;
-                let userIdShort = userId.slice(-10);
+                let userIdShort = 'ask' + userId.slice(-10);
+                userIdShort = userIdShort.replace(/]/g,'z').replace(/-/g,'z');
 
-                helpers.updateShadow(constants.mqttEndpoint, userIdShort, fullEvent, result => {
+                console.log(`****** updating shadow\n${userIdShort}`);
+
+                helpers.updateShadow(userIdShort, fullEvent, result => {
                     // console.log(`helpers.updateShadow result ${result}`);
                     resolve();
                 });
@@ -231,7 +231,7 @@ function flattenRequest(obj) { // maximum of 6 levels of JSON for IOT shadow
         let flatter = Object.assign({}, obj);
 
         flatter.intent.slots = getSlotValues(obj.intent.slots);
-        console.log(flatter.intent.slots);
+        // console.log(flatter.intent.slots);
 
         return flatter;
 

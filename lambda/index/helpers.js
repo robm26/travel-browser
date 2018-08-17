@@ -13,6 +13,9 @@ module.exports = {
         return(myArray[Math.floor(Math.random() * myArray.length)]);
 
     },
+    'setMqttEndpoint': function() {
+        console.log(`mqttEndpoint = ${constants.mqttEndpoint}`);
+    },
 
     'capitalize': function(myString) {
         return myString.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
@@ -43,9 +46,8 @@ module.exports = {
 
             let list = [];
             arr.forEach(function(item) {
-                // let inlineImg = `<img src='https://s3.amazonaws.com/skill-images-789/colors/CadetBlue.png' width='180' height='80' alt='City Image' />`;
                 let inlineImg = ``;
-                let token = item.city;
+                let token = item;
                 list.push(
                     {
                         "token":token,
@@ -400,42 +402,44 @@ module.exports = {
         return arr;
     },
 
-    'updateShadow': function(endpoint, thingName, payload, callback) {
+    'updateShadow': function(thingName, payload, callback) {
             // console.log(`in updateShadow with \n${endpoint}\n${thingName}\n`);
-            // update AWS IOT thing shadow
-            // var AWS = require('aws-sdk');
-            // AWS.config.region = config.IOT_BROKER_REGION;
-
-            //Prepare the parameters of the update call
 
             const paramsUpdate = {
                 "thingName" : thingName,
                 "payload" : JSON.stringify(
                     { "state":
-                        { "desired": payload            // {"pump":1}
+                        { "desired": payload
                         }
                     }
                 )
             };
 
-            const iotData = new AWS.IotData({endpoint: endpoint});
-            // console.log(`created new iotData`);
+            const iot = new AWS.Iot();
 
-            iotData.updateThingShadow(paramsUpdate, function(err, data)  {
-
-                if (err){
-                    console.log(err);
-
-                    callback(err);
-                }
+            iot.describeEndpoint({}, function(err, data) {
+                if (err) console.log(err, err.stack); // an error occurred
                 else {
-                    // console.log("updated thing shadow " + thingName + ' to state ' + payload);
-                    callback("ok");
+                    // console.log(`data.endpointAddress = ${data.endpointAddress}`);
+
+                    const iotData = new AWS.IotData({endpoint: data.endpointAddress});
+
+                    iotData.updateThingShadow(paramsUpdate, function(err, data)  {
+
+                        if (err){
+                            console.log(err);
+
+                            callback(err);
+                        }
+                        else {
+                            // console.log("updated thing shadow " + thingName + ' to state ' + payload);
+                            callback("ok");
+                        }
+
+                    });
+
                 }
-
             });
-
-
 
     }
 
@@ -446,16 +450,3 @@ Array.prototype.diff = function(a) {
     return this.filter(function(i) {return a.indexOf(i) < 0;});
 };
 
-//
-// return new Promise((resolve) => {
-//
-//     updateShadow(newState, status => {
-//
-//         resolve(responseBuilder
-//             .speak(say)
-//             .reprompt('try again, ' + say)
-//             .getResponse());
-//
-//     });
-//
-// });

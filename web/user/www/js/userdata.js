@@ -1,13 +1,7 @@
-/**
- * Created by mccaul on 4/7/18.
- */
 
-// const DYNAMODB_TABLE = 'askMemorySkillTable';
+const usersessionApiUrl = `https://t7t524d7m2.execute-api.us-east-1.amazonaws.com/Prod`;
 
-const serviceurl = `https://24kzsfwcoi.execute-api.us-east-1.amazonaws.com/prod`;
-
-//"https://2f1u50gvwh.execute-api.us-east-1.amazonaws.com/prod";
-
+    //`https://24kzsfwcoi.execute-api.us-east-1.amazonaws.com/prod`;
 
 const editableAttributes = [ // for display in profile form
     'name',
@@ -34,7 +28,7 @@ function testy(){
 }
 function init() {
     testy();
-    document.getElementById('apiurl').href = serviceurl; // from userdata.js
+    document.getElementById('apiurl').href = usersessionApiUrl; // from userdata.js
     setStatus('ready');
     document.getElementById('word1').focus();
     document.getElementById('word1').select();
@@ -110,7 +104,7 @@ function loadAttrs() {
 
     if (passPhrase) {
 
-        let url = serviceurl + "/lookup?tempPassPhrase=" + passPhrase;
+        let url = usersessionApiUrl + "/lookup?tempPassPhrase=" + passPhrase;
 
         let xhttp = new XMLHttpRequest({mozSystem: true});
 
@@ -261,7 +255,7 @@ function saveAttrs(withFile) {
 
     let passPhrase = validatePassPhrase();
     if (passPhrase) {
-        const url = serviceurl + "/update?tempPassPhrase=" + passPhrase;
+        const url = usersessionApiUrl + "/update?tempPassPhrase=" + passPhrase;
         console.log('url ' + url);
 
         let xhttp = new XMLHttpRequest({mozSystem: true});

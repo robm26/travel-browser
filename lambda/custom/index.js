@@ -224,7 +224,6 @@ const BrowseCitiesHandler = {
 
         if (helpers.supportsDisplay(handlerInput)) {
 
-
             handlerInput.responseBuilder.addRenderTemplateDirective({
                 type : 'ListTemplate1',
                 token : 'string',

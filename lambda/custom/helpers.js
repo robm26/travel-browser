@@ -13,6 +13,9 @@ module.exports = {
         return(myArray[Math.floor(Math.random() * myArray.length)]);
 
     },
+    'setMqttEndpoint': function() {
+        console.log(`mqttEndpoint = ${constants.mqttEndpoint}`);
+    },
 
     'capitalize': function(myString) {
         return myString.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
@@ -399,7 +402,7 @@ module.exports = {
         return arr;
     },
 
-    'updateShadow': function(endpoint, thingName, payload, callback) {
+    'updateShadow': function(thingName, payload, callback) {
             // console.log(`in updateShadow with \n${endpoint}\n${thingName}\n`);
 
             const paramsUpdate = {
@@ -412,23 +415,31 @@ module.exports = {
                 )
             };
 
-            const iotData = new AWS.IotData({endpoint: endpoint});
+            const iot = new AWS.Iot();
 
-            iotData.updateThingShadow(paramsUpdate, function(err, data)  {
-
-                if (err){
-                    console.log(err);
-
-                    callback(err);
-                }
+            iot.describeEndpoint({}, function(err, data) {
+                if (err) console.log(err, err.stack); // an error occurred
                 else {
-                    // console.log("updated thing shadow " + thingName + ' to state ' + payload);
-                    callback("ok");
+                    // console.log(`data.endpointAddress = ${data.endpointAddress}`);
+
+                    const iotData = new AWS.IotData({endpoint: data.endpointAddress});
+
+                    iotData.updateThingShadow(paramsUpdate, function(err, data)  {
+
+                        if (err){
+                            console.log(err);
+
+                            callback(err);
+                        }
+                        else {
+                            // console.log("updated thing shadow " + thingName + ' to state ' + payload);
+                            callback("ok");
+                        }
+
+                    });
+
                 }
-
             });
-
-
 
     }
 

@@ -1,17 +1,12 @@
-/**
- * Created by mccaul on 5/11/18.
- */
 
 let AWS = require('aws-sdk');
 AWS.config.region = process.env.AWS_REGION || 'us-east-1';
 
-// const helpers = require('./helpers.js');
-
 const DYNAMODB_TABLE = process.env.DYNAMODB_TABLE || 'askMemorySkillTable';
 
-const mqttEndpoint = process.env.mqttEndpoint || 'a3npzlqqmmzqo.iot.us-east-1.amazonaws.com';
+// const mqttEndpoint =  process.env.mqttEndpoint || 'a3npzlqqmmzqo.iot.us-east-1.amazonaws.com';
 const IdentityPoolId = process.env.IdentityPoolId || 'us-east-1:583dd84a-7792-49a6-9ce5-5624f80378e7';
-
+const bucketUrlPath = process.env.bucketUrlPath || `https://s3.amazonaws.com/skill-images-789/mp3/user/`;
 
 console.log('DYNAMODB_TABLE ' + DYNAMODB_TABLE);
 
@@ -21,8 +16,9 @@ module.exports = {
         'debug':true,
         'AWS': AWS,
         'DYNAMODB_TABLE': DYNAMODB_TABLE,
-        "mqttEndpoint":mqttEndpoint,
-        "IdentityPoolId":IdentityPoolId,
+        // "mqttEndpoint":   mqttEndpoint,
+        "IdentityPoolId": IdentityPoolId,
+        "bucketUrlPath":  bucketUrlPath,
         'invocationName': 'travel browser',
 
         'getMemoryAttributes': function() {
@@ -35,20 +31,21 @@ module.exports = {
             "joinRank": 1,
             "skillUserCount": 1,
 
-            "name":"",
-            "namePronounce":"",
+            "name":" ",
+            "namePronounce":" ",
             "preferredGreeting":"hello",
             "speakingSpeed":"medium",
-            "mobileNumber":"",
-
+            "mobileNumber":" ",
+            "audioClip": " ",
             "homeAirport":"BOS",
             "visitWishList":[],
 
-            "tempPassPhrase":"",
+            "tempPassPhrase":"sweet-dog-721",
+            "linkTimestamp":0,
 
-            "mqttEndpoint":mqttEndpoint,
+            // "mqttEndpoint":mqttEndpoint,
             "IdentityPoolId":IdentityPoolId,
-            "IotTopic":"user123"
+            "IotTopic":"ask-thing-topic"
 
             // "email":"",
             // "mobileNumber":"",
@@ -71,7 +68,8 @@ module.exports = {
     'getDisplayImg1': function() {
         return {
             title: 'Jet Plane',
-            url: 'https://s3.amazonaws.com/skill-images-789/display/plane340_340.png'
+            url: 'https://s3.amazonaws.com/skill-images-789/display/plane340_340.png',
+
         };
     },
     'getDisplayImg2': function() {
@@ -83,27 +81,11 @@ module.exports = {
     },
 
 
-
-    'getFacts' : function() {
-            return [ // include at least 5 facts
-                "Chameleon tongues can be as long as 28 inches.",
-                "It is estimated that over 100 billion people have lived on the earth so far.",
-                "The temperature on Venus is at least 462 degrees Celsius, which is about 864 degrees Fahrenheit.",
-                "The world's fastest land animal is Sarah, a cheetah that ran 100 meters in 5.95 seconds.",
-                "The quietest natural place on earth is in Washington State's Olympic National Park, within the Hoh Rainforest.",
-                "A liger is a hybrid offspring of a male lion and a female tiger.",
-                "Boston's Fenway Park has been the home of the Red Sox baseball team since 1912."
-            ];
-
-    } ,
-
     'getMaxHistorySize': function() {  // number of intent/request events to store
         return 3;
     },
 
-    'getDontRepeatLastN': function() {
-            return 3;
-    },
+
     'getEmoji': function(emojiName) {
 
         const emoji = {

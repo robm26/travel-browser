@@ -17,7 +17,7 @@ Resources:
   DynamoTable:
      Type: AWS::Serverless::SimpleTable
      Properties:
-       TableName: !Sub 'ask${ProjectName}'
+       TableName: !Sub 'ask-${ProjectName}'
        PrimaryKey:
          Name: id
          Type: String
@@ -25,11 +25,11 @@ Resources:
          ReadCapacityUnits: 5
          WriteCapacityUnits: 5
 
-  SkillFunction:
+  SkillLambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub '${ProjectName}-skill'
-      CodeUri: ./skill-lambda/index.zip
+      CodeUri: ../lambda/index.zip
       Description: Alexa Lambda function
       Handler: index.handler
       MemorySize: 128
@@ -42,6 +42,8 @@ Resources:
       Environment:
         Variables:
           DYNAMODB_TABLE: !Sub 'ask-${ProjectName}'
+          IdentityPoolId: !Ref CognitoPool
+          bucketUrlPath:  !GetAtt S3Bucket.WebsiteURL
       Policies:
         -
           Version: "2012-10-17"
@@ -49,19 +51,38 @@ Resources:
             -
               Effect: "Allow"
               Action:
+                - "dynamodb:Scan"
                 - "dynamodb:GetItem"
                 - "dynamodb:PutItem"
                 - "dynamodb:UpdateItem"
                 - "dynamodb:DeleteItem"
-                - "dynamodb:CreateTable"
               Resource:
-                - "arn:aws:dynamodb:::table/ask*"
+                - !Sub 'arn:aws:dynamodb:*:*:table/ask-${ProjectName}'
+
+        -
+          Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Action:
+                - 'iot:Connect'
+                - 'iot:DescribeEndpoint'
+              Resource:
+              - '*'
+
+        -
+          Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Action:
+                - 'iot:UpdateThingShadow'
+              Resource:
+                - !Sub 'arn:aws:iot:${AWS::Region}:${AWS::AccountId}:thing/ask*'
 
   userSessionAPIFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub '${ProjectName}-userSessionAPI'
-      CodeUri: ./console-user/index.zip
+      FunctionName: !Sub '${ProjectName}-usersessionAPI'
+      CodeUri: ../web/user/usersessionAPI/index.zip
       Description: DynamoDB Lambda function for API
       Handler: index.handler
       MemorySize: 128
@@ -71,11 +92,12 @@ Resources:
       Events:
 #        AlexaTrigger:
 #          Type: AlexaSkill
-        MyAPI:
+        usersessionAPI:
           Type: Api
           Properties:
             Path: /{proxy+}
             Method: ANY
+
       Environment:
         Variables:
           DYNAMODB_TABLE: !Sub 'ask-${ProjectName}'
@@ -83,16 +105,15 @@ Resources:
         -
           Version: "2012-10-17"
           Statement:
-            -
-              Effect: "Allow"
+            - Effect: "Allow"
               Action:
+                - "dynamodb:Scan"
                 - "dynamodb:GetItem"
                 - "dynamodb:PutItem"
                 - "dynamodb:UpdateItem"
                 - "dynamodb:DeleteItem"
-                - "dynamodb:CreateTable"
               Resource:
-                - "arn:aws:dynamodb:::table/ask*"
+                - !Sub 'arn:aws:dynamodb:*:*:table/ask-${ProjectName}'
 
   S3Bucket:
     Type: AWS::S3::Bucket
@@ -126,12 +147,15 @@ Resources:
               - Effect: "Allow"
                 Action:
                   - "iot:Connect"
+                  - "iot:DescribeEndpoint"
                 Resource: "*"
 
               - Effect: "Allow"
                 Action:
                   - "iot:Subscribe"
-                Resource: "arn:aws:iot:::ask*"
+                Resource:
+                  - !Sub 'arn:aws:iot:${AWS::Region}:${AWS::AccountId}:thing/ask*'
+#                 "arn:aws:iot:::ask*"
 
   # Create a role for unauthorized acces to AWS resources. Very limited access. Only allows users in the previously created Identity Pool
   CognitoAuthorizedRole:
@@ -150,21 +174,6 @@ Resources:
                 "cognito-identity.amazonaws.com:aud": !Ref CognitoPool
               "ForAnyValue:StringLike":
                 "cognito-identity.amazonaws.com:amr": authenticated
-#      Policies:
-#        - PolicyName: "CognitoAuthorizedPolicy"
-#          PolicyDocument:
-#            Version: "2012-10-17"
-#            Statement:
-#
-#              - Effect: "Allow"
-#                Action:
-#                  - "iot:Connect"
-#                Resource: "*"
-#
-#              - Effect: "Allow"
-#                Action:
-#                  - "iot:Subscribe"
-#                Resource: "arn:aws:iot:::ask*"
 
   CognitoPool:
     Type: AWS::Cognito::IdentityPool
@@ -181,12 +190,8 @@ Resources:
         unauthenticated: !GetAtt CognitoUnAuthorizedRole.Arn
 #  !Sub '${withTableName}MyFunction'
 Outputs:
-  Greeting:
-    Value: !Sub 'The stack for ${ProjectName} is ready.'
-#  Status:
-#    Value: !Ref projectName
-  UserSite:
-    Value: !GetAtt S3Bucket.WebsiteURL
+  SkillLambdaFunction:
+    Value: !GetAtt SkillLambdaFunction.Arn
 
   CognitoPoolId:
     Value: !Ref CognitoPool
@@ -195,24 +200,14 @@ Outputs:
 
   DatabaseTable:
     Value: !Sub 'ask-${ProjectName}'
-#    Value: !Sub 'https://s3.amazonaws.com/${ProjectName}/'
-#    Export:
-#      Name: 'Exporty'
 
-#   DynamoDBTable:
-#     Type: AWS::DynamoDB::Table
-#     Properties:
-#       AttributeDefinitions:
-#         - AttributeName: id
-#           AttributeType: S
-#       KeySchema:
-#         - AttributeName: id
-#           KeyType: HASH
-#       ProvisionedThroughput:
-#         ReadCapacityUnits: 5
-#         WriteCapacityUnits: 5
-#       StreamSpecification:
-#         StreamViewType: streamview type
+  usersessionAPI:
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"
 
-#    Export:
-#      Name: !Sub "${AWS::StackName}-Role"
+  Bucket:
+    Value: !Ref S3Bucket
+
+  UserSite:
+    Value: !GetAtt S3Bucket.WebsiteURL
+
+

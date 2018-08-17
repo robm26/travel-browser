@@ -21,12 +21,10 @@ module.exports = {
                     "request":  flattenedRequest,
 
                     "sessionAttributes":  handlerInput.requestEnvelope.session.attributes,
-                    // "sessionAttributes":  responseOutput.sessionAttributes,
-                    //"context":  handlerInput.requestEnvelope.context,  // display support
 
                     "outputSpeech":responseOutput.outputSpeech,
                     "reprompt":responseOutput.reprompt,
-                    // "directives":responseOutput.directives,  // nested too deep
+
                     "card":responseOutput.card,
                     "shouldEndSession":responseOutput.shouldEndSession
                 };
@@ -34,15 +32,14 @@ module.exports = {
                 // console.log(JSON.stringify(responseOutput, null, 2));
                 let userId = handlerInput.requestEnvelope.session.user.userId;
                 let userIdShort = 'ask' + userId.slice(-10);
+                userIdShort = userIdShort.replace(/]/g,'z').replace(/-/g,'z');
 
-                // console.log(`updating shadow\n${userIdShort}`);
+                // console.log(`****** updating shadow\n${userIdShort}`);
 
-
-                helpers.updateShadow(constants.mqttEndpoint, userIdShort, fullEvent, result => {
+                helpers.updateShadow(userIdShort, fullEvent, result => {
                     // console.log(`helpers.updateShadow result ${result}`);
                     resolve();
                 });
-
 
             });
 

@@ -25,7 +25,7 @@ Later on, use this event as a new Test definition within the Lambda console.
 ```
     { "queryStringParameters" :
         {
-            "tempPassPhrase":fast-car-345
+            "tempPassPhrase":"fast-car-345"
         },
         "path":"/lookup"
     }

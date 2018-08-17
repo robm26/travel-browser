@@ -6,9 +6,9 @@
 // The user may update their attribute map with the same fresh tempPassPhrase
 const bucket = 'skill-images-789';
 
-const TableName = process.env.DYNAMODB_TABLE || 'askMemorySkillTable';
+const TableName = process.env.DYNAMODB_TABLE || 'ask-travel-browser';
 
-const tempPassPhraseExpiryMinutes = 55555555;  // default 5 minutes
+const tempPassPhraseExpiryMinutes = 14400;  // = 14400 minutes is ten days, adjust to 5 minutes before going live
 
 
 const AWS = require('aws-sdk');

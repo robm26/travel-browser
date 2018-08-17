@@ -37,7 +37,7 @@ const LaunchHandler = {
 
         const joinRank = '3'; // sessionAttributes['joinRank'];
         const skillUserCount = sessionAttributes['skillUserCount'];
-        const preferredGreeting = sessionAttributes['preferredGreeting'];
+        const preferredGreeting = sessionAttributes['preferredGreeting'] || `Welcome, `;
 
         const thisTimeStamp = new Date(handlerInput.requestEnvelope.request.timestamp).getTime();
         // console.log('thisTimeStamp: ' + thisTimeStamp);
@@ -48,20 +48,27 @@ const LaunchHandler = {
             || sessionAttributes['name']
             || helpers.randomArrayElement(['friend','buddy','dear user']);
 
-
         let say = ``;
         if (launchCount == 1) {
             say = `welcome new user! `
-                + `<audio src='https://s3.amazonaws.com/ask-soundlibrary/magic/amzn_sfx_magic_blast_1x_01.mp3'/>`
-                + ` You are the <say-as interpret-as="ordinal">${joinRank}</say-as> user to join!`;
+                + `<audio src='https://s3.amazonaws.com/ask-soundlibrary/magic/amzn_sfx_magic_blast_1x_01.mp3'/> `
+                + `This skill will tell you about travel destinations. `;
+
         } else {
 
-            say = `${preferredGreeting} ${namePronounce}.  This is session ${launchCount}. `;
-                // + ' and it has been ' + span.timeSpanDesc
-                // + '. There are now ' + skillUserCount + ' skill users. '
-                // + ' You joined as the <say-as interpret-as="ordinal">' + joinRank + '</say-as> user.';
-            say += ' Say help to hear some options, or say browse cities. ';
+            say = `${preferredGreeting} ${namePronounce}.  `;
+            if(launchCount % 2 == 0) {
+                say += `This is your <say-as interpret-as="ordinal">${launchCount}</say-as> time using the skill.`;
+                say += ` and it has been ${span.timeSpanDesc}. `;
+            }
+
         }
+        if(sessionAttributes.audioClip && sessionAttributes.audioClip.length === 26) {
+        // say += `<audio src="https://s3.amazonaws.com/skill-images-789/mp3/user/5YC7UID123pSNhtEF7u6dB.mp3" />`;
+        say += `Here is your audio message, <audio src="${constants.bucketUrlPath}${sessionAttributes.audioClip}" />`;
+
+        }
+        say += ' Say help to hear some options, or say browse cities. ';
 
         const responseBuilder = handlerInput.responseBuilder;
 
@@ -93,7 +100,6 @@ const LaunchHandler = {
         }
         const welcomeCardImg = constants.getWelcomeCardImg();
 
-
         return handlerInput.responseBuilder
             .speak(say)
             .reprompt(say)
@@ -104,7 +110,6 @@ const LaunchHandler = {
             .getResponse();
 
  //    .withStandardCard(`Travel Browser Pass Phrase`, `Go to:\nhttps://bit.ly/travelbrowser\n\nand enter:\n${phraseArray[0]} ${phraseArray[1]} ${phraseArray[2]}`)
-
 
 
     }
@@ -122,22 +127,25 @@ const LinkSessionHandler = {
         const request = handlerInput.requestEnvelope.request;
         const responseBuilder = handlerInput.responseBuilder;
 
+
         let sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
 
         sessionAttributes['tempPassPhrase'] = helpers.generatePassPhrase().word1 + '-' + helpers.generatePassPhrase().word2 + '-' + helpers.generatePassPhrase().number;
+        sessionAttributes['linkTimestamp'] = new Date(request.timestamp).getTime();
 
         let phraseArray = sessionAttributes.tempPassPhrase.split('-');
 
         let phrase = phraseArray[0] + ', ' + phraseArray[1] + ', <say-as interpret-as="digits">' + phraseArray[2] + '</say-as> ';
 
-        sessionAttributes['IotTopic'] = handlerInput.requestEnvelope.session.user.userId.slice(-10);
+        sessionAttributes['IotTopic'] = 'ask' + handlerInput.requestEnvelope.session.user.userId.slice(-10);
 
         handlerInput.attributesManager.setPersistentAttributes(sessionAttributes);
         handlerInput.attributesManager.savePersistentAttributes();
 
         let say = `Okay I will tell you a web site and then a three part password. The password expires in five minutes. `;
-        say += `The website is bit dot lee slash travel browser. `;
+        say += `The website is, bit dot lee, slash travel browser. `;
         say += `The password is ${phrase} .  Thats ${phrase} . `;
+        say += `I have sent this to the Alexa app on your phone. `;
         say += ` Goodbye for now.`;
 
         return handlerInput.responseBuilder
@@ -156,12 +164,10 @@ const BrowseCitiesHandler = {
             && handlerInput.requestEnvelope.request.intent.name === 'BrowseCitiesIntent';
     },
 
+
     async handle(handlerInput) {
 
         const request = handlerInput.requestEnvelope.request;
-        const responseBuilder = handlerInput.responseBuilder;
-
-        // let sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
 
         let say = ``;
 
@@ -197,18 +203,15 @@ const BrowseCitiesHandler = {
         }
 
 
-
         if (slotValues.country.ERstatus === 'ER_SUCCESS_NO_MATCH') {
-            slotStatus += `which did not match any slot value. `;
+            slotStatus += `which is not a country I know about yet. `;
             console.log(`***** consider adding "${slotValues.country.heardAs}" to the custom slot type used by slot country! `);
         }
 
-
         if( (slotValues.country.ERstatus === 'ER_SUCCESS_NO_MATCH') ||  (!slotValues.country.heardAs) ) {
 
-            slotStatus += helpers.sayArray(helpers.shuffleArray(countryList).slice(0,3), `or`) + `, for example`;
-            // + helpers.sayArray(helpers.getExampleSlotValues('BrowseCitiesIntent','country'), 'or');
-        }
+            slotStatus += helpers.sayArray(helpers.shuffleArray(countryList).slice(0,3), `or`) + `, for example. `;
+       }
 
         say += slotStatus;
 
@@ -219,54 +222,19 @@ const BrowseCitiesHandler = {
         const DisplayImg1 = constants.getDisplayImg1();
         const DisplayImg2 = constants.getDisplayImg2();
 
-        // const img = `https://s3.amazonaws.com/skill-images-789/travel/${city}.jpg`;
-        // const img = data.getImgUrl(city);
-
-
         if (helpers.supportsDisplay(handlerInput)) {
-
-            const myImage1 = new Alexa.ImageHelper()
-                .addImageInstance(DisplayImg2)
-                .getImage();
-
-            const myImage2 = new Alexa.ImageHelper()
-                .addImageInstance(DisplayImg2)
-                .getImage();
-
-            const primaryText = new Alexa.RichTextContentHelper()
-                .withPrimaryText('Here is your list!')
-                .getTextContent();
-
-            // To do: Make template 7 work
-            // handlerInput.responseBuilder.addRenderTemplateDirective({
-            //   type: 'BodyTemplate7',
-            //   token: 'string',
-            //   backButton: 'HIDDEN',
-            //   backgroundImage: myImage2,
-            //   image: getDisplayImg1,
-            //   title: primaryText,
-            // });
 
             handlerInput.responseBuilder.addRenderTemplateDirective({
                 type : 'ListTemplate1',
                 token : 'string',
                 backButton : 'hidden',
-                backgroundImage: myImage2,
-                image: myImage1,
+                backgroundImage: DisplayImg2,
+                image: DisplayImg1,
                 title: helpers.capitalize(invocationName),
                 listItems : itemList
 
-              // type: 'BodyTemplate6',
-              // token: 'string',
-              // backButton: 'HIDDEN',
-              // backgroundImage: myImage2,
-              // image: DisplayImg1,
-              // title: helpers.capitalize(invocationName),
-              // textContent: primaryText
-
             });
         }
-
 
         return handlerInput.responseBuilder
             .speak(say)
@@ -287,17 +255,10 @@ const ShowCityHandler = {
         const request = handlerInput.requestEnvelope.request;
         const responseBuilder = handlerInput.responseBuilder;
 
-        let sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-
         let say = ``;
-
         let slotStatus = ``;
-        let resolvedSlot;
 
         let slotValues = helpers.getSlotValues(request.intent.slots);
-        // getSlotValues returns .heardAs, .resolved, and .isValidated for each slot, according to request slot status codes ER_SUCCESS_MATCH, ER_SUCCESS_NO_MATCH, or traditional simple request slot without resolutions
-
-        // console.log('***** slotValues: ' +  JSON.stringify(slotValues, null, 2));
 
         //   SLOT: city
         if (slotValues.city.heardAs) {
@@ -311,8 +272,6 @@ const ShowCityHandler = {
 
             if(slotValues.city.resolved !== slotValues.city.heardAs) {
                 slotStatus += `a valid synonym for ` + slotValues.city.resolved + `. `;
-            } else {
-                // slotStatus += `a valid match. `
             }
 
         }
@@ -323,40 +282,29 @@ const ShowCityHandler = {
 
         if( (slotValues.city.ERstatus === 'ER_SUCCESS_NO_MATCH') ||  (!slotValues.city.heardAs) ) {
             slotStatus += `A few valid values are, `
-                // + 'red, blue, or green. ';
                 + helpers.sayArray(helpers.getExampleSlotValues('ShowCityIntent','city'), 'or');
 
         }
 
         say += slotStatus;
 
-        // sessionAttributes['city'] = slotValues.city.resolved || slotValues.city.heardAs;
         let city = slotValues.city.resolved || slotValues.city.heardAs || ``;
-
 
         // throw artificial error
         if (city === 'unicorn') {
             let foo = constants.getUnicorns();
         }
 
-        let cardText = `${city} is an amazing city.  `;
+        let cardText = `${city} is an amazing city. `;
 
         const airportCode = data.getAirportCode(city);
         if (airportCode !== `unknown`) {
-            say += `To book travel here, use airport code <say-as interpret-as="characters">${airportCode}</say-as>`;
-            cardText += `To book travel here, use airport code ${airportCode}.`;
+            say += `To book travel here, use airport code <say-as interpret-as="characters">${airportCode}</say-as>. `;
+            cardText += `To book travel here, use airport code ${airportCode}.\n`;
 
         }
-
-        // const cardText = helpers.displayListFormatter(list, `card`);
-        // const itemList = helpers.displayListFormatter(list, `list`);
-
-        // const itemList = helpers.displayListFormatter(sortedList, `list`);
-        //const itemList = helpers.actionListFormatter(sortedList, `list`);
-
-
-        const DisplayImg1 = constants.getDisplayImg1();
-        const DisplayImg2 = constants.getDisplayImg2();
+        const description = data.getDescription(city);
+        say += description || ``;
 
         const img = data.getImgUrl(city);
 
@@ -371,19 +319,9 @@ const ShowCityHandler = {
                 .getImage();
 
             const primaryText = new Alexa.RichTextContentHelper()
-                .withPrimaryText('Here is your city!')
+                .withPrimaryText(`Here is ${city}!`)
                 .getTextContent();
 
-
-            // responseBuilder.addRenderTemplateDirective({
-            //     type : 'ListTemplate1',
-            //     token : 'string',
-            //     backButton : 'hidden',
-            //     backgroundImage: myImage2,
-            //     image: myImage1,
-            //     title: helpers.capitalize(invocationName),
-            //     listItems : itemList
-            // });
             responseBuilder.addRenderTemplateDirective({
                               type: 'BodyTemplate6',
                               token: 'string',
@@ -405,8 +343,6 @@ const ShowCityHandler = {
     }
 };
 
-
-
 const MyNameIsHandler = {
     canHandle(handlerInput) {
         return handlerInput.requestEnvelope.request.type === 'IntentRequest'
@@ -425,7 +361,6 @@ const MyNameIsHandler = {
             let sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
             sessionAttributes['name'] = myName;
 
-
         }
         return handlerInput.responseBuilder
             .speak(say)
@@ -440,7 +375,7 @@ const ElementSelectedHandler = {
         return handlerInput.requestEnvelope.request.type === 'Display.ElementSelected';
     },
     handle(handlerInput) {
-        let say = `You clicked on a city`;
+        let say = `You clicked on ${handlerInput.requestEnvelope.request.token}. `;
 
         return handlerInput.responseBuilder
             .speak(say)
@@ -460,7 +395,7 @@ const MyNameIsYesNoHandler = {
         }
 
         return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-           // && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.YesIntent'
+            && (handlerInput.requestEnvelope.request.intent.name === 'AMAZON.YesIntent' || handlerInput.requestEnvelope.request.intent.name === 'AMAZON.NoIntent')
             && previousIntent === 'MyNameIsIntent';
     },
     handle(handlerInput) {
@@ -482,7 +417,8 @@ const MyNameIsYesNoHandler = {
             say = ` Okay great, I will remember your name. What else can I help you with? `;
         } else {
             //sessionAttributes["name"] = '';
-            sessionAttributes["namePronounce"] = '';
+            sessionAttributes["namePronounce"] = ' ';
+            sessionAttributes["name"] = ' ';
             say = ` Sorry I could not hear your name! `
                     + ` You can teach me how to pronounce your name on the companion web page.  Just say, link browser. `;
         }
@@ -595,63 +531,22 @@ const MyPhoneNumberHandler = {
 
 
 
-//
-// const StatusHandler = {
-//     canHandle(handlerInput) {
-//         return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-//             && handlerInput.requestEnvelope.request.intent.name === 'StatusIntent';
-//     },
-//     handle(handlerInput) {
-//         const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-//         let say = '';
-//         let attrCount = 0;
-//         Object.keys(sessionAttributes).forEach(function(key) {  // initialize all attributes
-//
-//             if (sessionAttributes[key] && sessionAttributes[key].length > 0) {
-//                 attrCount += 1;
-//                 const attrVal = sessionAttributes[key];
-//                 let attrValSay = "";
-//                 if (Array.isArray(attrVal)) {
-//                     attrValSay += ' an attributed list called ' + key + ', the last of whose ' + attrVal.length
-//                         + ' elements is ' + attrVal[attrVal.length-1].IntentRequest;
-//                     // attrVal.forEach(function(element) {
-//                     //
-//                     //     attrValSay += element.IntentRequest + ', ';
-//                     // });
-//                 } else {
-//                     attrValSay = attrVal;
-//                 }
-//
-//                 say += 'Attribute ' + key + ' is ' + attrValSay + ', ';
-//
-//             }
-//
-//         });
-//         say = 'You have ' + attrCount + ' attributes defined. ' + say;
-//
-//         return handlerInput.responseBuilder
-//             .speak(say)
-//             .reprompt(say)
-//             .getResponse();
-//     }
-// };
-
-
 const HelpHandler = {
     canHandle(handlerInput) {
         return handlerInput.requestEnvelope.request.type === 'IntentRequest'
             && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.HelpIntent';
     },
     async handle(handlerInput) {
-        let say = 'You asked for help. ';
+        let say = `You asked for help. `;
         let sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
         let history = sessionAttributes['history'];
 
+
         if (!handlerInput.requestEnvelope.session.new) {
-            say += 'Your last intent was ' + history[history.length-2].IntentRequest + '. ';
+            say += `Your last intent was ${history[history.length-2].IntentRequest}. `;
             // prepare context-sensitive help messages here
         }
-        say += ' You can say things like, browse cities, show cities in a country, go to a city, my name is, link browser, reset profile. ';
+        say += `You can say things like, browse cities, show cities in a country, go to a city, my name is, link browser, reset profile. `;
 
         return handlerInput.responseBuilder
             .speak(say)
@@ -675,7 +570,6 @@ const ResetHandler = {
             .getResponse();
     }
 };
-
 
 const YesHandler = {
     canHandle(handlerInput) {
@@ -749,8 +643,6 @@ const NoHandler = {
             }
 
         }
-
-
 
         return handlerInput.responseBuilder
             .speak(say)
@@ -871,12 +763,3 @@ exports.handler = skillBuilder
     .lambda();
 
 //------------------------------------------------------------------------------
-// Helper Functions
-
-// Array.prototype.diff = function(a) {
-//     return this.filter(function(i) {return a.indexOf(i) < 0;});
-// };
-
-
-
-// End of Skill code -------------------------------------------------------------

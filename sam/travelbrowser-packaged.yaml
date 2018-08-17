@@ -4,6 +4,9 @@ Metadata:
   Name:
     Ref: ProjectName
 Outputs:
+  Bucket:
+    Value:
+      Ref: S3Bucket
   CognitoPoolId:
     Export:
       Name: IdentityPool::Id
@@ -11,15 +14,20 @@ Outputs:
       Ref: CognitoPool
   DatabaseTable:
     Value:
-      Fn::Sub: ask${ProjectName}
-  Greeting:
+      Fn::Sub: ask-${ProjectName}
+  SkillLambdaFunction:
     Value:
-      Fn::Sub: The stack for ${ProjectName} is ready.
+      Fn::GetAtt:
+      - SkillLambdaFunction
+      - Arn
   UserSite:
     Value:
       Fn::GetAtt:
       - S3Bucket
       - WebsiteURL
+  usersessionAPI:
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/
 Parameters:
   ProjectName:
     Default: travel-browser
@@ -84,12 +92,14 @@ Resources:
           Statement:
           - Action:
             - iot:Connect
+            - iot:DescribeEndpoint
             Effect: Allow
             Resource: '*'
           - Action:
             - iot:Subscribe
             Effect: Allow
-            Resource: arn:aws:iot:::ask*
+            Resource:
+            - Fn::Sub: arn:aws:iot:${AWS::Region}:${AWS::AccountId}:thing/ask*
           Version: '2012-10-17'
         PolicyName: CognitoUnauthorizedPolicy
     Type: AWS::IAM::Role
@@ -102,20 +112,22 @@ Resources:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
       TableName:
-        Fn::Sub: ask${ProjectName}
+        Fn::Sub: ask-${ProjectName}
     Type: AWS::Serverless::SimpleTable
   S3Bucket:
     Properties:
       AccessControl: PublicRead
     Type: AWS::S3::Bucket
-  SkillFunction:
+  SkillLambdaFunction:
     Properties:
-      CodeUri: s3://alexaconsole789/e5c2524ad430723c90cfa4a485dd22c7
+      CodeUri: s3://alexaconsole789/fc6acf4932676828ee2f035605a9ea94
       Description: Alexa Lambda function
       Environment:
         Variables:
           DYNAMODB_TABLE:
-            Fn::Sub: ask${ProjectName}
+            Fn::Sub: ask-${ProjectName}
+          IdentityPoolId:
+            Ref: CognitoPool
       Events:
         AlexaTrigger:
           Type: AlexaSkill
@@ -126,49 +138,62 @@ Resources:
       Policies:
       - Statement:
         - Action:
+          - dynamodb:Scan
           - dynamodb:GetItem
           - dynamodb:PutItem
           - dynamodb:UpdateItem
           - dynamodb:DeleteItem
-          - dynamodb:CreateTable
           Effect: Allow
           Resource:
-          - arn:aws:dynamodb:::table/ask*
+          - Fn::Sub: arn:aws:dynamodb:*:*:table/ask-${ProjectName}
+        Version: '2012-10-17'
+      - Statement:
+        - Action:
+          - iot:Connect
+          - iot:DescribeEndpoint
+          Effect: Allow
+          Resource:
+          - '*'
+        Version: '2012-10-17'
+      - Statement:
+        - Action:
+          - iot:UpdateThingShadow
+          Effect: Allow
+          Resource:
+          - Fn::Sub: arn:aws:iot:${AWS::Region}:${AWS::AccountId}:thing/ask*
         Version: '2012-10-17'
       Runtime: nodejs8.10
       Timeout: 7
     Type: AWS::Serverless::Function
   userSessionAPIFunction:
     Properties:
-      CodeUri: s3://alexaconsole789/58308a44e2a8c2e259d70898a93709c0
-      Description: DynamoDB Lambda function
+      CodeUri: s3://alexaconsole789/5699685fb45cbf9a839aa33be216498f
+      Description: DynamoDB Lambda function for API
       Environment:
         Variables:
           DYNAMODB_TABLE:
-            Fn::Sub: ask${ProjectName}
+            Fn::Sub: ask-${ProjectName}
       Events:
-        AlexaTrigger:
-          Type: AlexaSkill
-        MyAPI:
+        usersessionAPI:
           Properties:
             Method: ANY
             Path: /{proxy+}
           Type: Api
       FunctionName:
-        Fn::Sub: ${ProjectName}-userSessionAPI
+        Fn::Sub: ${ProjectName}-usersessionAPI
       Handler: index.handler
       MemorySize: 128
       Policies:
       - Statement:
         - Action:
+          - dynamodb:Scan
           - dynamodb:GetItem
           - dynamodb:PutItem
           - dynamodb:UpdateItem
           - dynamodb:DeleteItem
-          - dynamodb:CreateTable
           Effect: Allow
           Resource:
-          - arn:aws:dynamodb:::table/ask*
+          - Fn::Sub: arn:aws:dynamodb:*:*:table/ask-${ProjectName}
         Version: '2012-10-17'
       Runtime: nodejs8.10
       Timeout: 7

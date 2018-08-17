@@ -4,8 +4,7 @@ AWS.config.region = process.env.AWS_REGION || 'us-east-1';
 
 const DYNAMODB_TABLE = process.env.DYNAMODB_TABLE || 'askMemorySkillTable';
 
-const mqttEndpoint = process.env.mqttEndpoint || 'a3npzlqqmmzqo.iot.us-east-1.amazonaws.com';
-const IdentityPoolId = process.env.IdentityPoolId || 'us-east-1:583dd84a-7792-49a6-9ce5-5624f80378e7';
+const IdentityPoolId = process.env.IdentityPoolId; // || 'us-east-1:583dd84a-7792-49a6-9ce5-5624f80378e7';
 const bucketUrlPath = process.env.bucketUrlPath || `https://s3.amazonaws.com/skill-images-789/mp3/user/`;
 
 console.log('DYNAMODB_TABLE ' + DYNAMODB_TABLE);
@@ -16,7 +15,6 @@ module.exports = {
         'debug':true,
         'AWS': AWS,
         'DYNAMODB_TABLE': DYNAMODB_TABLE,
-        "mqttEndpoint":   mqttEndpoint,
         "IdentityPoolId": IdentityPoolId,
         "bucketUrlPath":  bucketUrlPath,
         'invocationName': 'travel browser',
@@ -43,9 +41,9 @@ module.exports = {
             "tempPassPhrase":"sweet-dog-721",
             "linkTimestamp":0,
 
-            "mqttEndpoint":mqttEndpoint,
+            // "mqttEndpoint":mqttEndpoint,
             "IdentityPoolId":IdentityPoolId,
-            "IotTopic":"user123"
+            "IotTopic":"ask-thing-topic"
 
             // "email":"",
             // "mobileNumber":"",

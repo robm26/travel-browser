@@ -5,15 +5,6 @@ module.exports = {
 
     'getCityList': function (country) {
 
-        const listMock = [
-            {"city":"Dublin",        "country":"Ireland", "fileName":"city-dublin._TTH_.jpg", "date":"2018-11-21"},
-            {"city":"Philadelphia",  "country":"USA",     "fileName":"city-philadelphia._TTH_.jpg", "date":"2017-12-12"},
-            {"city":"Portland",      "country":"USA",     "fileName":"city-portland._TTH_.jpg", "date":"2017-12-19"},
-            {"city":"Boston",        "country":"USA",     "fileName":"city-boston._TTH_.jpg", "date":"2018-03-22"},
-            {"city":"Denver",        "country":"USA",     "fileName":"city-denver._TTH_.jpg", "date":"2018-04-11"},
-            {"city":"London",        "country":"UK",      "fileName":"city-london._TTH_.jpg", "date":"2018-05-03"}
-        ];
-
         const list = data;
         let filteredList = [];
 
@@ -63,5 +54,18 @@ module.exports = {
         });
 
         return code;
+    },
+    'getDescription': function (city) {
+
+        //let urlBase = `https://s3.amazonaws.com/skill-images-789/travel/`;
+        let description = `unknown`;
+
+        data.forEach(function (item) {
+            if (city.toUpperCase() === item.city.toUpperCase()  ) {
+                description = `${item.description}`;
+            }
+        });
+
+        return description;
     }
 };
