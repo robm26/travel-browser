@@ -47,7 +47,26 @@ From the Build tab:
 The manual steps to install and configure each AWS cloud component are listed [here](./SETUP.md) for reference.
 These steps would take a long time to perform.  Instead, we can use AWS CloudFormation to quickly setup everything.
 CloudFormation defines a "stack" or integrated bundle of services.
-You can install (and delete) the entire stack within the AWS CloudFormation console.
+You can install (and later delete) the entire stack within the AWS CloudFormation console.
+
+1. Open the [AWS CloudFormation Console](https://console.aws.amazon.com/cloudformation/home)
+1. Click "Create New Stack"
+1. From the "Choose a Template" options, click the "Specify an Amazon S3 template URL" radio button
+1. Paste in ```https://s3.amazonaws.com/skill-building-labs/travel-browser/travelbrowser-packaged.yaml``` and click Next.
+1. For the stack name, enter ```travel-browser``` to match the project name, and click Next.
+1. Scroll down on the next page, leaving fields empty, and click Next.
+1. On the Review page, Capabilities section, click both checkboxes to acknowledge the warning.
+1. Click the blue "Create Change Set" button.
+1. Once the change set has bee created, scroll down and click "Execute"
+
+The stack will take a minute or two to be created. Click the refresh circle button near the top right.
+
+1. Once complete, review the tabs shown. Click on the Outputs tab.
+1. Copy the "SkillLambdaFunction" value.
+1. In another tab, review your Skill (on developer.amazon.com ) and click the Endpoint link near the bottom left of the Build page.
+1. Click on Endpoint Type: AWS Lambda ARN.
+1. Paste in the SkillLambdaFunction to the Default Region box.
+1. Save and Build your skill.
 
 
 ### 4. Configure the web app
@@ -68,6 +87,9 @@ Skill
 1. Next, type in "link session" and hear a three part pass phrase.
 1. Write down this pass phrase. For example, sweet dog 721
 
+User Profile Page
+1. Open up the www/userprofile.html page.  Enter in the three part pass phrase and click Load.
+1. You should see a status of "lookup success"
 
 DynamoDB
 1. Click to the DynamoDB service in the AWS console, and click Tables from the left menu.

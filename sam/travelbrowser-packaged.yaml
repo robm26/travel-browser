@@ -27,7 +27,7 @@ Outputs:
       - WebsiteURL
   usersessionAPI:
     Value:
-      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod
 Parameters:
   ProjectName:
     Default: travel-browser
@@ -120,7 +120,7 @@ Resources:
     Type: AWS::S3::Bucket
   SkillLambdaFunction:
     Properties:
-      CodeUri: s3://alexaconsole789/fc6acf4932676828ee2f035605a9ea94
+      CodeUri: s3://alexaconsole789/cb0bf9c43016bc01d1aa6edb49004b94
       Description: Alexa Lambda function
       Environment:
         Variables:
@@ -128,6 +128,10 @@ Resources:
             Fn::Sub: ask-${ProjectName}
           IdentityPoolId:
             Ref: CognitoPool
+          bucketUrlPath:
+            Fn::GetAtt:
+            - S3Bucket
+            - WebsiteURL
       Events:
         AlexaTrigger:
           Type: AlexaSkill
