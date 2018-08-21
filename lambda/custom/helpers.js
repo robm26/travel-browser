@@ -403,7 +403,7 @@ module.exports = {
     },
 
     'updateShadow': function(thingName, payload, callback) {
-            // console.log(`in updateShadow with \n${endpoint}\n${thingName}\n`);
+            // console.log(`in updateShadow for topic \n${thingName}\n`);
 
             const paramsUpdate = {
                 "thingName" : thingName,

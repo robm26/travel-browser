@@ -3,25 +3,8 @@
  */
 let workbook;
 let activeSheet;
+let viz;
 
-function stateFilter(state) {
-
-    console.log('filtering on state ' + state);
-    activeSheet.getWorksheets().get("ProfitMap").applyFilterAsync(
-        "State",
-        state,
-        tableau.FilterUpdateType.REPLACE);
-
-}
-function stateFilter(state) {
-
-    console.log('filtering on state ' + state);
-    activeSheet.getWorksheets().get("ProfitMap").applyFilterAsync(
-        "State",
-        state,
-        tableau.FilterUpdateType.REPLACE);
-
-}
 function initViz() {
     console.log('initViz() starting');
     let containerDiv = document.getElementById("vizContainer"),
@@ -38,6 +21,15 @@ function initViz() {
         }
     };
 
-    let viz = new tableau.Viz(containerDiv, url, options);
+    viz = new tableau.Viz(containerDiv, url, options);
+
+}
+
+function cityFilter(city) {
+
+    activeSheet.getWorksheets().get("Profit Map").applyFilterAsync(
+        "City",
+        city,
+        tableau.FilterUpdateType.REPLACE);
 
 }

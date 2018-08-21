@@ -1,7 +1,7 @@
 
-const usersessionApiUrl = `https://pgnsdro44d.execute-api.us-east-1.amazonaws.com/Prod`;
+const usersessionApiUrl = `https://24kzsfwcoi.execute-api.us-east-1.amazonaws.com/prod`;
 
-    //`https://24kzsfwcoi.execute-api.us-east-1.amazonaws.com/prod`;
+    //``;
 
 const editableAttributes = [ // for display in profile form
     'name',
@@ -44,7 +44,10 @@ function init() {
         }
 
     });
+
     // toggleConnected(false);
+    // Tableau viz
+    initViz();
 
 }
 function clearForm() {
@@ -127,6 +130,9 @@ function loadAttrs() {
                     setStatus('lookup success');
 
                     setTimeLeft(data.timeLeft);
+
+                    // load Tableau embedded dashboard
+                    // initViz();
 
 
                 } else {

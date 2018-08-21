@@ -8,7 +8,16 @@ function handleMessage(msgRaw) {  // called from within connectAsThing.js
     const msg = JSON.parse(msgRaw);
 
     prepareSessionLogEvent(msg);
+    updateViz(msg);
 
+}
+function updateViz(msg){
+
+    if(msg.request && msg.request.type == 'IntentRequest' && msg.request.intent.name == 'ShowCityIntent') {
+        let city = msg.request.intent.slots.city.heardAs;
+        cityFilter(city);
+
+    }
 }
 
 function prepareSessionLogEvent(msg) {

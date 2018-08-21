@@ -125,7 +125,7 @@ Resources:
     Type: AWS::S3::Bucket
   SkillLambdaFunction:
     Properties:
-      CodeUri: s3://alexaconsole789/b363b3dfa6120a4cfc310b0e8abfbdac
+      CodeUri: s3://alexaconsole789/16b8b7f734320a1a9b5297a30ac02226
       Description: Alexa Lambda function
       Environment:
         Variables:

@@ -31,6 +31,9 @@
     <script type="text/javascript" src="js/userdata.js"></script>
     <script type="text/javascript" src="js/tests.js"></script>
 
+    <script src="https://public.tableau.com/javascripts/api/tableau-2.min.js"></script>
+    <script src="js/updateViz.js"></script>
+
     <script >
         // body.onLoad = init() in userdata.js
     </script>
@@ -166,8 +169,15 @@
 
                     </div>
                     <div class="tab-pane" id="3">
-                        Tableau - coming soon!<br/>
-                        <a href="https://www.youtube.com/watch?v=zqGK2LYtx-U" >Teaser demo</a>
+
+                        <div class='tableauPlaceholder' id='vizContainer' style='position: relative'>
+                        </div>
+
+                        <hr />
+                        Filters:
+                        <a href="#" onClick="cityFilter('San Francisco');" class="filterTest">San Francisco</a> -
+                        <a href="#" onClick="cityFilter('Chicago');" class="filterTest">Chicago</a>
+
                     </div>
 
                     <div class="tab-pane" id="4">

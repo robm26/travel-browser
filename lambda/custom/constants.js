@@ -2,10 +2,12 @@
 let AWS = require('aws-sdk');
 AWS.config.region = process.env.AWS_REGION || 'us-east-1';
 
-const DYNAMODB_TABLE = process.env.DYNAMODB_TABLE || 'askMemorySkillTable';
+const DYNAMODB_TABLE = process.env.DYNAMODB_TABLE || 'ask-travel-browser';
 
 const IdentityPoolId = process.env.IdentityPoolId; // || 'us-east-1:583dd84a-7792-49a6-9ce5-5624f80378e7';
 const bucketUrlPath = process.env.bucketUrlPath || `https://s3.amazonaws.com/skill-images-789/mp3/user/`;
+
+console.log(`IdentityPoolId ${IdentityPoolId}`);
 
 console.log('DYNAMODB_TABLE ' + DYNAMODB_TABLE);
 
@@ -38,7 +40,7 @@ module.exports = {
             "homeAirport":"BOS",
             "visitWishList":[],
 
-            "tempPassPhrase":"sweet-dog-721",
+            "tempPassPhrase":" ",
             "linkTimestamp":0,
 
             "mqttEndpoint":" ",

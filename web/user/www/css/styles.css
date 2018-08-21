@@ -124,3 +124,7 @@ body {  padding : 10px ;  }
 }
 
 .tab-pane.iot {float:right}
+
+.filterTest {text-decoration:none; color:lightgray; font-size:smaller}
+
+.tableauPlaceholder {width:900px}

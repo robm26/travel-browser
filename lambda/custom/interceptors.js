@@ -112,6 +112,7 @@ module.exports = {
                                 // console.log('--- First Ever Visit for userId ' + handlerInput.requestEnvelope.session.user.userId);
 
                                 const initialAttributes = constants.getMemoryAttributes();
+                                // console.log(`constants.getMemoryAttributes()\n${JSON.stringify(initialAttributes)}`);
                                 sessionAttributes = initialAttributes;
 
                             }
